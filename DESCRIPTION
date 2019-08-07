@@ -8,7 +8,12 @@ Authors@R: c(
 Description: A Package to Analyse Simulation Study Data and Summarise Results.
 License: GPL-3
 Imports: 
-  chk
+  chk,
+  sims,
+  batchr,
+  nlist,
+  mcmcderive,
+  checkr
 Suggests: 
     covr,
     testthat
