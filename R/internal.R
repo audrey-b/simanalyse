@@ -1,6 +1,16 @@
-# make_code <- function(code, append, sprintf_args){}
+make_code <- function(code, append=NULL, ...){
+  
+    code %>% paste(append, sep = " \n ") %>% sprintf(...)
 
-# analyse_dataset <- function(nlistdata, seed, code, monitor, path, inits, n.adapt, n.burnin, n.iter, thin, quiet) {
+}
+
+add_model_block <- function(code){
+   
+   sprintf("model{\n\n%s\n\n}", code)
+   
+}
+
+# analyse_dataset_bayesian <- function(nlistdata, seed, code, monitor, path, inits, n.adapt, n.burnin, n.iter, thin, quiet) {
 #   
 #   code <- textConnection(code)
 #   
@@ -27,4 +37,4 @@
 # }
 
 
-# analyse_datasets <- function()
+# analyse_datasets_bayesian <- function(nlistsdata)

@@ -4,20 +4,20 @@
 \alias{simanalyse_analyse_bayesian}
 \title{Analyse data for a simulation study}
 \usage{
-simanalyse_analyse_bayesian(datalist, FUN, code, append, sprintf_args,
-  monitor, inits, n.adapt, n.burnin, n.iter, thin, seed, path, exists,
-  silent, ...)
+simanalyse_analyse_bayesian(datalist, code, code_add = NULL,
+  code_values = "", package, monitor, inits, n.adapt, n.burnin, n.iter,
+  thin, seed, path, exists, silent, ...)
 }
 \arguments{
 \item{datalist}{A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.}
 
-\item{FUN}{An R function to analyse the data. It should contain an argument called data which takes an nlist of the data.}
+\item{code}{A string of code to analyse the data. JAGS code must not be in a data or model block.}
 
-\item{code}{A string of JAGS or R code to analyse the data. The code must not be in a data or model block.}
+\item{code_add}{A string of code to append at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.}
 
-\item{append}{A string of JAGS or R code to append at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.}
+\item{code_values}{A character vector to pass to sprintf when applied to the appended code from \code{code} and \code{code_add}}
 
-\item{sprintf_args}{A list of arguments to pass to sprintf when applied to the appended code}
+\item{package}{A string with the name of the R package to analyse the data, among the following ones: "rjags"}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.}
 
@@ -39,7 +39,7 @@ simanalyse_analyse_bayesian(datalist, FUN, code, append, sprintf_args,
 
 \item{silent}{A flag specifying whether to suppress warnings.}
 
-\item{...}{Arguments to be passed to \code{FUN}.}
+\item{...}{not sure if will use}
 }
 \value{
 A flag.

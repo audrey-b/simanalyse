@@ -13,7 +13,8 @@ Imports:
   batchr,
   nlist,
   mcmcderive,
-  checkr
+  checkr,
+  magrittr
 Suggests: 
     covr,
     testthat

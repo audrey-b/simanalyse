@@ -3,10 +3,10 @@
 #' Analyse data for a simulation study. If path is supplied, saves a hidden file with the information on the analysis.
 #' 
 #' @param datalist A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.
-#' @param FUN An R function to analyse the data. It should contain an argument called data which takes an nlist of the data.
-#' @param code A string of JAGS or R code to analyse the data. The code must not be in a data or model block.
-#' @param append A string of JAGS or R code to append at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.
-#' @param sprintf_args A list of arguments to pass to sprintf when applied to the appended code
+#' @param package A string with the name of the R package to analyse the data, among the following ones: "rjags"
+#' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
+#' @param code_add A string of code to append at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.
+#' @param code_values A character vector to pass to sprintf when applied to the appended code from \code{code} and \code{code_add}
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.
 #' @param inits aa
 #' @param n.adapt aa
@@ -17,7 +17,7 @@
 #' @param seed A positive integer specifying the random seed to use for analysing the data.
 #' @param exists A flag specifying whether the directory should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.
 #' @param silent A flag specifying whether to suppress warnings.
-#' @param ... Arguments to be passed to \code{FUN}.
+#' @param ... not sure if will use
 #' 
 #' @return A flag.
 #' @export
@@ -27,10 +27,10 @@
 #' simanalyse_analyse_bayesian(dat, FUN=function(data, arg) data[arg], arg="a")
 
 simanalyse_analyse_bayesian <- function(datalist,
-                                        FUN,
                                         code,
-                                        append,
-                                        sprintf_args,
+                                        code_add=NULL,
+                                        code_values="",
+                                        package,
                                         monitor,
                                         inits,
                                         n.adapt,

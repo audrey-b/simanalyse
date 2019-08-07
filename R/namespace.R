@@ -1,2 +1,2 @@
-#' @import chk sims batchr nlist mcmcderive checkr
+#' @import chk sims batchr nlist mcmcderive checkr magrittr
 NULL
