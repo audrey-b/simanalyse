@@ -1,4 +1,4 @@
 library(testthat)
-library(pkgtemplate)
+library(simanalyse)
 
-test_check("pkgtemplate")
+test_check("simanalyse")
