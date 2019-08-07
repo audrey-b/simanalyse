@@ -14,7 +14,8 @@ Imports:
   nlist,
   mcmcderive,
   checkr,
-  magrittr
+  magrittr,
+  stringr
 Suggests: 
     covr,
     testthat

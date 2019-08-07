@@ -1,6 +1,12 @@
-make_code <- function(code, append=NULL, ...){
+prepare_code <- function(code, append=NULL, ...){
   
-    code %>% paste(append, sep = " \n ") %>% sprintf(...)
+  if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
+    err("jags code must not be in a data or model block")
+  
+    code %>% 
+      paste(append, sep = " \n ") %>% 
+      sprintf(...) %>%
+      add_model_block()
 
 }
 
@@ -9,6 +15,8 @@ add_model_block <- function(code){
    sprintf("model{\n\n%s\n\n}", code)
    
 }
+
+
 
 # analyse_dataset_bayesian <- function(nlistdata, seed, code, monitor, path, inits, n.adapt, n.burnin, n.iter, thin, quiet) {
 #   
