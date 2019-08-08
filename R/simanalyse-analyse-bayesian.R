@@ -5,7 +5,7 @@
 #' @param datalist A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.
 #' @param package A string with the name of the R package to analyse the data, among the following ones: "rjags"
 #' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
-#' @param code_add A string of code to append at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.
+#' @param code_add A string of code to add at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.
 #' @param code_values A character vector to pass to sprintf when applied to the appended code from \code{code} and \code{code_add}
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.
 #' @param inits aa

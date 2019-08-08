@@ -15,7 +15,8 @@ Imports:
   mcmcderive,
   checkr,
   magrittr,
-  stringr
+  stringr,
+  rjags
 Suggests: 
     covr,
     testthat

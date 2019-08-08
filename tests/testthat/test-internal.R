@@ -23,3 +23,15 @@ test_that("add_model_block works",{
   expect_identical(add_model_block("a ~ dnorm(0,1)"), "model{\n\na ~ dnorm(0,1)\n\n}")
 })
 
+test_that("add_model_block works",{
+  result <- analyse_dataset_bayesian(code = "a ~ dnorm(0,1)",
+                                     n.adapt = 101,
+                                     n.burnin = 0,
+                                     n.iter = 101,
+                                     monitor = "a",
+                                     seed = 10)
+  expect_true(class(result)=="nlist")
+  expect_equal(result[[1]][1], 0.3628946, tolerance = 0.0000001)
+})
+
+

@@ -13,7 +13,7 @@ simanalyse_analyse_bayesian(datalist, code, code_add = NULL,
 
 \item{code}{A string of code to analyse the data. JAGS code must not be in a data or model block.}
 
-\item{code_add}{A string of code to append at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.}
+\item{code_add}{A string of code to add at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.}
 
 \item{code_values}{A character vector to pass to sprintf when applied to the appended code from \code{code} and \code{code_add}}
 
