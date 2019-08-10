@@ -1,13 +1,12 @@
 language: R
-cache: packages
 
-r:
-  - oldrel
-  - release
-  - devel
+sudo: required
 
 r_packages:
   - covr
+
+apt_packages:
+  - r-cran-rjags
 
 after_success:
   - Rscript -e 'covr::codecov()'
