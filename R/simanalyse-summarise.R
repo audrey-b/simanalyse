@@ -43,8 +43,7 @@ simanalyse_summarise <- function(results.nlists,
         summarise_one_measure(results.nlists, 
                               "Epvar", 
                               estimator,
-                              parameters,
-                              monitor) %>% return
+                              parameters) %>% return
         
         
 }

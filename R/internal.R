@@ -74,8 +74,7 @@ as_natomic_mcarray <- function(x) {
 summarise_one_measure <- function(results.nlists, 
                                   measure, 
                                   estimator, 
-                                  parameters,
-                                  monitor){
+                                  parameters){
   if(measure == "Epvar"){ 
     aggregate_FUN = var
     measure_FUN = NULL
@@ -84,15 +83,13 @@ summarise_one_measure <- function(results.nlists,
     measure_FUN = NULL
   }else aggregate_FUN = mean
   
-  if(measure=="bias") measure_FUN = function(x, estimator, param.value){
+  if(measure=="bias") measure_FUN = function(x, param.value){
     estimator(x) - param.value}
-    
-    
-  #else if(measure == "bias") 
-  #measure_FUN = function(x, parameter) estimator(x) - parameters[parameter]
+  #if(measure=="rb") measure_FUN = function(x, param.value){
+  #  (estimator(x) - param.value)/param.value}
   
   results.nlists %>% 
-    summarise_within(measure_FUN, aggregate_FUN, parameters, monitor) %>%
+    summarise_within(measure_FUN, aggregate_FUN, parameters) %>%
     summarise_across(mean) %>%
     return
 }
@@ -100,18 +97,17 @@ summarise_one_measure <- function(results.nlists,
 summarise_within <- function(results.nlists, 
                              measure_FUN=NULL, 
                              aggregate_FUN,
-                             parameters,
-                             monitor){
+                             parameters=NULL){
   if(!is.null(measure_FUN)){
-    #results.nlists[[1]] %>% mcmc_derive(expr=expr, values=list())
+    monitor <- results.nlists[[1]][[1]] %>% names()
+    pos <- 1
+    envir = as.environment(pos)
+    assign("measure_FUN", measure_FUN, envir = envir) #not ideal, quick fix
+    expr <- paste("summary_", monitor, " <- measure_FUN(",monitor,", ",monitor,".value",")", collapse=" \n ", sep="")
+    names(parameters) <- paste0(names(parameters), ".value")
+    results.nlists[[1]] %>% mcmc_derive(expr=expr, values=parameters)
   }
-  #pos <- 1
-  #envir = as.environment(pos)
-  #assign("measure_FUN", measure_FUN, envir = envir) #not ideal, quick fix
-  #expr.FUN = function(m) paste0("summary_", monitor, " <- measure_FUN(",m,")")
-  #expr <- monitor %>% 
-  #  sapply(expr.FUN) %>% 
-  #  paste(collapse=" \n ")
+  
   summary.nlist <- lapply(results.nlists, aggregate, aggregate_FUN) %>% #, mcmc_derive, expr=expr)
     as.nlists()
   return(summary.nlist)

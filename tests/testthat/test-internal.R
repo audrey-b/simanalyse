@@ -63,7 +63,7 @@ test_that("package works",{
   expect_true(class(result)=="list")
   expect_equal(result[[1]][1][[1]]$mu, -1.817165, tolerance = 0.000001)
   
-  summarise_within(result, aggregate_FUN=var, monitor="mu")
+  summarise_within(result, aggregate_FUN=var)
   
   simanalyse_summarise(result, "Epsd", parameters=params, monitor="mu")
 })
@@ -81,7 +81,7 @@ test_that("package works 2",{
                                         n.burnin = 0,
                                         n.iter = 2,
                                         monitor = c("theta", "dummy"))
-  summarise_within(result, aggregate_FUN=var, parameters=params, monitor="theta")
+  summarise_within(result, aggregate_FUN=var, parameters=params)
   simanalyse_summarise(result, "Epsd", parameters=params, monitor="theta")
 })
 
