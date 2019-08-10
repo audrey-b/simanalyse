@@ -11,7 +11,6 @@ Depends: nlist
 Imports: 
   chk,
   sims,
-  batchr,
   mcmcr,
   mcmcderive,
   checkr,
@@ -27,7 +26,8 @@ Remotes:
   poissonconsulting/mcmcderive,
   poissonconsulting/checkr,
   poissonconsulting/nlist,
-  poissonconsulting/sims
+  poissonconsulting/sims,
+  poissonconsulting/batchr
 URL: https://github.com/audrey-b/simanalyse
 BugReports: https://github.com/audrey-b/simanalyse/issues
 Encoding: UTF-8
