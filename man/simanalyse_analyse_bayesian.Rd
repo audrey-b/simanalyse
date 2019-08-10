@@ -5,8 +5,8 @@
 \title{Analyse data for a simulation study}
 \usage{
 simanalyse_analyse_bayesian(datalist, code, code_add = NULL,
-  code_values = "", package, monitor, inits, n.adapt, n.burnin, n.iter,
-  thin, seed, path, exists, silent, ...)
+  code_values = "", package = "rjags", monitor, inits = list(),
+  n.adapt, n.burnin, n.iter, thin = 1, seed = sims::rcount())
 }
 \arguments{
 \item{datalist}{A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.}
@@ -32,14 +32,6 @@ simanalyse_analyse_bayesian(datalist, code, code_add = NULL,
 \item{thin}{aa}
 
 \item{seed}{A positive integer specifying the random seed to use for analysing the data.}
-
-\item{path}{A string specifying the path to the directory where the data sets are saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.}
-
-\item{exists}{A flag specifying whether the directory should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.}
-
-\item{silent}{A flag specifying whether to suppress warnings.}
-
-\item{...}{not sure if will use}
 }
 \value{
 A flag.
@@ -49,5 +41,4 @@ Analyse data for a simulation study. If path is supplied, saves a hidden file wi
 }
 \examples{
 dat <- sims::sims_simulate("a ~ dnorm(0,1)")
-simanalyse_analyse_bayesian(dat, FUN=function(data, arg) data[arg], arg="a")
 }

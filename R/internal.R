@@ -30,8 +30,9 @@ set_seed_inits <- function(seed, inits) {
 }
 
 analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
-                                     path=NULL, inits=list(), n.adapt, n.burnin, 
-                                     n.iter, thin=1, seed = sims::rcount(), quiet = FALSE) {
+                                     inits=list(), n.adapt, n.burnin, 
+                                     n.iter, thin=1, seed = sims::rcount(), 
+                                     quiet = FALSE) {
 
   code <- code %>% prepare_code() %>% textConnection
 
@@ -41,19 +42,16 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
 
                              n.adapt = n.adapt, quiet = quiet)
 
-  if(n.burnin >= 1) update(model, n.iter = n.burnin, progress.bar = "none")
+  if(n.burnin >= 1) update(model, n.iter = n.burnin)
 
-  sample <- rjags::jags.samples(model, variable.names = monitor, n.iter = n.iter, thin=thin,
-
-                                progress.bar = "none")
+  sample <- rjags::jags.samples(model, variable.names = monitor, n.iter = n.iter, thin=thin)
 
   nlist <-  set_class(lapply(sample, as_natomic_mcarray), "nlist")
 
-  if(is.null(path)) return(nlist)
-
+  return(nlist)
   #saveRDS(nlist, file.path(path, data_file_name(sim)))
   #data_file_name <- function(sim) p0("data", sprintf("%07d", sim), ".rds")
-  NULL
+  
 
 }
 

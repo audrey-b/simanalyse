@@ -13,40 +13,45 @@
 #' @param n.burnin aa
 #' @param n.iter aa
 #' @param thin aa
-#' @param path A string specifying the path to the directory where the data sets are saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
 #' @param seed A positive integer specifying the random seed to use for analysing the data.
-#' @param exists A flag specifying whether the directory should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.
-#' @param silent A flag specifying whether to suppress warnings.
-#' @param ... not sure if will use
 #' 
 #' @return A flag.
 #' @export
 #'
 #' @examples
 #' dat <- sims::sims_simulate("a ~ dnorm(0,1)")
-#' simanalyse_analyse_bayesian(dat, FUN=function(data, arg) data[arg], arg="a")
 
 simanalyse_analyse_bayesian <- function(datalist,
                                         code,
                                         code_add=NULL,
                                         code_values="",
-                                        package,
+                                        package="rjags",
                                         monitor,
-                                        inits,
+                                        inits=list(),
                                         n.adapt,
                                         n.burnin,
                                         n.iter,
-                                        thin,
-                                        seed,
-                                        path,
-                                        exists,
-                                        silent,
-                                        ...) {
+                                        thin=1,
+                                        seed=sims::rcount()) {
   
   
   check_nlists(datalist)
   lapply(datalist, check_nlist)
   
-  if(!missing(datalist)) NULL
+  n.data <- length(datalist)
   
+  seeds <- sims::rcount(n.data)
+  
+  res.nlists <- nlists(nlist())
+  
+  #jags
+  for(i in 1:n.data){
+    res.nlists[[i]] <- analyse_dataset_bayesian(nlistdata=datalist[[i]], 
+                                              code=code, monitor=monitor,
+                                              inits=inits, 
+                                              n.adapt=n.adapt, n.burnin=n.burnin, 
+                                              n.iter=n.iter, thin=thin,
+                                              seed=seeds[i])}
+  return(res.nlists)
+
 }
