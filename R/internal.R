@@ -70,3 +70,36 @@ as_natomic_mcarray <- function(x) {
 }
 
 # analyse_datasets_bayesian <- function(nlistsdata)
+
+summarise_one_measure <- function(results.nlists, 
+                                  measure, 
+                                  estimator, 
+                                  parameters,
+                                  monitor){
+  results.nlists %>% 
+    summarise_within(measure, parameters, monitor) %>%
+    summarise_across(mean) %>%
+    return
+}
+
+summarise_within <- function(results.nlists, 
+                             measure_FUN, 
+                             parameters,
+                             monitor){
+  pos <- 1
+  envir = as.environment(pos)
+  assign("measure_FUN", measure_FUN, envir = envir) #not ideal, quick fix
+  expr.FUN = function(m) paste0("trans_", monitor, " <- measure_FUN(",m,")")
+  expr <- monitor %>% 
+    sapply(expr.FUN) %>% 
+    paste(collapse=" \n ")
+  summary.nlist <- mcmc_derive(results.nlists, expr=expr)
+  return(summary.nlist)
+}
+
+summarise_across <- function(summary.nlist, FUN){
+  summary.nlist %>% 
+    aggregate(FUN = mean) %>%
+    as.numeric() %>%
+    return
+}

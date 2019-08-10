@@ -7,10 +7,12 @@
 #' nlist when neccessary.
 #' 
 #' @param results.nlists An nlists of results
-#' @param measures A vector of strings indicating which Monte Carlo measures to calculate. Strings may include bias, rb (relative 
-#' bias), br (bias ratio), var (variance), se (standard error), mse (mean square error), rmse (root mean square 
-#' error), rrmse (relative root mean square error), cp90, cp95 and cp99 (coverage probability of 90, 95 and 99 percent quantile-based CrIs)
+#' @param measures A vector of strings indicating which Monte Carlo measures to calculate. Strings may include "bias", "rb" (relative 
+#' bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (mean square error), rmse (root mean square 
+#' error), "rrmse" (relative root mean square error), "cp90", "cp95" and "cp99" (coverage probability of 90, 95 and 99 percent quantile-based CrIs),
+#' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use.
+#' @param parameters Parameters to use to calculate Monte Carlo measures such as bias and coverage probability
 #' @param monitor  A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
 #' 
 #' @return A flag.
@@ -26,21 +28,28 @@
 
 simanalyse_summarise <- function(results.nlists, 
                                  measures, 
-                                 estimator, 
+                                 estimator=mean, 
+                                 parameters,
                                  monitor){
-     
-     results.nlists %<>% subset(select=monitor)
-     
-     if(("var" %in% measures) | ("se" %in% measures)){
-       expr.FUN = function(m) paste0("var <- var(",m,")")
-       expr <- monitor %>% 
-         sapply(expr.FUN) %>% 
-         paste(collapse=" \n ")
-       summ.var <- mcmc_derive(results.nlists, expr=expr) %>% 
-         aggregate(FUN = mean) %>%
-         as.numeric()
-       summ.se <- sqrt(summ.var)
-     }
+        
+        check_nlists(results.nlists)
+        check_chr(measures)
+        check_function(estimator)
+        check_nlist(parameters)
+        check_chr(monitor)
+        
+        results.nlists %<>% subset(select=monitor)
+        
+        if(("Epvar" %in% measures) | ("Epse" %in% measures)){
+                summ.var <- summarise_one_measure(results.nlists, 
+                                                  var, 
+                                                  estimator,
+                                                  parameters,
+                                                  monitor)
+                summ.se <- sqrt(summ.var)
+                return(summ.var)
+        }
+        
 }
 
 

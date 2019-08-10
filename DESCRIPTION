@@ -22,11 +22,11 @@ Suggests:
     covr,
     testthat
 Remotes:
-  poissonconsulting/chk
-  poissonconsulting/mcmcr
-  poissonconsulting/mcmcderive
-  poissonconsulting/checkr
-  poissonconsulting/nlist
+  poissonconsulting/chk,
+  poissonconsulting/mcmcr,
+  poissonconsulting/mcmcderive,
+  poissonconsulting/checkr,
+  poissonconsulting/nlist,
   poissonconsulting/sims
 URL: https://github.com/audrey-b/simanalyse
 BugReports: https://github.com/audrey-b/simanalyse/issues

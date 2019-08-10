@@ -4,16 +4,20 @@
 \alias{simanalyse_summarise}
 \title{Summarises the results of simulation studies.}
 \usage{
-simanalyse_summarise(results.nlists, measures, estimator, monitor)
+simanalyse_summarise(results.nlists, measures, estimator = mean,
+  parameters, monitor)
 }
 \arguments{
 \item{results.nlists}{An nlists of results}
 
-\item{measures}{A vector of strings indicating which Monte Carlo measures to calculate. Strings may include bias, rb (relative 
-bias), br (bias ratio), var (variance), se (standard error), mse (mean square error), rmse (root mean square 
-error), rrmse (relative root mean square error), cp90, cp95 and cp99 (coverage probability of 90, 95 and 99 percent quantile-based CrIs)}
+\item{measures}{A vector of strings indicating which Monte Carlo measures to calculate. Strings may include "bias", "rb" (relative 
+bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (mean square error), rmse (root mean square 
+error), "rrmse" (relative root mean square error), "cp90", "cp95" and "cp99" (coverage probability of 90, 95 and 99 percent quantile-based CrIs),
+"Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)}
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use.}
+
+\item{parameters}{Parameters to use to calculate Monte Carlo measures such as bias and coverage probability}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.}
 }

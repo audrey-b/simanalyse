@@ -49,19 +49,22 @@ test_that("analyse_dataset_bayesian with data works",{
   expect_equal(result[[1]][1], -2.790483, tolerance = 0.000001)
 })
 
- test_that("simanalyse_analyse_bayesian works",{
-   set.seed(10L)
-   dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = nlist(mu=0), nsims=2)
-   result <- simanalyse_analyse_bayesian(datalist=dat,
-                                         code = "a ~ dnorm(mu,1)
-                                      mu ~ dunif(-3,3)",
-                                         n.adapt = 101,
-                                         n.burnin = 0,
-                                         n.iter = 101,
-                                         monitor = "mu")
-   expect_true(class(result)=="nlists")
-   expect_equal(result[[1]]$mu[1], 1.750656, tolerance = 0.000001)
- })
-
-
+test_that("package works",{
+  set.seed(10L)
+  params <- nlist(mu=0)
+  dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
+  result <- simanalyse_analyse_bayesian(datalist=dat,
+                                        code = "a ~ dnorm(mu,1)
+                                         mu ~ dunif(-3,3)",
+                                        n.adapt = 101,
+                                        n.burnin = 0,
+                                        n.iter = 101,
+                                        monitor = "mu")
+  expect_true(class(result)=="nlists")
+  expect_equal(result[[1]]$mu[1], 1.750656, tolerance = 0.000001)
+  
+  summarise_within(result, var, monitor="mu")
+  
+  simanalyse_summarise(result, "Epse", parameters=params, monitor="mu")
+})
 
