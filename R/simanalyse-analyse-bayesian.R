@@ -14,7 +14,7 @@
 #' @param n.burnin An integer specifying the number of burn-in iterations for each analysis (following the adaptation phase)
 #' @param n.iter An integer specifying the number of iterations for each analysis (following the burn-in phase)
 #' @param thin A numeric scalar of at least 1 specifying the thinning factor. Default is 1.
-#' @param seed A positive integer specifying the random seed to use for analysing the data.
+#' @param seed An integer specifying the random seed to use for analysing the data.
 #' 
 #' @return A flag.
 #' @export
@@ -42,7 +42,7 @@ simanalyse_analyse_bayesian <- function(datalist,
                                         n.iter,
                                         thin=1,
                                         n.chains=3,
-                                        seed=rcount()) {
+                                        seed=rinteger()) {
   
   
   check_nlists(datalist)
@@ -65,11 +65,11 @@ simanalyse_analyse_bayesian <- function(datalist,
   
   check_dbl(thin) #1 to max iter?
 
-  check_scalar(seed, c(1L, .max_integer))
+  check_scalar(seed, c(-.max_integer, .max_integer))
 
   n.data <- length(datalist)
   
-  seeds <- rcount(n.data)
+  seeds <- rinteger(n.data)
   
   res.nlists <- nlists(nlist())
   

@@ -11,7 +11,6 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
-library(nlist)
 ```
 # simanalyse
 
@@ -37,20 +36,21 @@ install.packages("simanalyse")
 
 To install the latest development version from [GitHub](https://github.com/audrey-b/simanalyse)
 ```r
-# install.packages("remotes")
+#install.packages("remotes")
 remotes::install_github("audrey-b/simanalyse")
 ```
 
 ## Demonstration
 
-Simulate 50 datasets using the sims package
+Simulate 5 datasets using the sims package (we use only 5 datasets for demonstration purposes)
 ```{r}
+library(simanalyse)
 set.seed(10L)
 params <- nlist(mu=0)
-dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=50)
+dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=5)
 ```
 
-Analyse all 50 datasets (here we use only a few iterations for demonstration purposes)
+Analyse all 5 datasets (here we use only a few iterations for demonstration purposes)
 ```{r}
 result <- simanalyse_analyse_bayesian(datalist=dat,
                                       code = "a ~ dnorm(mu,1)
@@ -61,7 +61,7 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
                                       monitor = "mu")
 ```
 
-Summarize the results over the 50 datasets
+Summarize the results over the 5 datasets
 ```{r}
 simanalyse_summarise(result, "Epse", parameters=params, monitor="mu")
 ```

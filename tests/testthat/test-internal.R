@@ -31,7 +31,7 @@ test_that("analyse_dataset_bayesian works",{
                                      monitor = "a",
                                      seed = 10)
   expect_true(class(result)=="nlist")
-  expect_equal(result[[1]][1], 0.3628946, tolerance = 0.0000001)
+  expect_equal(result[[1]][1], -1.636731, tolerance = 0.000001)
 })
 
 test_that("analyse_dataset_bayesian with data works",{
@@ -46,7 +46,7 @@ test_that("analyse_dataset_bayesian with data works",{
                                      monitor = "mu",
                                      seed = 10)
   expect_true(class(result)=="nlist")
-  expect_equal(result[[1]][1], -2.790483, tolerance = 0.000001)
+  expect_equal(result[[1]][1], -3.944967, tolerance = 0.000001)
 })
 
 test_that("package works",{
@@ -61,7 +61,7 @@ test_that("package works",{
                                         n.iter = 101,
                                         monitor = "mu")
   expect_true(class(result)=="nlists")
-  expect_equal(result[[1]]$mu[1], 1.750656, tolerance = 0.000001)
+  expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
   
   summarise_within(result, var, monitor="mu")
   

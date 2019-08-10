@@ -23,7 +23,7 @@ status](https://www.r-pkg.org/badges/version/simanalyse)](https://cran.r-project
 <!-- badges: end -->
 
 simanalyse is an R package to analyse simulation study data and
-summarise the results.
+summarise results.
 
 ## Installation
 
@@ -38,38 +38,94 @@ To install the latest development version from
 [GitHub](https://github.com/audrey-b/simanalyse)
 
 ``` r
-# install.packages("remotes")
+#install.packages("remotes")
 remotes::install_github("audrey-b/simanalyse")
 ```
 
 ## Demonstration
 
-In order to create a new package the user should
+Simulate 5 datasets using the sims package (we use only 5 datasets for
+demonstration purposes)
 
-1)  Go to the simanalyse [GitHub
-    repository](https://github.com/audrey-b/simanalyse) and choose ‘Use
-    this template’.
-2)  Clone the new repository and replace ‘simanalyse’ with the name of
-    the new package in `DESCRIPTION`, `NEWS.md`, `tests/testthat.R` and
-    this `README.Rmd` file.
-3)  `devtools::check()` the package and fix any Errors, Warnings or
-    Notes.
-4)  Knit this `README.Rmd` file and `pkgdown::build_site()`.
-5)  Add the project to
-    [Travis](https://www.travis-ci.com/audrey-b/simanalyse) and in the
-    [Settings](https://www.travis-ci.com/audrey-b/simanalyse/settings)
-    add a Cron Job to run the master branch daily if there hasn’t been a
-    build in the last 24h.
-6)  Add the project to
-    [Appveyor](https://ci.appveyor.com/project/audrey-b/simanalyse).
-7)  Rename the `simanalyse.Rproj` file.
-8)  Push the changes to the new repository.
-9)  Go to the repository GitHub
-    [settings](https://github.com/audrey-b/simanalyse/settings) and set
-    the GitHub Pages Source to be the master branch /docs folder.
-10) Edit the GitHub repository
-    [description](https://github.com/audrey-b/simanalyse/) and set the
-    website to be <https://audrey-b.github.io/simanalyse/>.
+``` r
+library(simanalyse)
+#> Loading required package: nlist
+#> Registered S3 method overwritten by 'rjags':
+#>   method               from 
+#>   as.mcmc.list.mcarray mcmcr
+set.seed(10L)
+params <- nlist(mu=0)
+dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=5)
+```
+
+Analyse all 5 datasets (here we use only a few iterations for
+demonstration purposes)
+
+``` r
+result <- simanalyse_analyse_bayesian(datalist=dat,
+                                      code = "a ~ dnorm(mu,1)
+                                         mu ~ dunif(-3,3)",
+                                      n.adapt = 101,
+                                      n.burnin = 0,
+                                      n.iter = 101,
+                                      monitor = "mu")
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 5
+#> 
+#> Initializing model
+#> 
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 5
+#> 
+#> Initializing model
+#> 
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 5
+#> 
+#> Initializing model
+#> 
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 5
+#> 
+#> Initializing model
+#> 
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 1
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 5
+#> 
+#> Initializing model
+```
+
+Summarize the results over the 5 datasets
+
+``` r
+simanalyse_summarise(result, "Epse", parameters=params, monitor="mu")
+#> [1] 0.9263116
+```
 
 ## Contribution
 

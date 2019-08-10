@@ -22,6 +22,8 @@ tibble <- function(...) {
 
 is_try_error <- function(x) inherits(x, "try-error")
 
+rinteger <- function(n = 1) as.integer(runif(n, -.max_integer, .max_integer))
+
 # from https://recology.info/2018/10/limiting-dependencies/
 remove_nulls <- function(x) Filter(Negate(is.null), x)
 

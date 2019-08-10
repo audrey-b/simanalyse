@@ -23,7 +23,7 @@ set_seed_inits <- function(seed, inits) {
   
   inits$.RNG.name <- "base::Wichmann-Hill"
   
-  inits$.RNG.seed <- as.integer(runif(1, 0, .max_integer))
+  inits$.RNG.seed <- abs(as.integer(rinteger()))
   
   inits
   
@@ -31,7 +31,7 @@ set_seed_inits <- function(seed, inits) {
 
 analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
                                      n.chains=3, inits=list(), n.adapt, n.burnin, 
-                                     n.iter, thin=1, seed = rcount(), 
+                                     n.iter, thin=1, seed = rinteger(), 
                                      quiet = FALSE) {
 
   code <- code %>% prepare_code() %>% textConnection

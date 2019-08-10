@@ -13,7 +13,7 @@ simanalyse_analyse_custom(datalist, FUN, path, seed, exists, silent, ...)
 
 \item{path}{A string specifying the path to the directory where the data sets are saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.}
 
-\item{seed}{A positive integer specifying the random seed to use for analysing the data.}
+\item{seed}{An integer specifying the random seed to use for analysing the data.}
 
 \item{exists}{A flag specifying whether the directory should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.}
 

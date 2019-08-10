@@ -6,7 +6,8 @@
 \usage{
 simanalyse_analyse_bayesian(datalist, code, code_add = "",
   code_values = "", package = "rjags", monitor, inits = list(),
-  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3, seed = rcount())
+  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3,
+  seed = rinteger())
 }
 \arguments{
 \item{datalist}{A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.}
@@ -33,7 +34,7 @@ simanalyse_analyse_bayesian(datalist, code, code_add = "",
 
 \item{n.chains}{An integer greater than zero specifying the number of mcmc chains to run}
 
-\item{seed}{A positive integer specifying the random seed to use for analysing the data.}
+\item{seed}{An integer specifying the random seed to use for analysing the data.}
 }
 \value{
 A flag.
