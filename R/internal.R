@@ -100,12 +100,13 @@ summarise_within <- function(results.nlists,
                              parameters=NULL){
   if(!is.null(measure_FUN)){
     monitor <- results.nlists[[1]][[1]] %>% names()
+    parameters <- parameters %>% subset(monitor)
     pos <- 1
     envir = as.environment(pos)
     assign("measure_FUN", measure_FUN, envir = envir) #not ideal, quick fix
     expr <- paste("summary_", monitor, " <- measure_FUN(",monitor,", ",monitor,".value",")", collapse=" \n ", sep="")
     names(parameters) <- paste0(names(parameters), ".value")
-    results.nlists[[1]] %>% mcmc_derive(expr=expr, values=parameters)
+    results.nlists %<>% lapply(mcmc_derive, expr=expr, values=parameters)
   }
   
   summary.nlist <- lapply(results.nlists, aggregate, aggregate_FUN) %>% #, mcmc_derive, expr=expr)

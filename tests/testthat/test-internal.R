@@ -70,18 +70,21 @@ test_that("package works",{
 
 test_that("package works 2",{
   set.seed(10L)
-  params <- nlist(theta=c(0,1))
-  dat <- sims_simulate("a ~ dnorm(theta[1],theta[2])", parameters = params, nsims=2)
+  params <- nlist(theta=c(0,1), df=3)
+  dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)", parameters = params, nsims=2)
   result <- simanalyse_analyse_bayesian(datalist=dat,
-                                        code = "a ~ dnorm(theta[1],theta[2])
+                                        code = "a ~ dt(theta[1],theta[2], df)
                                          theta[1] ~ dunif(-3,3)
                                          theta[2] ~ dunif(0,3)
-                                         dummy ~ dunif(0,1)",
+                                         dfnotrnd ~ dnorm(0,20)I(1,)
+                                         df <- round(dfnotrnd)",
                                         n.adapt = 100,
                                         n.burnin = 0,
                                         n.iter = 2,
-                                        monitor = c("theta", "dummy"))
+                                        monitor = c("theta", "df"))
   summarise_within(result, aggregate_FUN=var, parameters=params)
-  simanalyse_summarise(result, "Epsd", parameters=params, monitor="theta")
+  simanalyse_summarise(result, "Epsd", parameters=params, monitor=".*")
+  simanalyse_summarise(result, "bias", parameters=params, monitor=".*")
+  
 })
 

@@ -5,7 +5,7 @@
 \title{Summarises the results of simulation studies.}
 \usage{
 simanalyse_summarise(results.nlists, measures, estimator = mean,
-  parameters, monitor)
+  parameters, monitor = ".*")
 }
 \arguments{
 \item{results.nlists}{An nlists of results}
