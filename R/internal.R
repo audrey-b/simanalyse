@@ -76,8 +76,12 @@ summarise_one_measure <- function(results.nlists,
                                   estimator, 
                                   parameters,
                                   monitor){
+  if(measure == "Epvar") measure_FUN = var
+  else if(measure == "Epsd") measure_FUN = sd
+  else if(measure == "bias") measure_FUN = function(x) estimator(x)
+    
   results.nlists %>% 
-    summarise_within(measure, parameters, monitor) %>%
+    summarise_within(measure_FUN, parameters, monitor) %>%
     summarise_across(mean) %>%
     return
 }

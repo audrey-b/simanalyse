@@ -40,15 +40,12 @@ simanalyse_summarise <- function(results.nlists,
         
         results.nlists %<>% subset(select=monitor)
         
-        if(("Epvar" %in% measures) | ("Epse" %in% measures)){
-                summ.var <- summarise_one_measure(results.nlists, 
-                                                  var, 
-                                                  estimator,
-                                                  parameters,
-                                                  monitor)
-                summ.se <- sqrt(summ.var)
-                return(summ.var)
-        }
+        summarise_one_measure(results.nlists, 
+                              "Epvar", 
+                              estimator,
+                              parameters,
+                              monitor) %>% return
+        
         
 }
 

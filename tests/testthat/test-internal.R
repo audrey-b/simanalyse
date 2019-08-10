@@ -65,6 +65,6 @@ test_that("package works",{
   
   summarise_within(result, var, monitor="mu")
   
-  simanalyse_summarise(result, "Epse", parameters=params, monitor="mu")
+  simanalyse_summarise(result, "Epsd", parameters=params, monitor="mu")
 })
 

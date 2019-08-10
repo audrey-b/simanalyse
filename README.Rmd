@@ -63,7 +63,7 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 
 Summarize the results over the 5 datasets
 ```{r}
-simanalyse_summarise(result, "Epse", parameters=params, monitor="mu")
+simanalyse_summarise(result, "Epsd", parameters=params, monitor="mu")
 ```
 
 ## Contribution
