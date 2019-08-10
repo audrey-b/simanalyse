@@ -12,6 +12,7 @@ Imports:
   chk,
   sims,
   batchr,
+  mcmcr,
   mcmcderive,
   checkr,
   magrittr,
@@ -22,6 +23,11 @@ Suggests:
     testthat
 Remotes:
   poissonconsulting/chk
+  poissonconsulting/mcmcr
+  poissonconsulting/mcmcderive
+  poissonconsulting/checkr
+  poissonconsulting/nlist
+  poissonconsulting/sims
 URL: https://github.com/audrey-b/simanalyse
 BugReports: https://github.com/audrey-b/simanalyse/issues
 Encoding: UTF-8
