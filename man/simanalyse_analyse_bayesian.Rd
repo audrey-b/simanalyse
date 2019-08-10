@@ -6,8 +6,7 @@
 \usage{
 simanalyse_analyse_bayesian(datalist, code, code_add = "",
   code_values = "", package = "rjags", monitor, inits = list(),
-  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3,
-  seed = sims::rcount())
+  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3, seed = rcount())
 }
 \arguments{
 \item{datalist}{A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.}

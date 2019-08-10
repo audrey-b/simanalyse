@@ -36,7 +36,7 @@ test_that("analyse_dataset_bayesian works",{
 
 test_that("analyse_dataset_bayesian with data works",{
   set.seed(10L)
-  dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = nlist(mu=0), nsims=2)
+  dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = nlist(mu=0), nsims=2)
   result <- analyse_dataset_bayesian(nlistdata = dat[[1]],
                                      code = "a ~ dnorm(0,1)
                                              mu ~ dnorm(-3, 3)",
@@ -52,7 +52,7 @@ test_that("analyse_dataset_bayesian with data works",{
 test_that("package works",{
   set.seed(10L)
   params <- nlist(mu=0)
-  dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
+  dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
   result <- simanalyse_analyse_bayesian(datalist=dat,
                                         code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",

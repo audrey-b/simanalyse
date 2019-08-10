@@ -42,7 +42,7 @@ simanalyse_analyse_bayesian <- function(datalist,
                                         n.iter,
                                         thin=1,
                                         n.chains=3,
-                                        seed=sims::rcount()) {
+                                        seed=rcount()) {
   
   
   check_nlists(datalist)
@@ -69,7 +69,7 @@ simanalyse_analyse_bayesian <- function(datalist,
 
   n.data <- length(datalist)
   
-  seeds <- sims::rcount(n.data)
+  seeds <- rcount(n.data)
   
   res.nlists <- nlists(nlist())
   

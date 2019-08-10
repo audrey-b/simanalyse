@@ -31,7 +31,7 @@ set_seed_inits <- function(seed, inits) {
 
 analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
                                      n.chains=3, inits=list(), n.adapt, n.burnin, 
-                                     n.iter, thin=1, seed = sims::rcount(), 
+                                     n.iter, thin=1, seed = rcount(), 
                                      quiet = FALSE) {
 
   code <- code %>% prepare_code() %>% textConnection
