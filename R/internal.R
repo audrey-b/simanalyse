@@ -30,7 +30,7 @@ set_seed_inits <- function(seed, inits) {
 }
 
 analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
-                                     inits=list(), n.adapt, n.burnin, 
+                                     n.chains=3, inits=list(), n.adapt, n.burnin, 
                                      n.iter, thin=1, seed = sims::rcount(), 
                                      quiet = FALSE) {
 
@@ -40,7 +40,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
 
   model <- rjags::jags.model(code, data = nlistdata, inits = inits,
 
-                             n.adapt = n.adapt, quiet = quiet)
+                             n.adapt = n.adapt, n.chains = n.chains, quiet = quiet)
 
   if(n.burnin >= 1) update(model, n.iter = n.burnin)
 
