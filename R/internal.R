@@ -46,9 +46,9 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
 
   sample <- rjags::jags.samples(model, variable.names = monitor, n.iter = n.iter, thin=thin)
 
-  nlist <-  set_class(lapply(sample, as_natomic_mcarray), "nlist")
-
-  return(nlist)
+  nlists <-  sample %>% as.mcmcr() %>% collapse_chains() %>% as.nlists
+  
+  return(nlists)
   #saveRDS(nlist, file.path(path, data_file_name(sim)))
   #data_file_name <- function(sim) p0("data", sprintf("%07d", sim), ".rds")
   
@@ -76,9 +76,9 @@ summarise_one_measure <- function(results.nlists,
                                   estimator, 
                                   parameters,
                                   monitor){
-  if(measure == "Epvar") measure_FUN = var
-  else if(measure == "Epsd") measure_FUN = sd
-  else if(measure == "bias") measure_FUN = function(x) estimator(x)
+  if(measure == "Epvar"){ measure_FUN = var
+  }else if(measure == "Epsd"){ measure_FUN = sd
+  }#else if(measure == "bias") measure_FUN = function(x, parameter) estimator(x) - parameters[parameter]
     
   results.nlists %>% 
     summarise_within(measure_FUN, parameters, monitor) %>%
@@ -90,20 +90,20 @@ summarise_within <- function(results.nlists,
                              measure_FUN, 
                              parameters,
                              monitor){
-  pos <- 1
-  envir = as.environment(pos)
-  assign("measure_FUN", measure_FUN, envir = envir) #not ideal, quick fix
-  expr.FUN = function(m) paste0("trans_", monitor, " <- measure_FUN(",m,")")
-  expr <- monitor %>% 
-    sapply(expr.FUN) %>% 
-    paste(collapse=" \n ")
-  summary.nlist <- mcmc_derive(results.nlists, expr=expr)
-  return(summary.nlist)
+  #pos <- 1
+  #envir = as.environment(pos)
+  #assign("measure_FUN", measure_FUN, envir = envir) #not ideal, quick fix
+  #expr.FUN = function(m) paste0("summary_", monitor, " <- measure_FUN(",m,")")
+  #expr <- monitor %>% 
+  #  sapply(expr.FUN) %>% 
+  #  paste(collapse=" \n ")
+  summary.nlist <- lapply(results.nlists, aggregate, measure_FUN) %>% #, mcmc_derive, expr=expr)
+    as.nlists()
+    return(summary.nlist)
 }
 
 summarise_across <- function(summary.nlist, FUN){
   summary.nlist %>% 
     aggregate(FUN = mean) %>%
-    as.numeric() %>%
     return
 }

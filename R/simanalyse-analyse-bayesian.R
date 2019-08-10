@@ -71,16 +71,16 @@ simanalyse_analyse_bayesian <- function(datalist,
   
   seeds <- rinteger(n.data)
   
-  res.nlists <- nlists(nlist())
+  res.list <- list(nlists(nlist()))
   
   #jags
   for(i in 1:n.data){
-    res.nlists[[i]] <- analyse_dataset_bayesian(nlistdata=datalist[[i]], 
+    res.list[[i]] <- analyse_dataset_bayesian(nlistdata=datalist[[i]], 
                                               code=code, monitor=monitor,
                                               inits=inits, n.chains=n.chains,
                                               n.adapt=n.adapt, n.burnin=n.burnin, 
                                               n.iter=n.iter, thin=thin,
                                               seed=seeds[i])}
-  return(res.nlists)
+  return(res.list)
 
 }

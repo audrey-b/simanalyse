@@ -30,8 +30,8 @@ test_that("analyse_dataset_bayesian works",{
                                      n.iter = 101,
                                      monitor = "a",
                                      seed = 10)
-  expect_true(class(result)=="nlist")
-  expect_equal(result[[1]][1], -1.636731, tolerance = 0.000001)
+  expect_true(class(result)=="nlists")
+  expect_equal(result[[1]] %>% as.numeric, -1.636731, tolerance = 0.000001)
 })
 
 test_that("analyse_dataset_bayesian with data works",{
@@ -45,8 +45,8 @@ test_that("analyse_dataset_bayesian with data works",{
                                      n.iter = 101,
                                      monitor = "mu",
                                      seed = 10)
-  expect_true(class(result)=="nlist")
-  expect_equal(result[[1]][1], -3.944967, tolerance = 0.000001)
+  expect_true(class(result)=="nlists")
+  expect_equal(result[[1]] %>% as.numeric, -3.944967, tolerance = 0.000001)
 })
 
 test_that("package works",{
@@ -60,11 +60,28 @@ test_that("package works",{
                                         n.burnin = 0,
                                         n.iter = 101,
                                         monitor = "mu")
-  expect_true(class(result)=="nlists")
-  expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
+  expect_true(class(result)=="list")
+  expect_equal(result[[1]][1][[1]]$mu, -1.817165, tolerance = 0.000001)
   
   summarise_within(result, var, monitor="mu")
   
   simanalyse_summarise(result, "Epsd", parameters=params, monitor="mu")
+})
+
+test_that("package works 2",{
+  set.seed(10L)
+  params <- nlist(theta=c(0,1))
+  dat <- sims_simulate("a ~ dnorm(theta[1],theta[2])", parameters = params, nsims=2)
+  result <- simanalyse_analyse_bayesian(datalist=dat,
+                                        code = "a ~ dnorm(theta[1],theta[2])
+                                         theta[1] ~ dunif(-3,3)
+                                         theta[2] ~ dunif(0,3)
+                                         dummy ~ dunif(0,1)",
+                                        n.adapt = 100,
+                                        n.burnin = 0,
+                                        n.iter = 2,
+                                        monitor = c("theta", "dummy"))
+  summarise_within(result, var, parameters=params, monitor="theta")
+  simanalyse_summarise(result, "Epsd", parameters=params, monitor="theta")
 })
 

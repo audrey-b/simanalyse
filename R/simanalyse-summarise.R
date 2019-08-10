@@ -32,13 +32,13 @@ simanalyse_summarise <- function(results.nlists,
                                  parameters,
                                  monitor){
         
-        check_nlists(results.nlists)
+        check_list(results.nlists) #lapply checks needs to be added
         check_chr(measures)
         check_function(estimator)
         check_nlist(parameters)
         check_chr(monitor)
         
-        results.nlists %<>% subset(select=monitor)
+        results.nlists %<>% lapply(subset, select=monitor)
         
         summarise_one_measure(results.nlists, 
                               "Epvar", 
