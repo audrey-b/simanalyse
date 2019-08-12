@@ -68,23 +68,40 @@ test_that("package works",{
   simanalyse_summarise(result, "Epsd", parameters=params, monitor="mu")
 })
 
-test_that("package works 2",{
-  set.seed(10L)
-  params <- nlist(theta=c(0,1), df=3)
-  dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)", parameters = params, nsims=2)
-  result <- simanalyse_analyse_bayesian(datalist=dat,
-                                        code = "a ~ dt(theta[1],theta[2], df)
-                                         theta[1] ~ dunif(-3,3)
-                                         theta[2] ~ dunif(0,3)
-                                         dfnotrnd ~ dnorm(0,20)I(1,)
-                                         df <- round(dfnotrnd)",
-                                        n.adapt = 100,
-                                        n.burnin = 0,
-                                        n.iter = 2,
-                                        monitor = c("theta", "df"))
-  summarise_within(result, aggregate_FUN=var, parameters=params)
-  simanalyse_summarise(result, "Epsd", parameters=params, monitor=".*")
-  simanalyse_summarise(result, "bias", parameters=params, monitor=".*")
-  
+test_that("summarise_one_sim",{
+  parameters = nlist(mu=c(0,0), theta=c(1,1))
+  mu=matrix(1:4, nrow=2)
+  theta=matrix(1:4, nrow=2)
+  nlists <- nlists(nlist(mu=mu[1,], theta=theta[1,]), nlist(mu=mu[2,], theta=theta[2,]))
+  aggregate.FUNS=list(estimator = mean, qlow={function(x) quantile(x, 0.025)})
+  monitor = c("mu", "theta")
+  expr="error = estimator - parameters"
+
+  result <- summarise_one_sim(nlists, expr, aggregate.FUNS, parameters, monitor)
+  expect_identical(result, nlist(error.mu=c(1.5,3.5), error.theta=c(0.5,2.5)))
 })
 
+
+# 
+# test_that("package works 2",{
+#   set.seed(10L)
+#   params <- nlist(theta=c(0,1), df=3)
+#   dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)", parameters = params, nsims=2)
+#   result <- simanalyse_analyse_bayesian(datalist=dat,
+#                                         code = "a ~ dt(theta[1],theta[2], df)
+#                                          theta[1] ~ dunif(-3,3)
+#                                          theta[2] ~ dunif(0,3)
+#                                          dfnotrnd ~ dnorm(0,20)I(1,)
+#                                          df <- round(dfnotrnd)",
+#                                         n.adapt = 100,
+#                                         n.burnin = 0,
+#                                         n.iter = 2,
+#                                         monitor = c("theta", "df"))
+#   summarise_within(result, aggregate_FUN=sd, parameters=params)
+#   simanalyse_summarise(result, measures="Epsd", parameters=params, monitor=".*")
+#   simanalyse_summarise(result, measures="bias", parameters=params, monitor=".*")
+#   simanalyse_summarise(result, measures="cp95", parameters=params, monitor=".*")
+#   
+#   
+# })
+# 

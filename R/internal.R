@@ -119,3 +119,48 @@ summarise_across <- function(summary.nlist, FUN){
     aggregate(FUN = mean) %>%
     return
 }
+
+
+
+summarise_one_sim <- function(nlists, expr, aggregate.FUNS, parameters, monitor){
+  aggregate.list <- aggregate.FUNS %>% 
+    lapply(function(FUN, nlists) aggregate(nlists, FUN), nlists) %>%
+    unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
+    as.nlist()
+  names(parameters) <- paste0("parameters.",names(parameters))
+  measures <- measure_names(expr)
+  keywords <- c(measures, names(aggregate.FUNS), "parameters")
+  expr.all.params <- monitor %>% 
+    lapply(make_one_expr, expr, keywords) %>%
+    unlist %>%
+    paste(collapse=" \n ")
+ mcmc_derive(aggregate.list, expr.all.params, parameters) %>% return
+}
+
+make_one_expr <- function(param, expr, keywords){
+  patterns <- str_c("\\b", keywords, "\\b", collapse="|")
+  str_replace_all(expr, 
+                  patterns, 
+                  function(x) if(x %in% keywords) return(p0(x,".",param)))
+}
+
+strip_comments <- function(x) {
+  str_replace_all(x, pattern = "\\s*#[^\\\n]*", replacement = "")
+}
+
+measure_names <- function (x) {
+  x <- strip_comments(x)
+  
+  pattern <- "(?=\\s*([=]|([<][-])))"
+  
+  index <- "\\[[^\\]]*\\]"
+  
+  pattern <- p0("\\w+(", index, "){0,1}\\s*[)]{0,1}", pattern, collapse = "")
+  nodes <- str_extract_all(x, pattern)
+  nodes <- unlist(nodes)
+  nodes <- str_replace(nodes, pattern = "[)]$", "")
+  nodes <- str_replace(nodes, pattern = "\\s*$", "")
+  nodes <- str_replace(nodes, pattern = index, "")
+  nodes <- unique(nodes)
+  sort(nodes)
+}

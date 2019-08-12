@@ -8,7 +8,7 @@
 #' 
 #' @param results.nlists An nlists of results
 #' @param measures A vector of strings indicating which Monte Carlo measures to calculate. Strings may include "bias", "rb" (relative 
-#' bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (mean square error), rmse (root mean square 
+#' bias), "br" (bias ratio), "E" (expectation), var" (variance), "se" (standard error), "mse" (mean square error), rmse (root mean square 
 #' error), "rrmse" (relative root mean square error), "cp90", "cp95" and "cp99" (coverage probability of 90, 95 and 99 percent quantile-based CrIs),
 #' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use.
