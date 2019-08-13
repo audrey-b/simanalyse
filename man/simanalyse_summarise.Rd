@@ -11,9 +11,8 @@ simanalyse_summarise(results.nlists, measures = c("bias", "mse",
 \arguments{
 \item{results.nlists}{An nlists of results}
 
-\item{measures}{A vector of strings indicating which Monte Carlo measures to calculate. Strings may include "bias", "rb" (relative 
-bias), "br" (bias ratio), "E" (expectation), var" (variance), "se" (standard error), "mse" (mean square error), rmse (root mean square 
-error), "rrmse" (relative root mean square error), "cp90", "cp95" and "cp99" (coverage probability of 90, 95 and 99 percent quantile-based CrIs),
+\item{measures}{A vector of strings indicating which Monte Carlo measures to calculate. Strings may include "bias", "E" (expectation), 
+"cp.quantile" (coverage probability of quantile-based CrIs), "cp.length" (coverage probability of quantile-based CrIs),
 "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)}
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use.}
@@ -33,4 +32,18 @@ The results are compared with the true parameter values by calculating Monte Car
 such as bias, mean square error and coverage probability.
 R code can be used to customize the summary measures and to coerce results of analyses to
 nlist when neccessary.
+}
+\examples{
+params <- nlist(mu=0)
+dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
+                           parameters = params, 
+                           nsims=5)
+result <- simanalyse_analyse_bayesian(datalist=dat,
+                                      code = "a ~ dnorm(mu, 1)
+                                              mu ~ dunif(-3,3)",
+                                      n.adapt = 101,
+                                      n.burnin = 0,
+                                      n.iter = 101,
+                                      monitor="mu")
+simanalyse_summarise(result, parameters=params)
 }
