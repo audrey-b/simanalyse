@@ -28,14 +28,14 @@
 #  silent A flag specifying whether to suppress warnings.
 
 simanalyse_summarise <- function(results.nlists, 
-                                 measures, 
+                                 measures=c("bias", "mse", "cp.quantile"), 
                                  estimator=mean, 
                                  alpha=0.05,
                                  parameters,
                                  monitor=".*"){
         
         check_list(results.nlists) #lapply checks needs to be added
-        check_chr(measures)
+        check_character(measures)
         check_function(estimator)
         check_nlist(parameters)
         check_chr(monitor)

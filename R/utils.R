@@ -32,3 +32,7 @@ str_extract <- function(x, y) regmatches(x, regexpr(y, x))
 
 # from https://recology.info/2018/10/limiting-dependencies/
 `%||%` <- function(x, y) if (is.null(x) || length(x) == 0) y else x
+
+cp.low = function(x, alpha) quantile(x, alpha/2)
+
+cp.high = function(x, alpha) quantile(x, 1-alpha/2)

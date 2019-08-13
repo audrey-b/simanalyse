@@ -55,7 +55,23 @@ library(simanalyse)
 #>   as.mcmc.list.mcarray mcmcr
 set.seed(10L)
 params <- nlist(mu=0)
-dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=5)
+constants <- nlist(sigma=1)
+code <- "for(i in 1:10){
+          a[i] ~ dnorm(mu, 1/sigma^2)}"
+dat <- sims::sims_simulate(code, 
+                           parameters = params, 
+                           constants=constants,
+                           nsims=5,
+                           silent=TRUE)
+print(dat)
+#> $a
+#>  [1] -0.88079815 -0.08492460 -0.53168578 -0.06243852  0.76097710
+#>  [6] -0.04988989 -0.42954424  0.20710319 -0.72960984 -0.16097027
+#> 
+#> $sigma
+#> [1] 1
+#> 
+#> an nlists object of 5 nlist objects each with 2 natomic elements
 ```
 
 Analyse all 5 datasets (here we use only a few iterations for
@@ -63,8 +79,9 @@ demonstration purposes)
 
 ``` r
 result <- simanalyse_analyse_bayesian(datalist=dat,
-                                      code = "a ~ dnorm(mu,1)
-                                              mu ~ dunif(-3,3)",
+                                      code = paste(code, 
+                                                   "mu ~ dunif(-3,3)", 
+                                                   collapse = " \n "),
                                       n.adapt = 101,
                                       n.burnin = 0,
                                       n.iter = 101,
@@ -73,9 +90,9 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 #>    Resolving undeclared variables
 #>    Allocating nodes
 #> Graph information:
-#>    Observed stochastic nodes: 1
+#>    Observed stochastic nodes: 10
 #>    Unobserved stochastic nodes: 1
-#>    Total graph size: 5
+#>    Total graph size: 18
 #> 
 #> Initializing model
 #> 
@@ -83,9 +100,9 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 #>    Resolving undeclared variables
 #>    Allocating nodes
 #> Graph information:
-#>    Observed stochastic nodes: 1
+#>    Observed stochastic nodes: 10
 #>    Unobserved stochastic nodes: 1
-#>    Total graph size: 5
+#>    Total graph size: 18
 #> 
 #> Initializing model
 #> 
@@ -93,9 +110,9 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 #>    Resolving undeclared variables
 #>    Allocating nodes
 #> Graph information:
-#>    Observed stochastic nodes: 1
+#>    Observed stochastic nodes: 10
 #>    Unobserved stochastic nodes: 1
-#>    Total graph size: 5
+#>    Total graph size: 18
 #> 
 #> Initializing model
 #> 
@@ -103,9 +120,9 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 #>    Resolving undeclared variables
 #>    Allocating nodes
 #> Graph information:
-#>    Observed stochastic nodes: 1
+#>    Observed stochastic nodes: 10
 #>    Unobserved stochastic nodes: 1
-#>    Total graph size: 5
+#>    Total graph size: 18
 #> 
 #> Initializing model
 #> 
@@ -113,9 +130,9 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 #>    Resolving undeclared variables
 #>    Allocating nodes
 #> Graph information:
-#>    Observed stochastic nodes: 1
+#>    Observed stochastic nodes: 10
 #>    Unobserved stochastic nodes: 1
-#>    Total graph size: 5
+#>    Total graph size: 18
 #> 
 #> Initializing model
 ```
@@ -123,11 +140,17 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 Summarize the results over the 5 datasets
 
 ``` r
-simanalyse_summarise(result, "bias", parameters=params)
+simanalyse_summarise(result, parameters=params)
 #> $bias.mu
-#> [1] -0.7578987
+#> [1] -0.1992641
 #> 
-#> an nlist object with 1 natomic element
+#> $cp.quantile.mu
+#> [1] 1
+#> 
+#> $mse.mu
+#> [1] 0.184422
+#> 
+#> an nlist object with 3 natomic elements
 ```
 
 ## Contribution

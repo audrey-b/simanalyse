@@ -47,14 +47,23 @@ Simulate 5 datasets using the sims package (we use only 5 datasets for demonstra
 library(simanalyse)
 set.seed(10L)
 params <- nlist(mu=0)
-dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=5)
+constants <- nlist(sigma=1)
+code <- "for(i in 1:10){
+          a[i] ~ dnorm(mu, 1/sigma^2)}"
+dat <- sims::sims_simulate(code, 
+                           parameters = params, 
+                           constants=constants,
+                           nsims=5,
+                           silent=TRUE)
+print(dat)
 ```
 
 Analyse all 5 datasets (here we use only a few iterations for demonstration purposes)
 ```{r}
 result <- simanalyse_analyse_bayesian(datalist=dat,
-                                      code = "a ~ dnorm(mu,1)
-                                              mu ~ dunif(-3,3)",
+                                      code = paste(code, 
+                                                   "mu ~ dunif(-3,3)", 
+                                                   collapse = " \n "),
                                       n.adapt = 101,
                                       n.burnin = 0,
                                       n.iter = 101,
@@ -63,7 +72,7 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 
 Summarize the results over the 5 datasets
 ```{r}
-simanalyse_summarise(result, "bias", parameters=params)
+simanalyse_summarise(result, parameters=params)
 ```
 
 ## Contribution

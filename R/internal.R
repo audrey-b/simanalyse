@@ -77,21 +77,25 @@ summarise_all_measures <- function(listnlists,
                                    estimator,
                                    alpha=0.05){
   expr <- NULL
+  aggregate.FUNS <- NULL
+  if(("bias" %in% measures) | ("mse" %in% measures)) {
+    aggregate.FUNS %<>% append(list(estimator = estimator))
+  }
   if("bias" %in% measures){
     expr=paste(c(expr, "bias = estimator - parameters"), collapse=" \n ", sep="")
-    aggregate.FUNS=list(estimator = estimator)
   }
   if("mse" %in% measures){
     expr=paste(c(expr, "mse = (estimator - parameters)^2"), collapse=" \n ", sep="")
-    aggregate.FUNS=list(estimator = estimator)
   }
   if("cp.quantile" %in% measures){
     expr=paste(c(expr, "cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)"), collapse=" \n ", sep="")
-    aggregate.FUNS=list(cp.low = function(x, alpha) quantile(x, alpha/2), cp.high = function(x, alpha) quantile(x, 1-alpha/2))
+    cp.low.with.alpha = function(x) do.call("cp.low",list(x,"alpha"=0.05))
+    cp.high.with.alpha = function(x) do.call("cp.high",list(x,"alpha"=0.05))
+    aggregate.FUNS %<>% append(list(cp.low = cp.low.with.alpha, cp.high = cp.high.with.alpha))
   }
   
   listnlists %>% 
-    lapply(summarise_within, expr, aggregate.FUNS, parameters, alpha) %>%
+    lapply(summarise_within, expr, aggregate.FUNS, parameters) %>%
     as.nlists() %>%
     summarise_across(mean) %>%
     return
@@ -105,14 +109,11 @@ summarise_across <- function(summary.nlist, FUN){
 
 
 
-summarise_within <- function(nlists, expr, aggregate.FUNS, parameters, alpha=0.05){
+summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
   monitor = nlists[[1]] %>% names()
   #calculate aggregates
-  estimator <- function(x, alpha){
-    alpha=alpha
-    return(estimator(x))}
   aggregate.list <- aggregate.FUNS %>% 
-    lapply(function(FUN, nlists, alpha) aggregate(nlists, FUN, alpha), nlists, alpha) %>%
+    lapply(function(FUN, nlists) aggregate(nlists, FUN), nlists) %>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as.nlist()
   #apply expr

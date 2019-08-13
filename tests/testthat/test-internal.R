@@ -117,6 +117,7 @@ test_that("summarise one measure - bias",{
    simanalyse_summarise(result, measures="bias", parameters=parameters, monitor=".*")
    simanalyse_summarise(result, measures="mse", parameters=parameters, monitor=".*")
    simanalyse_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
+   simanalyse_summarise(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
    
  })
  

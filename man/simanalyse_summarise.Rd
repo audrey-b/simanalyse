@@ -4,8 +4,9 @@
 \alias{simanalyse_summarise}
 \title{Summarises the results of simulation studies.}
 \usage{
-simanalyse_summarise(results.nlists, measures, estimator = mean,
-  alpha = 0.05, parameters, monitor = ".*")
+simanalyse_summarise(results.nlists, measures = c("bias", "mse",
+  "cp.quantile"), estimator = mean, alpha = 0.05, parameters,
+  monitor = ".*")
 }
 \arguments{
 \item{results.nlists}{An nlists of results}
