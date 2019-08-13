@@ -44,12 +44,13 @@ Analyse data for a simulation study. If path is supplied, saves a hidden file wi
 }
 \examples{
  set.seed(10L)
- dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = nlist(mu=0), nsims=2)
+ code <- "a ~ dnorm(mu,1)"
+ dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
  result <- simanalyse_analyse_bayesian(datalist=dat,
- code = "a ~ dnorm(mu,1)
- mu ~ dunif(-3,3)",
- n.adapt = 101,
- n.burnin = 0,
- n.iter = 101,
- monitor = "mu")
+                                       code = code,
+                                       code_add = "mu ~ dunif(-3,3)",
+                                       n.adapt = 101,
+                                       n.burnin = 0,
+                                       n.iter = 101,
+                                       monitor = "mu")
 }

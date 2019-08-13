@@ -15,8 +15,10 @@ context("internal")
 # 
 
 test_that("make_code works",{
-  expect_identical(prepare_code("a ~ dnorm(%s,1)", "b ~ dnorm(%s,1)", -1, 1),
-                   "model{\n\na ~ dnorm(-1,1) \n b ~ dnorm(1,1)\n\n}")  
+  expect_identical(prepare_code("a ~ dnorm(%s,1)", 
+                                c("b ~ dnorm(%s,sigma)", "sigma=1"), 
+                                c(-1,1)),
+                   "a ~ dnorm(-1,1) \nb ~ dnorm(1,sigma) \nsigma=1") 
 })
 
 test_that("add_model_block works",{

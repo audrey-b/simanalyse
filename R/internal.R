@@ -1,14 +1,14 @@
-prepare_code <- function(code, append=NULL, ...){
-  
-  if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
-    err("jags code must not be in a data or model block")
-  
-  code %>% 
-    paste(append, sep = " \n ") %>% 
-    sprintf(...) %>%
-    add_model_block()
-  
-}
+# prepare_code <- function(code, append=NULL, ...){
+#   
+#   if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
+#     err("jags code must not be in a data or model block")
+#   
+#   code %>% 
+#     paste(append, sep = " \n ") %>% 
+#     sprintf(...) %>%
+#     add_model_block()
+#   
+# }
 
 add_model_block <- function(code){
   
@@ -34,7 +34,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
                                      n.iter, thin=1, seed = rinteger(), 
                                      quiet = FALSE) {
   
-  code <- code %>% prepare_code() %>% textConnection
+  code %<>% add_model_block() %>% textConnection
   
   inits <- set_seed_inits(seed, inits)
   
@@ -155,3 +155,15 @@ measure_names <- function (x) {
   nodes <- unique(nodes)
   sort(nodes)
 }
+
+prepare_code <- function(code, code_add, code_values){
+  code <- paste(c(code, code_add), 
+                collapse=" \n", 
+                sep="")
+  if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
+    err("jags code must not be in a data or model block")
+  
+  do.call(sprintf, args = as.list(c(code, code_values))) %>% 
+    return
+}
+

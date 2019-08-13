@@ -21,14 +21,15 @@
 #'
 #' @examples
 #'  set.seed(10L)
-#'  dat <- sims::sims_simulate("a ~ dnorm(mu,1)", parameters = nlist(mu=0), nsims=2)
+#'  code <- "a ~ dnorm(mu,1)"
+#'  dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
 #'  result <- simanalyse_analyse_bayesian(datalist=dat,
-#'  code = "a ~ dnorm(mu,1)
-#'  mu ~ dunif(-3,3)",
-#'  n.adapt = 101,
-#'  n.burnin = 0,
-#'  n.iter = 101,
-#'  monitor = "mu")
+#'                                        code = code,
+#'                                        code_add = "mu ~ dunif(-3,3)",
+#'                                        n.adapt = 101,
+#'                                        n.burnin = 0,
+#'                                        n.iter = 101,
+#'                                        monitor = "mu")
 
 simanalyse_analyse_bayesian <- function(datalist,
                                         code,
@@ -64,14 +65,16 @@ simanalyse_analyse_bayesian <- function(datalist,
   check_pos_int(n.iter, coerce=TRUE)
   
   check_dbl(thin) #1 to max iter?
-
+  
   check_scalar(seed, c(-.max_integer, .max_integer))
-
+  
   n.data <- length(datalist)
   
   seeds <- rinteger(n.data)
   
   res.list <- list(nlists(nlist()))
+  
+  code %<>% prepare_code(code_add, code_values)
   
   #jags
   for(i in 1:n.data){
@@ -82,5 +85,5 @@ simanalyse_analyse_bayesian <- function(datalist,
                                               n.iter=n.iter, thin=thin,
                                               seed=seeds[i])}
   return(res.list)
-
+  
 }
