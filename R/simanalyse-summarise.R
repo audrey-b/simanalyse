@@ -12,6 +12,7 @@
 #' error), "rrmse" (relative root mean square error), "cp90", "cp95" and "cp99" (coverage probability of 90, 95 and 99 percent quantile-based CrIs),
 #' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use.
+#' @param alpha scalar representing the alpha level used to construct credible intervals. Default is 0.05.
 #' @param parameters Parameters to use to calculate Monte Carlo measures such as bias and coverage probability
 #' @param monitor  A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
 #' 
@@ -29,6 +30,7 @@
 simanalyse_summarise <- function(results.nlists, 
                                  measures, 
                                  estimator=mean, 
+                                 alpha=0.05,
                                  parameters,
                                  monitor=".*"){
         
@@ -37,13 +39,15 @@ simanalyse_summarise <- function(results.nlists,
         check_function(estimator)
         check_nlist(parameters)
         check_chr(monitor)
+        check_scalar(alpha) #how can I print error is not between zero and 1?
         
         if(monitor != ".*") results.nlists %<>% lapply(subset, select=monitor)
         
-        summarise_one_measure(results.nlists, 
+        summarise_all_measures(results.nlists, 
                               measures, 
+                              parameters,
                               estimator,
-                              parameters) %>% return
+                              alpha) %>% return
         
         
 }

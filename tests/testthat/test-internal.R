@@ -78,7 +78,7 @@ test_that("summarise one measure - bias",{
   theta2 = c(0,2) #two mcmc iterations of theta for sim2
   nlists1 <- nlists(nlist(mu=c(mu11[1],mu12[1]), theta=theta1[1]), nlist(mu=c(mu11[2],mu12[2]), theta=theta1[2]))
   nlists2 <- nlists(nlist(mu=c(mu21[1],mu22[1]), theta=theta2[1]), nlist(mu=c(mu21[2],mu22[2]), theta=theta2[2]))
-  aggregate.FUNS=list(estimator = mean, qlow={function(x) quantile(x, 0.025)})
+  aggregate.FUNS=list(estimator = mean)
   listnlists <- list(nlists1,nlists2)
   #bias
   expr="error = estimator - parameters"
@@ -92,7 +92,7 @@ test_that("summarise one measure - bias",{
                                         error.theta=error.theta1),
                                   nlist(error.mu = error.mu2, 
                                         error.theta=error.theta2)))
-  result2 <- summarise_one_measure(listnlists, "bias", estimator=mean, parameters)
+  result2 <- summarise_all_measures(listnlists, "bias", parameters=parameters, estimator=mean)
   expect_identical(result2, nlist(bias.mu = (error.mu1+error.mu2)/2,
                                    bias.theta = (error.theta1+error.theta2)/2))
 })
@@ -115,5 +115,8 @@ test_that("summarise one measure - bias",{
                                          n.iter = 2,
                                          monitor = c("theta", "df"))
    simanalyse_summarise(result, measures="bias", parameters=parameters, monitor=".*")
+   simanalyse_summarise(result, measures="mse", parameters=parameters, monitor=".*")
+   simanalyse_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
+   
  })
  

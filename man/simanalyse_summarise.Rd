@@ -5,7 +5,7 @@
 \title{Summarises the results of simulation studies.}
 \usage{
 simanalyse_summarise(results.nlists, measures, estimator = mean,
-  parameters, monitor = ".*")
+  alpha = 0.05, parameters, monitor = ".*")
 }
 \arguments{
 \item{results.nlists}{An nlists of results}
@@ -16,6 +16,8 @@ error), "rrmse" (relative root mean square error), "cp90", "cp95" and "cp99" (co
 "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)}
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use.}
+
+\item{alpha}{scalar representing the alpha level used to construct credible intervals. Default is 0.05.}
 
 \item{parameters}{Parameters to use to calculate Monte Carlo measures such as bias and coverage probability}
 
