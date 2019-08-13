@@ -6,7 +6,7 @@
 \usage{
 sma_summarise(results.nlists, measures = c("bias", "mse", "cp.quantile"),
   estimator = mean, alpha = 0.05, parameters, monitor = ".*",
-  custom_expr)
+  custom_expr, custom_FUNS)
 }
 \arguments{
 \item{results.nlists}{An nlists of results}
@@ -23,7 +23,9 @@ sma_summarise(results.nlists, measures = c("bias", "mse", "cp.quantile"),
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.}
 
-\item{custom_expr}{A string of R code to define custom measures; estimator and parameters are reserved keywords. E.g. "bias = estimator - parameters".}
+\item{custom_expr}{A string of R code to define custom measures; parameters is a reserved keyword. E.g. "bias = estimator - parameters".}
+
+\item{custom_FUNS}{A string of R code to define functions to calculate aggregate values over the mcmc samples, which will be passed to \code{custom_expr}. E.g. list(estimator = mean).}
 }
 \value{
 A flag.
@@ -48,4 +50,9 @@ result <- sma_analyse_bayesian(datalist=dat,
                                       n.iter = 101,
                                       monitor="mu")
 sma_summarise(result, parameters=params)
+sma_summarise(result, 
+measures="", 
+parameters=params, 
+custom_expr= "bias = estimator - parameters", 
+custom_FUNS= list(estimator = mean))
 }

@@ -56,12 +56,12 @@ test_that("package works",{
   params <- nlist(mu=0)
   dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
   result <- sma_analyse_bayesian(datalist=dat,
-                                        code = "a ~ dnorm(mu,1)
+                                 code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
-                                        n.adapt = 101,
-                                        n.burnin = 0,
-                                        n.iter = 101,
-                                        monitor = "mu")
+                                 n.adapt = 101,
+                                 n.burnin = 0,
+                                 n.iter = 101,
+                                 monitor = "mu")
   expect_true(class(result)=="list")
   expect_equal(result[[1]][1][[1]]$mu, -1.817165, tolerance = 0.000001)
   
@@ -94,32 +94,60 @@ test_that("summarise one measure - bias",{
                                         error.theta=error.theta1),
                                   nlist(error.mu = error.mu2, 
                                         error.theta=error.theta2)))
-  result2 <- summarise_all_measures(listnlists, "bias", parameters=parameters, estimator=mean)
+  
+  expr_FUN <- make_expr_and_FUNS("bias", estimator = mean, parameters=parameters)
+  expect_identical(expr_FUN[["expr"]], "bias = estimator - parameters")
+  result2 <- summarise_all_measures(listnlists, expr_FUN, parameters=parameters)
   expect_identical(result2, nlist(bias.mu = (error.mu1+error.mu2)/2,
-                                   bias.theta = (error.theta1+error.theta2)/2))
+                                  bias.theta = (error.theta1+error.theta2)/2))
 })
 
 
- test_that("package works 2",{
-   set.seed(10L)
-   parameters <- nlist(theta=c(0,1), df=3)
-   dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)", 
-                        parameters = parameters, 
-                        nsims=2)
-   result <- sma_analyse_bayesian(datalist=dat,
-                                         code = "a ~ dt(theta[1],theta[2], df)
+test_that("package works 2",{
+  set.seed(10L)
+  parameters <- nlist(theta=c(0,1), df=3)
+  dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)", 
+                       parameters = parameters, 
+                       nsims=2)
+  result <- sma_analyse_bayesian(datalist=dat,
+                                 code = "a ~ dt(theta[1],theta[2], df)
                                           theta[1] ~ dunif(-3,3)
                                           theta[2] ~ dunif(0,3)
                                           dfnotrnd ~ dnorm(0,20)I(1,)
                                           df <- round(dfnotrnd)",
-                                         n.adapt = 100,
-                                         n.burnin = 0,
-                                         n.iter = 2,
-                                         monitor = c("theta", "df"))
-   sma_summarise(result, measures="bias", parameters=parameters, monitor=".*")
-   sma_summarise(result, measures="mse", parameters=parameters, monitor=".*")
-   sma_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
-   sma_summarise(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
+                                 n.adapt = 100,
+                                 n.burnin = 0,
+                                 n.iter = 2,
+                                 monitor = c("theta", "df"))
+  sma_summarise(result, measures="bias", parameters=parameters, monitor=".*")
+  sma_summarise(result, measures="mse", parameters=parameters, monitor=".*")
+  sma_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
+  sma_summarise(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
+  
+})
+
+
+test_that("custom expr and FUNS",{
+  set.seed(10L)
+  parameters <- nlist(mu=0)
+  dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
+                             parameters = parameters, 
+                             nsims=2)
+  result <- sma_analyse_bayesian(datalist=dat,
+                                 code = "a ~ dnorm(mu, 1)
+                                         mu ~ dunif(-3,3)",
+                                 n.adapt = 101,
+                                 n.burnin = 0,
+                                 n.iter = 101,
+                                 monitor="mu")
+  result_method1 <- sma_summarise(result, measures="", 
+                parameters=parameters, 
+                custom_expr= "bias = estimator - parameters", 
+                custom_FUNS= list(estimator = mean))
+  result_method2 <- sma_summarise(result, measures="bias", parameters=parameters)
+  
+  expect_identical(result_method1, result_method2)
    
  })
+ 
  

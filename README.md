@@ -152,6 +152,30 @@ sma_summarise(result, parameters=params)
 #> an nlist object with 3 natomic elements
 ```
 
+You may also create customized Monte Carlo measures. The example below
+shows how to reproduce the results above with custom code.
+
+``` r
+sma_summarise(result, measures="", 
+                parameters=params, 
+                custom_expr= "bias = estimator - parameters
+                              mse = (estimator - parameters)^2
+                              cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)", 
+                custom_FUNS= list(estimator = mean,
+                                  cp.low = function(x) quantile(x, 0.025),
+                                  cp.high = function(x) quantile(x, 0.975)))
+#> $bias.mu
+#> [1] -0.1992641
+#> 
+#> $cp.quantile.mu
+#> [1] 1
+#> 
+#> $mse.mu
+#> [1] 0.184422
+#> 
+#> an nlist object with 3 natomic elements
+```
+
 ## Contribution
 
 Please report any

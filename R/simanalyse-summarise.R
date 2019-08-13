@@ -14,7 +14,8 @@
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use.
 #' @param alpha scalar representing the alpha level used to construct credible intervals. Default is 0.05.
 #' @param monitor  A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
-#' @param custom_expr A string of R code to define custom measures; estimator and parameters are reserved keywords. E.g. "bias = estimator - parameters".
+#' @param custom_expr A string of R code to define custom measures; parameters is a reserved keyword. E.g. "bias = estimator - parameters".
+#' @param custom_FUNS A string of R code to define functions to calculate aggregate values over the mcmc samples, which will be passed to \code{custom_expr}. E.g. list(estimator = mean).
 #' @return A flag.
 #' @export
 #'
@@ -31,6 +32,11 @@
 #'                                       n.iter = 101,
 #'                                       monitor="mu")
 #' sma_summarise(result, parameters=params)
+#' sma_summarise(result, 
+#' measures="", 
+#' parameters=params, 
+#' custom_expr= "bias = estimator - parameters", 
+#' custom_FUNS= list(estimator = mean))
 
 #  custom_expr A string of R functions to define custom measures.
 #  custom_derive
@@ -47,7 +53,8 @@ sma_summarise <- function(results.nlists,
                           alpha=0.05,
                           parameters,
                           monitor=".*",
-                          custom_expr){
+                          custom_expr,
+                          custom_FUNS){
         
         check_list(results.nlists) #lapply checks needs to be added
         check_character(measures)
@@ -56,15 +63,17 @@ sma_summarise <- function(results.nlists,
         check_chr(monitor)
         check_scalar(alpha) #how can I print error is not between zero and 1?
         
-        if(!missing(custom_expr)){check_string(custom_expr)}
+        if(!missing(custom_expr)){check_string(custom_expr)} else custom_expr=""
+        if(!missing(custom_FUNS)){
+                check_list(custom_FUNS)
+                lapply(custom_FUNS, check_function)
+        }else custom_FUNS=NULL
         
         if(monitor != ".*") results.nlists %<>% lapply(subset, select=monitor)
         
         summarise_all_measures(results.nlists, 
-                               measures, 
-                               parameters,
-                               estimator,
-                               alpha) %>% return
+                               make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_expr, custom_FUNS), 
+                               parameters) %>% return
 }
 
 
