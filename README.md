@@ -79,9 +79,8 @@ demonstration purposes)
 
 ``` r
 result <- simanalyse_analyse_bayesian(datalist=dat,
-                                      code = paste(code, 
-                                                   "mu ~ dunif(-3,3)", 
-                                                   collapse = " \n "),
+                                      code = code,
+                                      code_add = "mu ~ dunif(-3,3)",
                                       n.adapt = 101,
                                       n.burnin = 0,
                                       n.iter = 101,
