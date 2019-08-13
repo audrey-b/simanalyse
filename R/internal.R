@@ -71,47 +71,21 @@ as_natomic_mcarray <- function(x) {
 
 # analyse_datasets_bayesian <- function(nlistsdata)
 
-summarise_one_measure <- function(results.nlists, 
+summarise_one_measure <- function(listnlists, 
                                   measure, 
                                   estimator, 
                                   parameters){
-  if(measure == "Epvar"){ 
-    aggregate_FUN = var
-    measure_FUN = NULL
-  }else if(measure == "Epsd"){ 
-    aggregate_FUN = sd
-    measure_FUN = NULL
-  }else aggregate_FUN = mean
+
+  if(measure=="bias"){
+    expr="bias = estimator - parameters"
+    aggregate.FUNS=list(estimator = estimator)
+    }
   
-  if(measure=="bias") measure_FUN = function(x, param.value){
-    estimator(x) - param.value}
-  #if(measure=="rb") measure_FUN = function(x, param.value){
-  #  (estimator(x) - param.value)/param.value}
-  
-  results.nlists %>% 
-    summarise_within(measure_FUN, aggregate_FUN, parameters) %>%
+  listnlists %>% 
+    lapply(summarise_within, expr, aggregate.FUNS, parameters) %>%
+    as.nlists() %>%
     summarise_across(mean) %>%
     return
-}
-
-summarise_within <- function(results.nlists, 
-                             measure_FUN=NULL, 
-                             aggregate_FUN,
-                             parameters=NULL){
-  if(!is.null(measure_FUN)){
-    monitor <- results.nlists[[1]][[1]] %>% names()
-    parameters <- parameters %>% subset(monitor)
-    pos <- 1
-    envir = as.environment(pos)
-    assign("measure_FUN", measure_FUN, envir = envir) #not ideal, quick fix
-    expr <- paste("summary_", monitor, " <- measure_FUN(",monitor,", ",monitor,".value",")", collapse=" \n ", sep="")
-    names(parameters) <- paste0(names(parameters), ".value")
-    results.nlists %<>% lapply(mcmc_derive, expr=expr, values=parameters)
-  }
-  
-  summary.nlist <- lapply(results.nlists, aggregate, aggregate_FUN) %>% #, mcmc_derive, expr=expr)
-    as.nlists()
-  return(summary.nlist)
 }
 
 summarise_across <- function(summary.nlist, FUN){
@@ -122,7 +96,8 @@ summarise_across <- function(summary.nlist, FUN){
 
 
 
-summarise_one_sim <- function(nlists, expr, aggregate.FUNS, parameters, monitor){
+summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
+  monitor = nlists[[1]] %>% names()
   aggregate.list <- aggregate.FUNS %>% 
     lapply(function(FUN, nlists) aggregate(nlists, FUN), nlists) %>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
@@ -130,11 +105,12 @@ summarise_one_sim <- function(nlists, expr, aggregate.FUNS, parameters, monitor)
   names(parameters) <- paste0("parameters.",names(parameters))
   measures <- measure_names(expr)
   keywords <- c(measures, names(aggregate.FUNS), "parameters")
-  expr.all.params <- monitor %>% 
+  expr.all.params <- names(nlists[[1]]) %>% 
     lapply(make_one_expr, expr, keywords) %>%
     unlist %>%
     paste(collapse=" \n ")
- mcmc_derive(aggregate.list, expr.all.params, parameters) %>% return
+ mcmc_derive(aggregate.list, expr.all.params, parameters) %>%
+   return
 }
 
 make_one_expr <- function(param, expr, keywords){

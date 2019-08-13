@@ -64,7 +64,7 @@ demonstration purposes)
 ``` r
 result <- simanalyse_analyse_bayesian(datalist=dat,
                                       code = "a ~ dnorm(mu,1)
-                                         mu ~ dunif(-3,3)",
+                                              mu ~ dunif(-3,3)",
                                       n.adapt = 101,
                                       n.burnin = 0,
                                       n.iter = 101,
@@ -123,8 +123,11 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 Summarize the results over the 5 datasets
 
 ``` r
-simanalyse_summarise(result, "Epse", parameters=params, monitor="mu")
-#> [1] 0.9263116
+simanalyse_summarise(result, "bias", parameters=params)
+#> $bias.mu
+#> [1] -0.7578987
+#> 
+#> an nlist object with 1 natomic element
 ```
 
 ## Contribution

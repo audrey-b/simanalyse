@@ -54,7 +54,7 @@ Analyse all 5 datasets (here we use only a few iterations for demonstration purp
 ```{r}
 result <- simanalyse_analyse_bayesian(datalist=dat,
                                       code = "a ~ dnorm(mu,1)
-                                         mu ~ dunif(-3,3)",
+                                              mu ~ dunif(-3,3)",
                                       n.adapt = 101,
                                       n.burnin = 0,
                                       n.iter = 101,
@@ -63,7 +63,7 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 
 Summarize the results over the 5 datasets
 ```{r}
-simanalyse_summarise(result, "Epsd", parameters=params, monitor="mu")
+simanalyse_summarise(result, "bias", parameters=params)
 ```
 
 ## Contribution
