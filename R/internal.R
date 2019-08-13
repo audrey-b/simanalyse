@@ -71,11 +71,7 @@ as_natomic_mcarray <- function(x) {
 
 # analyse_datasets_bayesian <- function(nlistsdata)
 
-summarise_all_measures <- function(listnlists, 
-                                   measures, 
-                                   parameters,
-                                   estimator,
-                                   alpha=0.05){
+make_expr_and_FUNS <- function(measures, parameters, estimator, alpha){
   expr <- NULL
   aggregate.FUNS <- NULL
   if(("bias" %in% measures) | ("mse" %in% measures)) {
@@ -89,13 +85,22 @@ summarise_all_measures <- function(listnlists,
   }
   if("cp.quantile" %in% measures){
     expr=paste(c(expr, "cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)"), collapse=" \n ", sep="")
-    cp.low.with.alpha = function(x) do.call("cp.low",list(x,"alpha"=0.05))
-    cp.high.with.alpha = function(x) do.call("cp.high",list(x,"alpha"=0.05))
+    cp.low.with.alpha = function(x) do.call("cp.low",list(x,"alpha"=alpha))
+    cp.high.with.alpha = function(x) do.call("cp.high",list(x,"alpha"=alpha))
     aggregate.FUNS %<>% append(list(cp.low = cp.low.with.alpha, cp.high = cp.high.with.alpha))
   }
+  return(list(expr=expr, aggregate.FUNS=aggregate.FUNS))
+}
+
+summarise_all_measures <- function(listnlists, 
+                                   measures, 
+                                   parameters,
+                                   estimator,
+                                   alpha=0.05){
+  expr_FUNS <- make_expr_and_FUNS(measures, parameters, estimator, alpha)
   
   listnlists %>% 
-    lapply(summarise_within, expr, aggregate.FUNS, parameters) %>%
+    lapply(summarise_within, expr_FUNS[["expr"]], expr_FUNS[["aggregate.FUNS"]], parameters) %>%
     as.nlists() %>%
     summarise_across(mean) %>%
     return

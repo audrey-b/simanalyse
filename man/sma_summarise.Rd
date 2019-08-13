@@ -5,7 +5,8 @@
 \title{Summarises the results of simulation studies.}
 \usage{
 sma_summarise(results.nlists, measures = c("bias", "mse", "cp.quantile"),
-  estimator = mean, alpha = 0.05, parameters, monitor = ".*")
+  estimator = mean, alpha = 0.05, parameters, monitor = ".*",
+  custom_expr)
 }
 \arguments{
 \item{results.nlists}{An nlists of results}
@@ -21,6 +22,8 @@ sma_summarise(results.nlists, measures = c("bias", "mse", "cp.quantile"),
 \item{parameters}{Parameters to use to calculate Monte Carlo measures such as bias and coverage probability}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.}
+
+\item{custom_expr}{A string of R code to define custom measures; estimator and parameters are reserved keywords. E.g. "bias = estimator - parameters".}
 }
 \value{
 A flag.
