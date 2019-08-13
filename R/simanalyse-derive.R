@@ -13,12 +13,12 @@
 #' @export
 #'
 #' @examples
-#' simanalyse_derive()
-#' simanalyse_derive(FALSE)
-# simanalyse_derive <- function(x = TRUE) {
+#' sma_derive()
+#' sma_derive(FALSE)
+# sma_derive <- function(x = TRUE) {
 #   check_flag(x)
 #   x
 # }
 
-# simanalyse_derive(code = "b <- a + 1", path=...)
+# sma_derive(code = "b <- a + 1", path=...)
 

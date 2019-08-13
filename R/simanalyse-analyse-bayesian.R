@@ -23,7 +23,7 @@
 #'  set.seed(10L)
 #'  code <- "a ~ dnorm(mu,1)"
 #'  dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
-#'  result <- simanalyse_analyse_bayesian(datalist=dat,
+#'  result <- sma_analyse_bayesian(datalist=dat,
 #'                                        code = code,
 #'                                        code_add = "mu ~ dunif(-3,3)",
 #'                                        n.adapt = 101,
@@ -31,19 +31,19 @@
 #'                                        n.iter = 101,
 #'                                        monitor = "mu")
 
-simanalyse_analyse_bayesian <- function(datalist,
-                                        code,
-                                        code_add="",
-                                        code_values="",
-                                        package="rjags",
-                                        monitor,
-                                        inits=list(),
-                                        n.adapt,
-                                        n.burnin,
-                                        n.iter,
-                                        thin=1,
-                                        n.chains=3,
-                                        seed=rinteger()) {
+sma_analyse_bayesian <- function(datalist,
+                                 code,
+                                 code_add="",
+                                 code_values="",
+                                 package="rjags",
+                                 monitor,
+                                 inits=list(),
+                                 n.adapt,
+                                 n.burnin,
+                                 n.iter,
+                                 thin=1,
+                                 n.chains=3,
+                                 seed=rinteger()) {
   
   
   check_nlists(datalist)

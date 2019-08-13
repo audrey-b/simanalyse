@@ -78,7 +78,7 @@ Analyse all 5 datasets (here we use only a few iterations for
 demonstration purposes)
 
 ``` r
-result <- simanalyse_analyse_bayesian(datalist=dat,
+result <- sma_analyse_bayesian(datalist=dat,
                                       code = code,
                                       code_add = "mu ~ dunif(-3,3)",
                                       n.adapt = 101,
@@ -139,7 +139,7 @@ result <- simanalyse_analyse_bayesian(datalist=dat,
 Summarize the results over the 5 datasets
 
 ``` r
-simanalyse_summarise(result, parameters=params)
+sma_summarise(result, parameters=params)
 #> $bias.mu
 #> [1] -0.1992641
 #> 

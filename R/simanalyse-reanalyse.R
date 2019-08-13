@@ -11,9 +11,9 @@
 #' @export
 #'
 #' @examples
-#' simanalyse_reanalyse()
-#' simanalyse_reanalyse(FALSE)
-# simanalyse_reanalyse <- function(x = TRUE) {
+#' sma_reanalyse()
+#' sma_reanalyse(FALSE)
+# sma_reanalyse <- function(x = TRUE) {
 #   check_flag(x)
 #   x
 # }

@@ -23,14 +23,14 @@
 #' dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
 #'                            parameters = params, 
 #'                            nsims=5)
-#' result <- simanalyse_analyse_bayesian(datalist=dat,
+#' result <- sma_analyse_bayesian(datalist=dat,
 #'                                       code = "a ~ dnorm(mu, 1)
 #'                                               mu ~ dunif(-3,3)",
 #'                                       n.adapt = 101,
 #'                                       n.burnin = 0,
 #'                                       n.iter = 101,
 #'                                       monitor="mu")
-#' simanalyse_summarise(result, parameters=params)
+#' sma_summarise(result, parameters=params)
 
 #  custom_expr A string of R functions to define custom measures.
 #  custom_derive
@@ -41,7 +41,7 @@
 # @param derive A vector of strings indicating which Monte Carlo measures to derive from \code{measures}. Strings may include "rb" (relative 
 # bias), "br" (bias ratio), "var" (variance), "se" (standard error), rmse (root mean square error), "rrmse" (relative root mean square error)
 
-simanalyse_summarise <- function(results.nlists, 
+sma_summarise <- function(results.nlists, 
                                  measures=c("bias", "mse", "cp.quantile"), 
                                  estimator=mean, 
                                  alpha=0.05,

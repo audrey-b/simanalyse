@@ -15,9 +15,9 @@
 #'
 #' @examples
 #' dat <- sims::sims_simulate("a ~ dnorm(0,1)")
-#' simanalyse_analyse_custom(dat, FUN=function(data, arg) data[arg], arg="a")
+#' sma_analyse_custom(dat, FUN=function(data, arg) data[arg], arg="a")
 
-simanalyse_analyse_custom <- function(datalist,
+sma_analyse_custom <- function(datalist,
                                       FUN,
                                       path,
                                       seed,

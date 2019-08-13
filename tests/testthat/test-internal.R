@@ -55,7 +55,7 @@ test_that("package works",{
   set.seed(10L)
   params <- nlist(mu=0)
   dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
-  result <- simanalyse_analyse_bayesian(datalist=dat,
+  result <- sma_analyse_bayesian(datalist=dat,
                                         code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
                                         n.adapt = 101,
@@ -67,7 +67,7 @@ test_that("package works",{
   
   #summarise_within(result, aggregate_FUN=var)
   
-  #simanalyse_summarise(result, "Epsd", parameters=params, monitor="mu")
+  #sma_summarise(result, "Epsd", parameters=params, monitor="mu")
 })
 
 test_that("summarise one measure - bias",{
@@ -106,7 +106,7 @@ test_that("summarise one measure - bias",{
    dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)", 
                         parameters = parameters, 
                         nsims=2)
-   result <- simanalyse_analyse_bayesian(datalist=dat,
+   result <- sma_analyse_bayesian(datalist=dat,
                                          code = "a ~ dt(theta[1],theta[2], df)
                                           theta[1] ~ dunif(-3,3)
                                           theta[2] ~ dunif(0,3)
@@ -116,10 +116,10 @@ test_that("summarise one measure - bias",{
                                          n.burnin = 0,
                                          n.iter = 2,
                                          monitor = c("theta", "df"))
-   simanalyse_summarise(result, measures="bias", parameters=parameters, monitor=".*")
-   simanalyse_summarise(result, measures="mse", parameters=parameters, monitor=".*")
-   simanalyse_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
-   simanalyse_summarise(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
+   sma_summarise(result, measures="bias", parameters=parameters, monitor=".*")
+   sma_summarise(result, measures="mse", parameters=parameters, monitor=".*")
+   sma_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
+   sma_summarise(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
    
  })
  
