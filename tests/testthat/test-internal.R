@@ -123,7 +123,6 @@ test_that("package works 2",{
   sma_summarise(result, measures="mse", parameters=parameters, monitor=".*")
   sma_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
   sma_summarise(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
-  sma_summarise(result, measures=c("all"), parameters=parameters, monitor=".*")
 })
 
 
@@ -141,14 +140,31 @@ test_that("custom expr and FUNS",{
                                  n.iter = 101,
                                  monitor="mu")
   result_method1 <- sma_summarise(result, measures="", 
-                parameters=parameters, 
-                custom_FUNS= list(estimator = mean),
-                custom_expr_before= "mse = (estimator - parameters)^2",
-                custom_expr_after= "rmse = sqrt(mse)")
+                                  parameters=parameters, 
+                                  custom_FUNS= list(estimator = mean),
+                                  custom_expr_before= "mse = (estimator - parameters)^2",
+                                  custom_expr_after= "rmse = sqrt(mse)")
   result_method2 <- sma_summarise(result, measures=c("mse","rmse"), parameters=parameters)
   
   expect_identical(result_method1, result_method2)
-   
- })
- 
- 
+  
+})
+
+# test_that("extract_measure_from_summary",{
+#   monitor = c("mu", "theta")
+#   word <- "mse"
+#   summaries=nlist("bias.mu"=1, "bias.theta"=2, "mse.mu"=3, "mse.theta"=4)
+#   extract_measure_from_summary(summaries, word, monitor) %>%
+#     expect_identical(nlist(mu=3, theta=4))
+# })
+# 
+# test_that("summary_reformat",{
+#   measures=c("mse", "bias")
+#   monitor = c("mu", "theta")
+#   summaries=nlist("bias.mu"=1, "bias.theta"=2, "mse.mu"=3, "mse.theta"=4)
+#   res <- summary_reformat(measures=measures,
+#                           summaries=summaries,
+#                           monitor=monitor) %>%
+#     set_names(measures)
+#   expect_identical(res, list(mse=nlist(mu=3, theta=4), bias=nlist(mu=1, theta=2)))
+# })

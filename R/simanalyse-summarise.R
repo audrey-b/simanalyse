@@ -73,7 +73,9 @@ sma_summarise <- function(results.nlists,
                 lapply(custom_FUNS, check_function)
         }else custom_FUNS=NULL
         
-        if(monitor != ".*") results.nlists %<>% lapply(subset, select=monitor)
+        if(monitor != ".*"){results.nlists %<>% lapply(subset, select=monitor)
+                #parameters %<>% parameters[monitor]
+                }
         
         summarise_all_measures(results.nlists, 
                                make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_FUNS, custom_expr_before, custom_expr_after), 

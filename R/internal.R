@@ -158,6 +158,8 @@ summarise_all_measures <- function(listnlists,
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
                     parameters) %>%
+    #summary_reformat(measures=measures,
+    #                 monitor=names(listnlists)[[1]]) %>%
     return
 }
 
@@ -166,7 +168,7 @@ derive_measures <- function(nlist, derive_expr, keywords, parameters){
     monitor = names(parameters)
     expr.all.params <- expand_expr(derive_expr, keywords, monitor, parameters)
     names(parameters) <- paste0("parameters.",names(parameters))
-    mcmc_derive(nlist, expr.all.params, parameters) %>%
+    mcmc_derive(nlist, expr.all.params, parameters, silent = TRUE) %>%
       append(nlist) %>%
       return
   }else{return(nlist)}
@@ -197,10 +199,10 @@ summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
     as.nlist()
   #apply expr
   if(!is.null(expr)){
-  expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
-  names(parameters) <- paste0("parameters.",names(parameters))
-  mcmc_derive(aggregate.list, expr.all.params, parameters) %>%
-    return
+    expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
+    names(parameters) <- paste0("parameters.",names(parameters))
+    mcmc_derive(aggregate.list, expr.all.params, parameters, silent=TRUE) %>%
+      return
   }else{return(aggregate.list)}
 }
 
@@ -242,4 +244,25 @@ prepare_code <- function(code, code_add, code_values){
   do.call(sprintf, args = as.list(c(code, code_values))) %>% 
     return
 }
-
+# 
+# extract_measure_from_summary <- function(summaries, word, monitor){
+#   indices <- summaries %>% 
+#     names %>%
+#     startsWith(p0(word,".")) %>% 
+#     which()
+#   measure_res = summaries[indices]
+#   #monitor= measure_res %>% 
+#   #  names %>% 
+#   #  sub(pattern='.*\\.', replacement='')
+#   names(measure_res)=monitor
+#   return(measure_res)
+# }
+# 
+# summary_reformat <- function(summaries, measures, monitor){
+#   measures %>% 
+#     lapply(extract_measure_from_summary, 
+#            summaries=summaries,
+#            monitor=monitor) %>%
+#     set_names(measures)
+# }
+# 
