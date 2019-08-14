@@ -82,27 +82,59 @@ make_expr_and_FUNS <- function(measures,
   derive_expr <- NULL
   
   #aggregate_FUNS
-  if(sum(c("bias", "mse", "rb", "br", "var", "se", "rmse", "rrmse") %in% measures) > 0) {
+  if(sum(c("bias", "mse", "rb", "br", "var", "se", "rmse", "rrmse", "all") %in% measures) > 0) {
     aggregate.FUNS %<>% append(list(estimator = estimator))
   }
-  
-  #expr
-  if(sum(c("bias", "rb", "br", "var", "se") %in% measures) > 0){
-    expr=paste(c(expr, "bias = estimator - parameters"), collapse=" \n ", sep="")
+  if(sum(c("Epvar", "all") %in% measures) > 0){
+    aggregate.FUNS %<>% append(list(Epvar = var))
   }
-  if(sum(c("mse", "br", "var", "se", "rmse", "rrmse") %in% measures) > 0){
-    expr=paste(c(expr, "mse = (estimator - parameters)^2"), collapse=" \n ", sep="")
+  if(sum(c("Epse", "all") %in% measures) > 0){
+    aggregate.FUNS %<>% append(list(Epse = sd))
   }
-  if("cp.quantile" %in% measures){
-    expr=paste(c(expr, "cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)"), collapse=" \n ", sep="")
+  if(sum(c("cp.quantile", "cp.length", "all") %in% measures) > 0){
     cp.low.with.alpha = function(x) do.call("cp.low",list(x,"alpha"=alpha))
     cp.high.with.alpha = function(x) do.call("cp.high",list(x,"alpha"=alpha))
     aggregate.FUNS %<>% append(list(cp.low = cp.low.with.alpha, cp.high = cp.high.with.alpha))
   }
   
+  #expr
+  if(sum(c("bias", "rb", "br", "var", "se", "all") %in% measures) > 0){
+    expr=paste(c(expr, "bias = estimator - parameters"), collapse=" \n ", sep="")
+  }
+  if(sum(c("mse", "br", "var", "se", "rmse", "rrmse", "all") %in% measures) > 0){
+    expr=paste(c(expr, "mse = (estimator - parameters)^2"), collapse=" \n ", sep="")
+  }
+  if(sum(c("cp.quantile", "all") %in% measures) > 0){
+    expr=paste(c(expr, "cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)"), collapse=" \n ", sep="")
+  }
+  if(sum(c("E", "cv", "all") %in% measures) > 0){
+    expr=paste(c(expr, "E = estimator"), collapse=" \n ", sep="")
+  }
+  if(sum(c("cp.length", "all") %in% measures) > 0){
+    expr=paste(c(expr, "cp.length = cp.high - cp.low"), collapse=" \n ", sep="")
+  }
+  
   #derive
-  if("rb" %in% measures){
+  if(sum(c("rb", "all") %in% measures) > 0){
     derive_expr = paste(c(derive_expr, "rb = bias/parameters"), collapse=" \n ", sep="")
+  }
+  if(sum(c("var", "br", "se", "cv", "all") %in% measures) > 0){
+    derive_expr = paste(c(derive_expr, "var = mse - bias^2"), collapse=" \n ", sep="")
+  }
+  if(sum(c("br", "all") %in% measures) > 0){
+    derive_expr = paste(c(derive_expr, "br = bias/sqrt(var)"), collapse=" \n ", sep="")
+  }
+  if(sum(c("se", "all") %in% measures) > 0){
+    derive_expr = paste(c(derive_expr, "se = sqrt(var)"), collapse=" \n ", sep="")
+  }
+  if(sum(c("cv", "all") %in% measures) > 0){
+    derive_expr = paste(c(derive_expr, "cv = sqrt(var)/E"), collapse=" \n ", sep="")
+  }
+  if(sum(c("rmse", "all") %in% measures) > 0){
+    derive_expr = paste(c(derive_expr, "rmse = sqrt(mse)"), collapse=" \n ", sep="")
+  }
+  if(sum(c("rrmse", "all") %in% measures) > 0){
+    derive_expr = paste(c(derive_expr, "rrmse = sqrt(mse)/parameters"), collapse=" \n ", sep="")
   }
   
   if(custom_expr!="") expr=paste(c(expr, custom_expr), collapse=" \n ", sep="")
@@ -162,10 +194,12 @@ summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as.nlist()
   #apply expr
+  if(!is.null(expr)){
   expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
   names(parameters) <- paste0("parameters.",names(parameters))
   mcmc_derive(aggregate.list, expr.all.params, parameters) %>%
     return
+  }else{return(aggregate.list)}
 }
 
 make_one_expr <- function(param, expr, keywords){

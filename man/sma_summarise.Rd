@@ -13,7 +13,9 @@ sma_summarise(results.nlists, measures = c("bias", "mse", "cp.quantile"),
 
 \item{measures}{A vector of strings indicating which Monte Carlo measures to calculate. Strings may include "bias", "E" (expectation), 
 "cp.quantile" (coverage probability of quantile-based CrIs), "cp.length" (coverage probability of quantile-based CrIs),
-"Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)}
+"Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
+ bias), "br" (bias ratio), "var" (variance), "se" (standard error), rmse (root mean square error), "rrmse" (relative root mean square error),
+"cv" (coefficient of variation), "all" (all the measures)}
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use.}
 

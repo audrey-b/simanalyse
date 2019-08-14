@@ -9,7 +9,9 @@
 #' @param results.nlists An nlists of results
 #' @param measures A vector of strings indicating which Monte Carlo measures to calculate. Strings may include "bias", "E" (expectation), 
 #' "cp.quantile" (coverage probability of quantile-based CrIs), "cp.length" (coverage probability of quantile-based CrIs),
-#' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation)
+#' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
+#'  bias), "br" (bias ratio), "var" (variance), "se" (standard error), rmse (root mean square error), "rrmse" (relative root mean square error),
+#' "cv" (coefficient of variation), "all" (all the measures)
 #' @param parameters Parameters to use to calculate Monte Carlo measures such as bias and coverage probability
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use.
 #' @param alpha scalar representing the alpha level used to construct credible intervals. Default is 0.05.
@@ -44,8 +46,7 @@
 #  path A string specifying the path to the directory where the results were saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
 #  exists A flag specifying whether the summaries should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.
 #  silent A flag specifying whether to suppress warnings.
-# @param derive A vector of strings indicating which Monte Carlo measures to derive from \code{measures}. Strings may include "rb" (relative 
-# bias), "br" (bias ratio), "var" (variance), "se" (standard error), rmse (root mean square error), "rrmse" (relative root mean square error)
+# @param derive A vector of strings indicating which Monte Carlo measures to derive from \code{measures}. Strings may include 
 
 sma_summarise <- function(results.nlists, 
                           measures=c("bias", "mse", "cp.quantile"), 

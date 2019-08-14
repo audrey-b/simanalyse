@@ -123,7 +123,7 @@ test_that("package works 2",{
   sma_summarise(result, measures="mse", parameters=parameters, monitor=".*")
   sma_summarise(result, measures="cp.quantile", parameters=parameters, monitor=".*")
   sma_summarise(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
-  sma_summarise(result, measures=c("rb"), parameters=parameters, monitor=".*")
+  sma_summarise(result, measures=c("all"), parameters=parameters, monitor=".*")
 })
 
 
