@@ -57,6 +57,7 @@ sma_summarise(result, parameters=params)
 sma_summarise(result, 
 measures="", 
 parameters = params, 
-custom_FUNS = list(estimator = mean),
-custom_expr_before = "bias = estimator - parameters")
+custom_FUNS = list(posteriormedian = median),
+custom_expr_before = "mse = (posteriormedian - parameters)^2",
+custom_expr_after = "rmse = sqrt(mse)")
 }

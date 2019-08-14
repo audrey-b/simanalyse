@@ -159,10 +159,10 @@ shows how to reproduce the results above with custom code.
 sma_summarise(result,
               measures = "", 
               parameters = params, 
-              custom_FUNS= list(estimator = mean,
+              custom_FUNS = list(estimator = mean,
                                 cp.low = function(x) quantile(x, 0.025),
                                 cp.high = function(x) quantile(x, 0.975)),
-              custom_expr_before = "bias = estimator - parameters
+              custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)")
 #> $bias.mu
