@@ -75,8 +75,9 @@ make_expr_and_FUNS <- function(measures,
                                parameters, 
                                estimator, 
                                alpha, 
+                               custom_FUNS=NULL,
                                custom_expr_before="", 
-                               custom_FUNS=NULL){
+                               custom_expr_after=""){
   expr <- NULL
   aggregate.FUNS <- NULL
   derive_expr <- NULL
@@ -138,6 +139,7 @@ make_expr_and_FUNS <- function(measures,
   }
   
   if(custom_expr_before!="") expr=paste(c(expr, custom_expr_before), collapse=" \n ", sep="")
+  if(custom_expr_after!="") derive_expr=paste(c(derive_expr, custom_expr_after), collapse=" \n ", sep="")
   if(!is.null(custom_FUNS)) aggregate.FUNS %<>% append(custom_FUNS)
   
   return(list(expr=expr, aggregate.FUNS=aggregate.FUNS, derive_expr=derive_expr))

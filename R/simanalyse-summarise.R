@@ -41,6 +41,8 @@
 #' custom_FUNS = list(estimator = mean),
 #' custom_expr_before = "bias = estimator - parameters")
 
+
+#  thin
 #  parallel An integer specifying the number of CPU cores to use for generating the datasets in parallel. Defaul is 1 (not parallel).
 #  path A string specifying the path to the directory where the results were saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
 #  exists A flag specifying whether the summaries should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.
@@ -56,8 +58,6 @@ sma_summarise <- function(results.nlists,
                           custom_expr_before,
                           custom_expr_after=NULL){
         
-        #.NotYetUsed(custom_expr_after)
-        
         check_list(results.nlists) #lapply checks needs to be added
         check_character(measures)
         check_function(estimator)
@@ -66,6 +66,7 @@ sma_summarise <- function(results.nlists,
         check_scalar(alpha) #how can I print error is not between zero and 1?
         
         if(!missing(custom_expr_before)){check_string(custom_expr_before)} else custom_expr_before=""
+        if(!missing(custom_expr_after)){check_string(custom_expr_after)} else custom_expr_after=""
         if(!missing(custom_FUNS)){
                 check_list(custom_FUNS)
                 lapply(custom_FUNS, check_function)
@@ -74,7 +75,7 @@ sma_summarise <- function(results.nlists,
         if(monitor != ".*") results.nlists %<>% lapply(subset, select=monitor)
         
         summarise_all_measures(results.nlists, 
-                               make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_expr_before, custom_FUNS), 
+                               make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_FUNS, custom_expr_before, custom_expr_after), 
                                parameters) %>% return
 }
 
