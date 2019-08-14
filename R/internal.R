@@ -234,16 +234,35 @@ measure_names <- function (x) {
   sort(nodes)
 }
 
-prepare_code <- function(code, code_add, code_values){
-  code <- paste(c(code, code_add), 
+prepare_code <- function(code, code.add, code.values){
+  code <- paste(c(code, code.add), 
                 collapse=" \n", 
                 sep="")
   if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
     err("jags code must not be in a data or model block")
   
-  do.call(sprintf, args = as.list(c(code, code_values))) %>% 
+  do.call(sprintf, args = as.list(c(code, code.values))) %>% 
     return
 }
+
+fun.batchr.analyse <- function(file, path.save, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
+  readRDS(file) %>%
+    sma_analyse_bayesian(...) %>%
+    saveRDS(file.path(path.save, sub("data", "analys", basename(file))))
+}
+
+analyse_to_file <- function(path, ...){
+  
+  saving.dir <- file.path(path, "analysis") 
+  if(!dir.exists(saving.dir)) dir.create(saving.dir)
+  batch_process(fun.batchr.analyse, 
+                path=path,
+                regexp="^data\\d{7,7}.rds$", 
+                path.save=file.path(path, "analysis"),
+                ask=FALSE,
+                ...)
+}
+
 # 
 # extract_measure_from_summary <- function(summaries, word, monitor){
 #   indices <- summaries %>% 

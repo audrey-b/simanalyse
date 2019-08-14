@@ -42,34 +42,34 @@ remotes::install_github("audrey-b/simanalyse")
 
 ## Demonstration
 
-Simulate 5 datasets using the sims package (we use only 5 datasets for demonstration purposes)
+Simulate 3 datasets using the sims package (we use only 3 datasets for demonstration purposes)
 ```{r}
 library(simanalyse)
 set.seed(10L)
-params <- nlist(mu=0)
-constants <- nlist(sigma=1)
+params <- nlist(mu = 0)
+constants <- nlist(sigma = 1)
 code <- "for(i in 1:10){
           a[i] ~ dnorm(mu, 1/sigma^2)}"
 dat <- sims::sims_simulate(code, 
                            parameters = params, 
-                           constants=constants,
-                           nsims=5,
-                           silent=TRUE)
+                           constants = constants,
+                           nsims = 3,
+                           silent = TRUE)
 print(dat)
 ```
 
-Analyse all 5 datasets (here we use only a few iterations for demonstration purposes)
+Analyse all 3 datasets (here we use only a few iterations for demonstration purposes)
 ```{r}
-result <- sma_analyse_bayesian(datalist=dat,
+result <- sma_analyse_bayesian(data = dat,
                                code = code,
-                               code_add = "mu ~ dunif(-3,3)",
+                               code.add = "mu ~ dunif(-3,3)",
                                n.adapt = 101,
                                n.burnin = 0,
                                n.iter = 101,
                                monitor = "mu")
 ```
 
-Summarize the results over the 5 datasets
+Summarize the results over the 3 datasets
 ```{r}
 sma_summarise(result, parameters=params)
 ```
@@ -79,11 +79,30 @@ sma_summarise(result,
               measures = "", 
               parameters = params, 
               custom_FUNS = list(estimator = mean,
-                                cp.low = function(x) quantile(x, 0.025),
-                                cp.high = function(x) quantile(x, 0.975)),
+                                 cp.low = function(x) quantile(x, 0.025),
+                                 cp.high = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)")
+```
+
+You may also save results to file with
+
+```{r}
+set.seed(10L)
+sims::sims_simulate(code, 
+                    parameters = params, 
+                    constants = constants,
+                    nsims = 3,
+                    exists = NA,
+                    path = tempdir())
+sma_analyse_bayesian(code = code,
+                     code.add = "mu ~ dunif(-3,3)",
+                     n.adapt = 101,
+                     n.burnin = 0,
+                     n.iter = 101,
+                     monitor = "mu",
+                     path = tempdir())
 ```
 
 ## Contribution

@@ -4,24 +4,25 @@
 \alias{sma_analyse_bayesian}
 \title{Analyse data for a simulation study}
 \usage{
-sma_analyse_bayesian(datalist, code, code_add = "", code_values = "",
-  package = "rjags", monitor, inits = list(), n.adapt, n.burnin,
-  n.iter, thin = 1, n.chains = 3, seed = rinteger())
+sma_analyse_bayesian(data = NULL, code, code.add = "",
+  code.values = "", package = "rjags", monitor, inits = list(),
+  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3,
+  seed = rinteger(), path = NULL)
 }
 \arguments{
-\item{datalist}{A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.}
+\item{data}{An nlists or nlist object of the data. If NULL, data files are read from \code{path}.}
 
 \item{code}{A string of code to analyse the data. JAGS code must not be in a data or model block.}
 
-\item{code_add}{A string of code to add at the end of \code{code} before analysing the data. This is useful for specifying priors seperately from the likelihood in JAGS.}
+\item{code.add}{A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.}
 
-\item{code_values}{A character vector to pass to sprintf when applied to the appended code from \code{code} and \code{code_add}. This is useful for varying choices of distributions or conducting sensitivity to prior analyses.}
+\item{code.values}{A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.}
 
-\item{package}{A string with the name of the R package to analyse the data, among the following ones: "rjags"}
+\item{package}{A string with the name of the R package to analyse the data. Currently, only "rjags" is implemented.}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.}
 
-\item{inits}{Initial values for the mcmc chains}
+\item{inits}{A list. Initial values for the MCMC chains}
 
 \item{n.adapt}{An integer specifying the number of adaptations for each analysis}
 
@@ -31,9 +32,11 @@ sma_analyse_bayesian(datalist, code, code_add = "", code_values = "",
 
 \item{thin}{A numeric scalar of at least 1 specifying the thinning factor. Default is 1.}
 
-\item{n.chains}{An integer greater than zero specifying the number of mcmc chains to run}
+\item{n.chains}{An integer greater than zero specifying the number of MCMC chains to run}
 
-\item{seed}{An integer specifying the random seed to use for analysing the data.}
+\item{seed}{An integer. The random seed to use for analysing the data.}
+
+\item{path}{A string. If specified, results are saved at that path on disk.}
 }
 \value{
 A flag.
@@ -45,9 +48,9 @@ Analyse data for a simulation study. If path is supplied, saves a hidden file wi
  set.seed(10L)
  code <- "a ~ dnorm(mu,1)"
  dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
- result <- sma_analyse_bayesian(datalist=dat,
+ result <- sma_analyse_bayesian(data=dat,
                                        code = code,
-                                       code_add = "mu ~ dunif(-3,3)",
+                                       code.add = "mu ~ dunif(-3,3)",
                                        n.adapt = 101,
                                        n.burnin = 0,
                                        n.iter = 101,

@@ -16,7 +16,8 @@ Imports:
   checkr,
   magrittr,
   stringr,
-  rjags
+  rjags,
+  batchr
 Suggests: 
     covr,
     testthat

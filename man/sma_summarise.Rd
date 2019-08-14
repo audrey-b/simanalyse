@@ -46,7 +46,7 @@ params <- nlist(mu=0)
 dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
                            parameters = params, 
                            nsims=5)
-result <- sma_analyse_bayesian(datalist=dat,
+result <- sma_analyse_bayesian(data=dat,
                                       code = "a ~ dnorm(mu, 1)
                                               mu ~ dunif(-3,3)",
                                       n.adapt = 101,

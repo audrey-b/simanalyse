@@ -44,7 +44,7 @@ remotes::install_github("audrey-b/simanalyse")
 
 ## Demonstration
 
-Simulate 5 datasets using the sims package (we use only 5 datasets for
+Simulate 3 datasets using the sims package (we use only 3 datasets for
 demonstration purposes)
 
 ``` r
@@ -54,33 +54,33 @@ library(simanalyse)
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
 set.seed(10L)
-params <- nlist(mu=0)
-constants <- nlist(sigma=1)
+params <- nlist(mu = 0)
+constants <- nlist(sigma = 1)
 code <- "for(i in 1:10){
           a[i] ~ dnorm(mu, 1/sigma^2)}"
 dat <- sims::sims_simulate(code, 
                            parameters = params, 
-                           constants=constants,
-                           nsims=5,
-                           silent=TRUE)
+                           constants = constants,
+                           nsims = 3,
+                           silent = TRUE)
 print(dat)
 #> $a
-#>  [1] -0.88079815 -0.08492460 -0.53168578 -0.06243852  0.76097710
-#>  [6] -0.04988989 -0.42954424  0.20710319 -0.72960984 -0.16097027
+#>  [1] -1.27435905 -0.41192778 -0.20520427  0.03849253  1.07432109
+#>  [6] -0.14679574 -0.62402896  0.03856476 -0.54504778 -0.20984170
 #> 
 #> $sigma
 #> [1] 1
 #> 
-#> an nlists object of 5 nlist objects each with 2 natomic elements
+#> an nlists object of 3 nlist objects each with 2 natomic elements
 ```
 
-Analyse all 5 datasets (here we use only a few iterations for
+Analyse all 3 datasets (here we use only a few iterations for
 demonstration purposes)
 
 ``` r
-result <- sma_analyse_bayesian(datalist=dat,
+result <- sma_analyse_bayesian(data = dat,
                                code = code,
-                               code_add = "mu ~ dunif(-3,3)",
+                               code.add = "mu ~ dunif(-3,3)",
                                n.adapt = 101,
                                n.burnin = 0,
                                n.iter = 101,
@@ -114,40 +114,20 @@ result <- sma_analyse_bayesian(datalist=dat,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> 
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
 ```
 
-Summarize the results over the 5 datasets
+Summarize the results over the 3 datasets
 
 ``` r
 sma_summarise(result, parameters=params)
 #> $bias.mu
-#> [1] -0.1992641
+#> [1] -0.2100996
 #> 
 #> $cp.quantile.mu
-#> [1] 1
+#> [1] 0.6666667
 #> 
 #> $mse.mu
-#> [1] 0.184422
+#> [1] 0.1638946
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -160,21 +140,77 @@ sma_summarise(result,
               measures = "", 
               parameters = params, 
               custom_FUNS = list(estimator = mean,
-                                cp.low = function(x) quantile(x, 0.025),
-                                cp.high = function(x) quantile(x, 0.975)),
+                                 cp.low = function(x) quantile(x, 0.025),
+                                 cp.high = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)")
 #> $bias.mu
-#> [1] -0.1992641
+#> [1] -0.2100996
 #> 
 #> $cp.quantile.mu
-#> [1] 1
+#> [1] 0.6666667
 #> 
 #> $mse.mu
-#> [1] 0.184422
+#> [1] 0.1638946
 #> 
 #> an nlist object with 3 natomic elements
+```
+
+You may also save results to file with
+
+``` r
+set.seed(10L)
+sims::sims_simulate(code, 
+                    parameters = params, 
+                    constants = constants,
+                    nsims = 3,
+                    exists = NA,
+                    path = tempdir())
+#> Warning in dir.create(path, recursive = TRUE): 'C:
+#> \Users\audre\AppData\Local\Temp\Rtmpi8ARxl' already exists
+#> [1] TRUE
+sma_analyse_bayesian(code = code,
+                     code.add = "mu ~ dunif(-3,3)",
+                     n.adapt = 101,
+                     n.burnin = 0,
+                     n.iter = 101,
+                     monitor = "mu",
+                     path = tempdir())
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 10
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 18
+#> 
+#> Initializing model
+#> 
+#> SUCCESS 1/3/0 [2019-08-14 22:44:19] 'data0000001.rds'
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 10
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 18
+#> 
+#> Initializing model
+#> 
+#> SUCCESS 2/3/0 [2019-08-14 22:44:19] 'data0000002.rds'
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 10
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 18
+#> 
+#> Initializing model
+#> 
+#> SUCCESS 3/3/0 [2019-08-14 22:44:19] 'data0000003.rds'
+#> [1] TRUE
 ```
 
 ## Contribution
