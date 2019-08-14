@@ -71,16 +71,26 @@ as_natomic_mcarray <- function(x) {
 
 # analyse_datasets_bayesian <- function(nlistsdata)
 
-make_expr_and_FUNS <- function(measures, parameters, estimator, alpha, custom_expr="", custom_FUNS=NULL){
+make_expr_and_FUNS <- function(measures, 
+                               parameters, 
+                               estimator, 
+                               alpha, 
+                               custom_expr="", 
+                               custom_FUNS=NULL){
   expr <- NULL
   aggregate.FUNS <- NULL
-  if(("bias" %in% measures) | ("mse" %in% measures)) {
+  derive_expr <- NULL
+  
+  #aggregate_FUNS
+  if(sum(c("bias", "mse", "rb", "br", "var", "se", "rmse", "rrmse") %in% measures) > 0) {
     aggregate.FUNS %<>% append(list(estimator = estimator))
   }
-  if("bias" %in% measures){
+  
+  #expr
+  if(sum(c("bias", "rb", "br", "var", "se") %in% measures) > 0){
     expr=paste(c(expr, "bias = estimator - parameters"), collapse=" \n ", sep="")
   }
-  if("mse" %in% measures){
+  if(sum(c("mse", "br", "var", "se", "rmse", "rrmse") %in% measures) > 0){
     expr=paste(c(expr, "mse = (estimator - parameters)^2"), collapse=" \n ", sep="")
   }
   if("cp.quantile" %in% measures){
@@ -89,10 +99,16 @@ make_expr_and_FUNS <- function(measures, parameters, estimator, alpha, custom_ex
     cp.high.with.alpha = function(x) do.call("cp.high",list(x,"alpha"=alpha))
     aggregate.FUNS %<>% append(list(cp.low = cp.low.with.alpha, cp.high = cp.high.with.alpha))
   }
+  
+  #derive
+  if("rb" %in% measures){
+    derive_expr = paste(c(derive_expr, "rb = bias/parameters"), collapse=" \n ", sep="")
+  }
+  
   if(custom_expr!="") expr=paste(c(expr, custom_expr), collapse=" \n ", sep="")
   if(!is.null(custom_FUNS)) aggregate.FUNS %<>% append(custom_FUNS)
-
-  return(list(expr=expr, aggregate.FUNS=aggregate.FUNS))
+  
+  return(list(expr=expr, aggregate.FUNS=aggregate.FUNS, derive_expr=derive_expr))
 }
 
 summarise_all_measures <- function(listnlists, 
@@ -100,10 +116,26 @@ summarise_all_measures <- function(listnlists,
                                    parameters){
   
   listnlists %>% 
-    lapply(summarise_within, expr_FUNS[["expr"]], expr_FUNS[["aggregate.FUNS"]], parameters) %>%
+    lapply(summarise_within, expr_FUNS[["expr"]], 
+           expr_FUNS[["aggregate.FUNS"]], 
+           parameters) %>%
     as.nlists() %>%
     summarise_across(mean) %>%
+    derive_measures(expr_FUNS[["derive_expr"]], 
+                    measure_names(expr_FUNS[["expr"]]), 
+                    parameters) %>%
     return
+}
+
+derive_measures <- function(nlist, derive_expr, keywords, parameters){
+  if(!is.null(derive_expr)){
+    monitor = names(parameters)
+    expr.all.params <- expand_expr(derive_expr, keywords, monitor, parameters)
+    names(parameters) <- paste0("parameters.",names(parameters))
+    mcmc_derive(nlist, expr.all.params, parameters) %>%
+      append(nlist) %>%
+      return
+  }else{return(nlist)}
 }
 
 summarise_across <- function(summary.nlist, FUN){
@@ -112,7 +144,15 @@ summarise_across <- function(summary.nlist, FUN){
     return
 }
 
-
+expand_expr <- function(expr, keywords, monitor, parameters){
+  measures <- measure_names(expr)
+  keywords %<>% c(measures, "parameters")
+  expr.all.params <- monitor %>% 
+    lapply(make_one_expr, expr, keywords) %>%
+    unlist %>%
+    paste(collapse=" \n ") %>%
+    return
+}
 
 summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
   monitor = nlists[[1]] %>% names()
@@ -122,13 +162,8 @@ summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as.nlist()
   #apply expr
+  expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
   names(parameters) <- paste0("parameters.",names(parameters))
-  measures <- measure_names(expr)
-  keywords <- c(measures, names(aggregate.FUNS), "parameters")
-  expr.all.params <- names(nlists[[1]]) %>% 
-    lapply(make_one_expr, expr, keywords) %>%
-    unlist %>%
-    paste(collapse=" \n ")
   mcmc_derive(aggregate.list, expr.all.params, parameters) %>%
     return
 }
