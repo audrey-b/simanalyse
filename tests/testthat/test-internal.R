@@ -142,7 +142,7 @@ test_that("custom expr and FUNS",{
                                  monitor="mu")
   result_method1 <- sma_summarise(result, measures="", 
                 parameters=parameters, 
-                custom_expr= "bias = estimator - parameters", 
+                custom_expr_before= "bias = estimator - parameters", 
                 custom_FUNS= list(estimator = mean))
   result_method2 <- sma_summarise(result, measures="bias", parameters=parameters)
   
