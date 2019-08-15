@@ -38,7 +38,7 @@ sma_analyse_bayesian <- function(data = NULL,
                                  code.add="",
                                  code.values="",
                                  package="rjags",
-                                 monitor,
+                                 monitor, #need to configure so .* by default
                                  inits=list(),
                                  n.adapt,
                                  n.burnin,

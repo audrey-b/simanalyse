@@ -8,11 +8,11 @@ or in the results of the analyses.}
 sma_derive(object, code, monitor = ".*")
 }
 \arguments{
-\item{object}{A nlists object}
+\item{object}{A single nlists object or a list of nlists objects.}
 
-\item{code}{A string of R code to modify the results.}
+\item{code}{A string of R code to modify the nlists in \code{object}.}
 
-\item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the data. By default all stochastic nodes are included.}
+\item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}
 }
 \value{
 A flag.
@@ -22,7 +22,9 @@ Derive new variables from the results of analyses
 }
 \examples{
 set.seed(10L)
-code <- "for(i in 1:10){x[i] ~ dnorm(mu,1)}"
-dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
-sma_derive(dat, "y=x+1")
+code <- "for(i in 1:10){x[i] ~ dnorm(0,1/variance)}"
+dat <- sims::sims_simulate(code, parameters = nlist(variance=4), nsims=2)
+res <- sma_analyse_bayesian(dat, code, code.add = "variance ~ dunif(0,10)", 
+n.adapt=100, n.burnin=0, n.iter=3, monitor="variance")
+sma_derive(res, "sd=sqrt(variance)")
 }
