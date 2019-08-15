@@ -99,6 +99,6 @@ sma_analyse_bayesian <- function(data = NULL,
                   inits=inits, n.chains=n.chains,
                   n.adapt=n.adapt, n.burnin=n.burnin, 
                   n.iter=n.iter, thin=thin,
-                  seed=seed, path.read=path.read, path.save=path.save) #will this use the same seeds as above??? I think this will need to be fixed
+                  seeds=seeds, path.read=path.read, path.save=path.save) #will this use the same seeds as above??? I think this will need to be fixed
   
 }

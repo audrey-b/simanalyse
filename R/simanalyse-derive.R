@@ -17,29 +17,13 @@
 #' sma_derive()
 #' sma_derive(FALSE)
 
-# set.seed(10L)
-# dat <- sims_simulate("a ~ dnorm(mu,1) \n f ~ dnorm(0,1) \n j ~ dnorm(0,1)", parameters = nlist(mu=0), nsims=2)
-# result <- analyse_dataset_bayesian(nlistdata = dat[[1]],
-#                                    code = "a ~ dnorm(0,1)
-#                                              mu ~ dnorm(-3, 3)",
-#                                    n.adapt = 101,
-#                                    n.burnin = 0,
-#                                    n.iter = 101,
-#                                    monitor = "mu",
-#                                    seed = 10)
-# dat
-# code <- "b=a+1
-#         g=f+1
-#          k=j+1"
-# 
-# nlists1 <- nlists(nlist(a=1, b=1), nlist(a=-1,b=-1))
-# nlists2 <- mcmc_derive(nlists1, "c=a+1")
-# nlists1 %>% lapply(mcmc_derive, expr="c=a+1", silent=TRUE)
-# nlists1 %>% subset(select="a")
-# 
-#  sma_derive <- function(nlists, code, values=list(), monitor=".*") {
-#     dat %>% lapply(mcmc_derive, expr=code, silent=TRUE)
-#     append(dat, test)}
-
-# sma_derive(code = "b <- a + 1", path=...)
+# sma_derive <- function(object, code, monitor=".*") {
+#   if(monitor == ".*") monitor = names(object[[1]])
+#   object %>% 
+#     mcmc_derive(expr = code, 
+#                 primary = TRUE, 
+#                 silent = TRUE) %>%
+#     subset(select=monitor) %>%
+#     return
+# }
 

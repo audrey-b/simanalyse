@@ -168,7 +168,7 @@ derive_measures <- function(nlist, derive_expr, keywords, parameters){
     monitor = names(parameters)
     expr.all.params <- expand_expr(derive_expr, keywords, monitor, parameters)
     names(parameters) <- paste0("parameters.",names(parameters))
-    mcmc_derive(nlist, expr.all.params, parameters, silent = TRUE) %>%
+    mcmc_derive(object = nlist, expr = expr.all.params, values = parameters, silent = TRUE) %>%
       append(nlist) %>%
       return
   }else{return(nlist)}
@@ -201,7 +201,7 @@ summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
   if(!is.null(expr)){
     expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
     names(parameters) <- paste0("parameters.",names(parameters))
-    mcmc_derive(aggregate.list, expr.all.params, parameters, silent=TRUE) %>%
+    mcmc_derive(object = aggregate.list, expr = expr.all.params, values = parameters, silent=TRUE) %>%
       return
   }else{return(aggregate.list)}
 }
@@ -245,13 +245,15 @@ prepare_code <- function(code, code.add, code.values){
     return
 }
 
-fun.batchr.analyse <- function(file, path.save, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
+fun.batchr.analyse <- function(file, path.save, seeds, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
+  basename <- basename(file)
+  seed = seeds[sub("data", "analys", basename) %>% as.integer()]
   readRDS(file) %>%
-    sma_analyse_bayesian(...) %>%
-    saveRDS(file.path(path.save, sub("data", "analys", basename(file))))
+    sma_analyse_bayesian(seed=seed, ...) %>%
+    saveRDS(file.path(path.save, sub("data", "analys", basename)))
 }
 
-analyse_to_file <- function(path.read, path.save, ...){
+analyse_to_file <- function(path.read, path.save, seeds, ...){
   
   saving.dir <- path.save
   if(!dir.exists(saving.dir)) dir.create(saving.dir)
@@ -260,6 +262,7 @@ analyse_to_file <- function(path.read, path.save, ...){
                 regexp="^data\\d{7,7}.rds$", 
                 ask=FALSE,
                 path.save = path.save,
+                seeds = seeds,
                 ...)
 }
 

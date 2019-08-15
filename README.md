@@ -168,7 +168,7 @@ sims::sims_simulate(code,
                     exists = NA,
                     path = tempdir())
 #> Warning in dir.create(path, recursive = TRUE): 'C:
-#> \Users\audre\AppData\Local\Temp\RtmpwNFQlM' already exists
+#> \Users\audre\AppData\Local\Temp\Rtmpiy8Sqx' already exists
 #> [1] TRUE
 sma_analyse_bayesian(code = code,
                      code.add = "mu ~ dunif(-3,3)",
@@ -177,7 +177,7 @@ sma_analyse_bayesian(code = code,
                      n.iter = 101,
                      monitor = "mu",
                      path.read = tempdir(),
-                     path.save = file.path(tempdir(), "analyses"))
+                     path.save = tempdir())
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -188,7 +188,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-15 12:50:41] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-15 12:54:50] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -199,7 +199,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-15 12:50:41] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-15 12:54:50] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -210,7 +210,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-15 12:50:41] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-15 12:54:51] 'data0000003.rds'
 #> [1] TRUE
 ```
 

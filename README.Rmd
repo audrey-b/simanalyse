@@ -103,7 +103,7 @@ sma_analyse_bayesian(code = code,
                      n.iter = 101,
                      monitor = "mu",
                      path.read = tempdir(),
-                     path.save = file.path(tempdir(), "analyses"))
+                     path.save = tempdir())
 ```
 
 ## Contribution
