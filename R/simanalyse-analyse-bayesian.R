@@ -1,8 +1,8 @@
 #' Analyse data for a simulation study
 #'
-#' Analyse data for a simulation study. If path is supplied, saves a hidden file with the information on the analysis.
+#' Analyse data for a simulation study. Allows data to be read from files and results to be written to files.
 #' 
-#' @param data An nlists or nlist object of the data. If NULL, data files are read from \code{path}.
+#' @param data An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.
 #' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
 #' @param code.add A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.
 #' @param code.values A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
@@ -15,7 +15,8 @@
 #' @param n.iter An integer specifying the number of iterations for each analysis (following the burn-in phase)
 #' @param thin A numeric scalar of at least 1 specifying the thinning factor. Default is 1.
 #' @param seed An integer. The random seed to use for analysing the data.
-#' @param path A string. If specified, results are saved at that path on disk.
+#' @param path.read A string. If data is NULL, data is read from that path on disk.
+#' @param path.save A string specifying the path to the directory to save the results in. By default path = NULL the results are not saved but are returned as a list of nlists objects.
 #' 
 #' @return A flag.
 #' @export
@@ -45,7 +46,8 @@ sma_analyse_bayesian <- function(data = NULL,
                                  thin=1,
                                  n.chains=3,
                                  seed=rinteger(),
-                                 path = NULL) {
+                                 path.read = NULL,
+                                 path.save = NULL) {
   
   if(!is.null(data)){
   if(is.nlist(data)) data <- nlists(data)
@@ -57,7 +59,9 @@ sma_analyse_bayesian <- function(data = NULL,
   check_string(code.add)
   check_string(code.values)
   check_string(package)
-  if(!is.null(path)) check_string(path)
+  if(!is.null(path.read)) check_string(path.read)
+  if(!is.null(path.save)) check_string(path.save)
+  
   
   check_character(monitor)
   
@@ -95,6 +99,6 @@ sma_analyse_bayesian <- function(data = NULL,
                   inits=inits, n.chains=n.chains,
                   n.adapt=n.adapt, n.burnin=n.burnin, 
                   n.iter=n.iter, thin=thin,
-                  seed=seed, path=path) #will this use the same seeds as above??? I think this will need to be fixed
+                  seed=seed, path.read=path.read, path.save=path.save) #will this use the same seeds as above??? I think this will need to be fixed
   
 }

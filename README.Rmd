@@ -102,7 +102,8 @@ sma_analyse_bayesian(code = code,
                      n.burnin = 0,
                      n.iter = 101,
                      monitor = "mu",
-                     path = tempdir())
+                     path.read = tempdir(),
+                     path.save = file.path(tempdir(), "analyses"))
 ```
 
 ## Contribution

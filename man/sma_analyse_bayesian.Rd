@@ -7,10 +7,10 @@
 sma_analyse_bayesian(data = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
   n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3,
-  seed = rinteger(), path = NULL)
+  seed = rinteger(), path.read = NULL, path.save = NULL)
 }
 \arguments{
-\item{data}{An nlists or nlist object of the data. If NULL, data files are read from \code{path}.}
+\item{data}{An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.}
 
 \item{code}{A string of code to analyse the data. JAGS code must not be in a data or model block.}
 
@@ -36,13 +36,15 @@ sma_analyse_bayesian(data = NULL, code, code.add = "",
 
 \item{seed}{An integer. The random seed to use for analysing the data.}
 
-\item{path}{A string. If specified, results are saved at that path on disk.}
+\item{path.read}{A string. If data is NULL, data is read from that path on disk.}
+
+\item{path.save}{A string specifying the path to the directory to save the results in. By default path = NULL the results are not saved but are returned as a list of nlists objects.}
 }
 \value{
 A flag.
 }
 \description{
-Analyse data for a simulation study. If path is supplied, saves a hidden file with the information on the analysis.
+Analyse data for a simulation study. Allows data to be read from files and results to be written to files.
 }
 \examples{
  set.seed(10L)

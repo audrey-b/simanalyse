@@ -251,15 +251,15 @@ fun.batchr.analyse <- function(file, path.save, ...){#, code, n.adapt, n.burnin,
     saveRDS(file.path(path.save, sub("data", "analys", basename(file))))
 }
 
-analyse_to_file <- function(path, ...){
+analyse_to_file <- function(path.read, path.save, ...){
   
-  saving.dir <- file.path(path, "analysis") 
+  saving.dir <- path.save
   if(!dir.exists(saving.dir)) dir.create(saving.dir)
   batch_process(fun.batchr.analyse, 
-                path=path,
+                path=path.read,
                 regexp="^data\\d{7,7}.rds$", 
-                path.save=file.path(path, "analysis"),
                 ask=FALSE,
+                path.save = path.save,
                 ...)
 }
 

@@ -30,11 +30,12 @@ test_that("save analyses to files",{
   sims_data_files(tempdir)
   
   sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
-                                        mu ~ dunif(-3,3)",
-                                 n.adapt = 101,
-                                 n.burnin = 0,
-                                 n.iter = 101,
-                                 monitor = "mu",
-                                 path=tempdir)
+                               mu ~ dunif(-3,3)",
+                       n.adapt = 101,
+                       n.burnin = 0,
+                       n.iter = 101,
+                       monitor = "mu",
+                       path.read = tempdir,
+                       path.save = file.path(tempdir, "analyses"))
   
 })
