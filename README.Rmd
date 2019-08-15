@@ -70,6 +70,11 @@ result <- sma_analyse_bayesian(data = dat,
                                monitor = "mu")
 ```
 
+Derive posterior samples for new parameters
+```{r}
+sma_derive(result, "mu2=mu^2")
+```
+
 Evaluate the performance of the model using the 3 analyses
 ```{r}
 sma_evaluate(result, parameters=params)

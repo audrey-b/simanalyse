@@ -266,6 +266,16 @@ analyse_to_file <- function(path.read, path.save, seeds, ...){
                 ...)
 }
 
+derive_one <- function(object.nlists, code){
+  derived_obj <- object.nlists %>% 
+    mcmc_derive(expr = code, 
+                primary = TRUE, 
+                silent = TRUE) %>%
+    return
+  #if(monitor != ".*") return(subset(derived_obj, select=monitor))
+  #return(derived_obj)
+}
+
 # 
 # extract_measure_from_summary <- function(summaries, word, monitor){
 #   indices <- summaries %>% 

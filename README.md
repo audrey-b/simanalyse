@@ -117,6 +117,38 @@ result <- sma_analyse_bayesian(data = dat,
 #> Initializing model
 ```
 
+Derive posterior samples for new parameters
+
+``` r
+sma_derive(result, "mu2=mu^2")
+#> [[1]]
+#> $mu
+#> [1] -0.07532
+#> 
+#> $mu2
+#> [1] 0.01605921
+#> 
+#> an nlists object of 9 nlist objects each with 2 natomic elements
+#> 
+#> [[2]]
+#> $mu
+#> [1] 0.06495014
+#> 
+#> $mu2
+#> [1] 0.01603629
+#> 
+#> an nlists object of 9 nlist objects each with 2 natomic elements
+#> 
+#> [[3]]
+#> $mu
+#> [1] -0.2784517
+#> 
+#> $mu2
+#> [1] 0.1596828
+#> 
+#> an nlists object of 9 nlist objects each with 2 natomic elements
+```
+
 Evaluate the performance of the model using the 3 analyses
 
 ``` r
@@ -187,7 +219,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-15 20:49:20] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-15 21:39:28] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -198,7 +230,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-15 20:49:20] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-15 21:39:29] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -209,7 +241,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-15 20:49:20] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-15 21:39:29] 'data0000003.rds'
 #> [1] TRUE
 ```
 

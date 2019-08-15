@@ -3,7 +3,7 @@
 #'
 #' Derive new variables from the results of analyses
 #' 
-#' @param object A list of nlists object of results or a single nlists of results.
+#' @param object A list of nlists object of results or a single nlists of results. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param measures A vector of strings indicating which functions to calculate over the mcmc samples. Strings may include "mean", 
 #' "median", "lower.q" (lower bound of the quantile-based credible interval), "upper.q" (upper bound of the quantile-based 
@@ -27,38 +27,40 @@
 #' dat <- sims::sims_simulate(code, parameters = nlist(variance=4), nsims=2)
 #' res <- sma_analyse_bayesian(dat, code, code.add = "variance ~ dunif(0,10)", 
 #' n.adapt=100, n.burnin=0, n.iter=3, monitor="variance")
-#' sma_summarise(res, "sd=sqrt(variance)")
+#' sma_derive(res, "sd=sqrt(variance)")
 
-#rename sma_summarise
-sma_summarise <- function(object, code, 
-                       measures=c("mean", "lower.q", "upper.q"), 
-                       parameters="", monitor=".*", alpha=0.05,
-                       custom_funs = list()) {
+sma_derive <- function(object, code, 
+                          measures=c("mean", "lower.q", "upper.q"), 
+                          parameters=nlist::nlist(), monitor=".*", alpha=0.05,
+                          custom_funs = list()) {
   
   #need to add checks
-
-  #apply code to object to derive new variables and only keep the monitored ones
   parameters=parameters #tmp
   measures=measures #tmp
   custom_funs=custom_funs #tmp
   
-  derive_one <- function(object.nlists, code, monitor){
-  derived_obj <- object.nlists %>% 
-    mcmc_derive(expr = code, 
-                primary = TRUE, 
-                silent = TRUE)
-  if(monitor != ".*") return(subset(derived_obj, select=monitor))
-  else return(derived_obj)
+  #apply code to parameters to derive new variables
+  
+  if(length(parameters)!=0) derived.parameters <- derive_one(parameters, code=code)
+  
+  #apply code to object to derive new variables, keep only monitor
+  
+  if(is.nlists(object)){
+    derived.object <- derive_one(object, code=code) 
+    if(length(parameters)!=0) derived.object %<>% c(derived.parameters)
+    if(monitor != ".*"){derived.object %<>% subset(select=monitor)}
+  } else{
+    derived.object <- lapply(object, derive_one, code=code)
+    if(length(parameters)!=0) derived.object %<>% lapply(obj=derived.parameters)
+    if(monitor != ".*"){derived.object %<>% lapply(subset, select=monitor)}
   }
-  
-  if(is.nlists(object)) return(derive_one(object, code=code, monitor=monitor))
-  else return(lapply(object, derive_one, code=code, monitor=monitor))
-  
+  return(derived.object)
   #apply measures and custom_funs to calculate summaries over the derived object
   
-  #apply code to parameters to derive new variables and only keep the monitored ones
   
-  #combine the two nlist with c() through lapply on index i
+  
+  
+  #combine the two nlist with c() through lapply on index i when parameters are used
   
   
   
