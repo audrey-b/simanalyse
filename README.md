@@ -78,12 +78,13 @@ Analyse all 3 datasets (here we use only a few iterations for
 demonstration purposes)
 
 ``` r
+prior <- "mu ~ dunif(-3,3)"
 result <- sma_analyse_bayesian(data = dat,
                                code = code,
-                               code.add = "mu ~ dunif(-3,3)",
-                               n.adapt = 101,
+                               code.add = prior,
+                               n.adapt = 100,
                                n.burnin = 0,
-                               n.iter = 101,
+                               n.iter = 3,
                                monitor = "mu")
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -121,13 +122,13 @@ Summarize the results over the 3 datasets
 ``` r
 sma_summarise(result, parameters=params)
 #> $bias.mu
-#> [1] -0.2100996
+#> [1] -0.09627386
 #> 
 #> $cp.quantile.mu
-#> [1] 0.6666667
+#> [1] 1
 #> 
 #> $mse.mu
-#> [1] 0.1638946
+#> [1] 0.02914233
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -146,13 +147,13 @@ sma_summarise(result,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)")
 #> $bias.mu
-#> [1] -0.2100996
+#> [1] -0.09627386
 #> 
 #> $cp.quantile.mu
-#> [1] 0.6666667
+#> [1] 1
 #> 
 #> $mse.mu
-#> [1] 0.1638946
+#> [1] 0.02914233
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -167,14 +168,12 @@ sims::sims_simulate(code,
                     nsims = 3,
                     exists = NA,
                     path = tempdir())
-#> Warning in dir.create(path, recursive = TRUE): 'C:
-#> \Users\audre\AppData\Local\Temp\Rtmpiy8Sqx' already exists
 #> [1] TRUE
 sma_analyse_bayesian(code = code,
-                     code.add = "mu ~ dunif(-3,3)",
+                     code.add = prior,
                      n.adapt = 101,
                      n.burnin = 0,
-                     n.iter = 101,
+                     n.iter = 3,
                      monitor = "mu",
                      path.read = tempdir(),
                      path.save = tempdir())
@@ -188,7 +187,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-15 12:54:50] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-15 18:43:07] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -199,7 +198,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-15 12:54:50] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-15 18:43:07] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -210,7 +209,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-15 12:54:51] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-15 18:43:07] 'data0000003.rds'
 #> [1] TRUE
 ```
 

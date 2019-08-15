@@ -50,16 +50,21 @@ sma_analyse_bayesian <- function(data = NULL,
                                  path.save = NULL) {
   
   if(!is.null(data)){
-  if(is.nlist(data)) data <- nlists(data)
-  check_nlists(data)
-  lapply(data, check_nlist)
+    if(is.nlist(data)) data <- nlists(data)
+    check_nlists(data)
+    lapply(data, check_nlist)
+    n.data <- length(data)
   }
+  
   
   check_string(code)
   check_string(code.add)
   check_string(code.values)
   check_string(package)
-  if(!is.null(path.read)) check_string(path.read)
+  if(!is.null(path.read)){
+    check_string(path.read)
+    n.data <- length(sims_data_files(path.read))
+  }
   if(!is.null(path.save)) check_string(path.save)
   
   
@@ -76,9 +81,7 @@ sma_analyse_bayesian <- function(data = NULL,
   check_dbl(thin) #1 to max iter?
   
   check_scalar(seed, c(-.max_integer, .max_integer))
-  
-  n.data <- length(data)
-  
+
   seeds <- rinteger(n.data)
   
   res.list <- list(nlists(nlist()))
@@ -87,18 +90,18 @@ sma_analyse_bayesian <- function(data = NULL,
   
   #jags
   if(!is.null(data)){
-  for(i in 1:n.data){
-    res.list[[i]] <- analyse_dataset_bayesian(nlistdata=data[[i]], 
-                                              code=code, monitor=monitor,
-                                              inits=inits, n.chains=n.chains,
-                                              n.adapt=n.adapt, n.burnin=n.burnin, 
-                                              n.iter=n.iter, thin=thin,
-                                              seed=seeds[i])}
-  return(res.list)
+    for(i in 1:n.data){
+      res.list[[i]] <- analyse_dataset_bayesian(nlistdata=data[[i]], 
+                                                code=code, monitor=monitor,
+                                                inits=inits, n.chains=n.chains,
+                                                n.adapt=n.adapt, n.burnin=n.burnin, 
+                                                n.iter=n.iter, thin=thin,
+                                                seed=seeds[i])}
+    return(res.list)
   }else analyse_to_file(code=code, monitor=monitor,
-                  inits=inits, n.chains=n.chains,
-                  n.adapt=n.adapt, n.burnin=n.burnin, 
-                  n.iter=n.iter, thin=thin,
-                  seeds=seeds, path.read=path.read, path.save=path.save) #will this use the same seeds as above??? I think this will need to be fixed
+                        inits=inits, n.chains=n.chains,
+                        n.adapt=n.adapt, n.burnin=n.burnin, 
+                        n.iter=n.iter, thin=thin,
+                        seeds=seeds, path.read=path.read, path.save=path.save) #will this use the same seeds as above??? I think this will need to be fixed
   
 }

@@ -246,11 +246,11 @@ prepare_code <- function(code, code.add, code.values){
 }
 
 fun.batchr.analyse <- function(file, path.save, seeds, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
-  basename <- basename(file)
-  seed = seeds[sub("data", "analys", basename) %>% as.integer()]
+  base.name <- basename(file)
+  seed = seeds[str_extract(base.name, "[[:digit:]]+") %>% as.integer()]
   readRDS(file) %>%
     sma_analyse_bayesian(seed=seed, ...) %>%
-    saveRDS(file.path(path.save, sub("data", "analys", basename)))
+    saveRDS(file.path(path.save, sub("data", "analys", base.name)))
 }
 
 analyse_to_file <- function(path.read, path.save, seeds, ...){
