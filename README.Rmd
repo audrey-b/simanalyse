@@ -70,21 +70,21 @@ result <- sma_analyse_bayesian(data = dat,
                                monitor = "mu")
 ```
 
-Summarize the results over the 3 datasets
+Evaluate the performance of the model using the 3 analyses
 ```{r}
-sma_summarise(result, parameters=params)
+sma_evaluate(result, parameters=params)
 ```
-You may also create customized Monte Carlo measures. The example below shows how to reproduce the results above with custom code.
+You may also create customized performance measures. The example below shows how to reproduce the results above with custom code.
 ```{r}
-sma_summarise(result,
+sma_evaluate(result,
               measures = "", 
               parameters = params, 
               custom_FUNS = list(estimator = mean,
                                  cp.low = function(x) quantile(x, 0.025),
-                                 cp.high = function(x) quantile(x, 0.975)),
+                                 cp.upp = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
-                              cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)")
+                              cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 ```
 
 You may also save results to file with

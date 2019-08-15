@@ -117,10 +117,10 @@ result <- sma_analyse_bayesian(data = dat,
 #> Initializing model
 ```
 
-Summarize the results over the 3 datasets
+Evaluate the performance of the model using the 3 analyses
 
 ``` r
-sma_summarise(result, parameters=params)
+sma_evaluate(result, parameters=params)
 #> $bias.mu
 #> [1] -0.09627386
 #> 
@@ -133,19 +133,19 @@ sma_summarise(result, parameters=params)
 #> an nlist object with 3 natomic elements
 ```
 
-You may also create customized Monte Carlo measures. The example below
+You may also create customized performance measures. The example below
 shows how to reproduce the results above with custom code.
 
 ``` r
-sma_summarise(result,
+sma_evaluate(result,
               measures = "", 
               parameters = params, 
               custom_FUNS = list(estimator = mean,
                                  cp.low = function(x) quantile(x, 0.025),
-                                 cp.high = function(x) quantile(x, 0.975)),
+                                 cp.upp = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
-                              cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)")
+                              cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.mu
 #> [1] -0.09627386
 #> 
@@ -187,7 +187,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-15 18:43:07] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-15 20:49:20] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -198,7 +198,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-15 18:43:07] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-15 20:49:20] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -209,7 +209,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-15 18:43:07] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-15 20:49:20] 'data0000003.rds'
 #> [1] TRUE
 ```
 
