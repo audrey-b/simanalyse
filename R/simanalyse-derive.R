@@ -3,7 +3,7 @@
 #'
 #' Derive new variables from the results of analyses
 #' 
-#' @param nlists A nlists object
+#' @param object A nlists object
 #' @param code A string of R code to modify the results.
 #' @param monitor  A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the data. By default all stochastic nodes are included.
 # @param parallel An integer specifying the number of CPU cores to use for generating the datasets in parallel. Defaul is 1 (not parallel).
@@ -14,16 +14,21 @@
 #' @export
 #'
 #' @examples
-#' sma_derive()
-#' sma_derive(FALSE)
+#' set.seed(10L)
+#' code <- "for(i in 1:10){x[i] ~ dnorm(mu,1)}"
+#' dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
+#' sma_derive(dat, "y=x+1")
 
-# sma_derive <- function(object, code, monitor=".*") {
-#   if(monitor == ".*") monitor = names(object[[1]])
-#   object %>% 
-#     mcmc_derive(expr = code, 
-#                 primary = TRUE, 
-#                 silent = TRUE) %>%
-#     subset(select=monitor) %>%
-#     return
-# }
+sma_derive <- function(object, code, monitor=".*") {
+
+  #need to add checks
+  #need to allow object to be a list and apply to each nlists element
+  
+  derived_obj <- object %>% 
+    mcmc_derive(expr = code, 
+                primary = TRUE, 
+                silent = TRUE)
+  if(monitor != ".*") return(subset(derived_obj, select=monitor))
+  else return(derived_obj)
+}
 
