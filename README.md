@@ -54,8 +54,8 @@ library(simanalyse)
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
 set.seed(10L)
-params <- nlist(mu = 0)
-constants <- nlist(sigma = 1)
+params <- nlist(sigma = 2)
+constants <- nlist(mu = 0)
 code <- "for(i in 1:10){
           a[i] ~ dnorm(mu, 1/sigma^2)}"
 dat <- sims::sims_simulate(code, 
@@ -65,11 +65,11 @@ dat <- sims::sims_simulate(code,
                            silent = TRUE)
 print(dat)
 #> $a
-#>  [1] -1.27435905 -0.41192778 -0.20520427  0.03849253  1.07432109
-#>  [6] -0.14679574 -0.62402896  0.03856476 -0.54504778 -0.20984170
+#>  [1] -2.54871809 -0.82385556 -0.41040854  0.07698506  2.14864217
+#>  [6] -0.29359147 -1.24805791  0.07712952 -1.09009556 -0.41968340
 #> 
-#> $sigma
-#> [1] 1
+#> $mu
+#> [1] 0
 #> 
 #> an nlists object of 3 nlist objects each with 2 natomic elements
 ```
@@ -78,14 +78,14 @@ Analyse all 3 datasets (here we use only a few iterations for
 demonstration purposes)
 
 ``` r
-prior <- "mu ~ dunif(-3,3)"
+prior <- "sigma ~ dunif(0, 6)"
 result <- sma_analyse_bayesian(data = dat,
                                code = code,
                                code.add = prior,
                                n.adapt = 100,
                                n.burnin = 0,
                                n.iter = 3,
-                               monitor = "mu")
+                               monitor = "sigma")
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -122,34 +122,34 @@ of the method for those new parameters (e.g. bias), the same
 transformation must be applied to the true parameter values.
 
 ``` r
-derived.result <- sma_derive(result, "mu2=mu^2", monitor="mu2")
+derived.result <- sma_derive(result, "var=sigma^2", monitor="var")
 print(derived.result)
 #> $mcmcr1
-#> $mu2
-#> [1] 0.002846049
+#> $var
+#> [1] 16.5214
 #> 
 #> nchains:  3 
 #> niters:  3 
 #> 
 #> 
 #> $mcmcr2
-#> $mu2
-#> [1] 0.0001716579
+#> $var
+#> [1] 5.690343
 #> 
 #> nchains:  3 
 #> niters:  3 
 #> 
 #> 
 #> $mcmcr3
-#> $mu2
-#> [1] 0.07554253
+#> $var
+#> [1] 2.819938
 #> 
 #> nchains:  3 
 #> niters:  3
-derived.params <- sma_derive(params, "mu2=mu^2", monitor="mu2")
+derived.params <- sma_derive(params, "var=sigma^2", monitor="var")
 print(derived.params)
-#> $mu2
-#> [1] 0
+#> $var
+#> [1] 4
 #> 
 #> an nlist object with 1 natomic element
 ```
@@ -158,14 +158,14 @@ Evaluate the performance of the model using the 3 analyses
 
 ``` r
 sma_assess(derived.result, parameters=derived.params)
-#> $bias.mu2
-#> [1] 0.06392611
+#> $bias.var
+#> [1] 3.630788
 #> 
-#> $cp.quantile.mu2
-#> [1] 0
+#> $cp.quantile.var
+#> [1] 1
 #> 
-#> $mse.mu2
-#> [1] 0.008671223
+#> $mse.var
+#> [1] 34.41747
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -183,14 +183,14 @@ sma_assess(derived.result,
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
-#> $bias.mu2
-#> [1] 0.06392611
+#> $bias.var
+#> [1] 3.630788
 #> 
-#> $cp.quantile.mu2
-#> [1] 0
+#> $cp.quantile.var
+#> [1] 1
 #> 
-#> $mse.mu2
-#> [1] 0.008671223
+#> $mse.var
+#> [1] 34.41747
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -211,7 +211,7 @@ sma_analyse_bayesian(code = code,
                      n.adapt = 101,
                      n.burnin = 0,
                      n.iter = 3,
-                     monitor = "mu",
+                     monitor = "sigma",
                      path.read = tempdir(),
                      path.save = tempdir())
 #> Compiling model graph
@@ -224,7 +224,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-19 18:52:16] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-19 19:03:15] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -235,7 +235,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-19 18:52:16] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-19 19:03:15] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -246,7 +246,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-19 18:52:16] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-19 19:03:15] 'data0000003.rds'
 #> [1] TRUE
 ```
 

@@ -46,8 +46,8 @@ Simulate 3 datasets using the sims package (we use only 3 datasets for demonstra
 ```{r}
 library(simanalyse)
 set.seed(10L)
-params <- nlist(mu = 0)
-constants <- nlist(sigma = 1)
+params <- nlist(sigma = 2)
+constants <- nlist(mu = 0)
 code <- "for(i in 1:10){
           a[i] ~ dnorm(mu, 1/sigma^2)}"
 dat <- sims::sims_simulate(code, 
@@ -60,21 +60,21 @@ print(dat)
 
 Analyse all 3 datasets (here we use only a few iterations for demonstration purposes)
 ```{r}
-prior <- "mu ~ dunif(-3,3)"
+prior <- "sigma ~ dunif(0, 6)"
 result <- sma_analyse_bayesian(data = dat,
                                code = code,
                                code.add = prior,
                                n.adapt = 100,
                                n.burnin = 0,
                                n.iter = 3,
-                               monitor = "mu")
+                               monitor = "sigma")
 ```
 
 Derive posterior samples for new parameters. To assess the performance of the method for those new parameters (e.g. bias), the same transformation must be applied to the true parameter values.
 ```{r}
-derived.result <- sma_derive(result, "mu2=mu^2", monitor="mu2")
+derived.result <- sma_derive(result, "var=sigma^2", monitor="var")
 print(derived.result)
-derived.params <- sma_derive(params, "mu2=mu^2", monitor="mu2")
+derived.params <- sma_derive(params, "var=sigma^2", monitor="var")
 print(derived.params)
 ```
 
@@ -110,7 +110,7 @@ sma_analyse_bayesian(code = code,
                      n.adapt = 101,
                      n.burnin = 0,
                      n.iter = 3,
-                     monitor = "mu",
+                     monitor = "sigma",
                      path.read = tempdir(),
                      path.save = tempdir())
 ```
