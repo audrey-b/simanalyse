@@ -60,12 +60,12 @@ test_that("custom expr and FUNS",{
                                  n.burnin = 0,
                                  n.iter = 101,
                                  monitor="mu")
-  result_method1 <- sma_evaluate(result, measures="", 
+  result_method1 <- sma_assess(result, measures="", 
                                   parameters=parameters, 
                                   custom_FUNS= list(estimator = mean),
                                   custom_expr_before= "mse = (estimator - parameters)^2",
                                   custom_expr_after= "rmse = sqrt(mse)")
-  result_method2 <- sma_evaluate(result, measures=c("mse","rmse"), parameters=parameters)
+  result_method2 <- sma_assess(result, measures=c("mse","rmse"), parameters=parameters)
   
   expect_identical(result_method1, result_method2)
   

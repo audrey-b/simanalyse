@@ -1,5 +1,5 @@
 
-test_that("sma_evaluate",{
+test_that("sma_assess",{
   set.seed(10L)
   parameters <- nlist(theta=c(0,1), df=3)
   dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)", 
@@ -15,8 +15,8 @@ test_that("sma_evaluate",{
                                  n.burnin = 0,
                                  n.iter = 2,
                                  monitor = c("theta", "df"))
-  sma_evaluate(result, measures="bias", parameters=parameters, monitor=".*")
-  sma_evaluate(result, measures="mse", parameters=parameters, monitor=".*")
-  sma_evaluate(result, measures="cp.quantile", parameters=parameters, monitor=".*")
-  sma_evaluate(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
+  sma_assess(result, measures="bias", parameters=parameters, monitor=".*")
+  sma_assess(result, measures="mse", parameters=parameters, monitor=".*")
+  sma_assess(result, measures="cp.quantile", parameters=parameters, monitor=".*")
+  sma_assess(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
 })

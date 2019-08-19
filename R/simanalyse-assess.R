@@ -1,6 +1,6 @@
-#' Calculates measures to evaluate the performance of the model
+#' Calculates measures to assess the performance of the model
 #'
-#' Calculates measures to evaluate the performance of the model
+#' Calculates measures to assess the performance of the model
 #' The results are compared with the true parameter values by calculating performance measures 
 #' such as bias, mean square error and coverage probability.
 #' R code can be used to customize the performance measures
@@ -34,8 +34,8 @@
 #'                                       n.burnin = 0,
 #'                                       n.iter = 101,
 #'                                       monitor="mu")
-#' sma_evaluate(result, parameters=params)
-#' sma_evaluate(result, 
+#' sma_assess(result, parameters=params)
+#' sma_assess(result, 
 #' measures="", 
 #' parameters = params, 
 #' custom_FUNS = list(posteriormedian = median),
@@ -49,8 +49,7 @@
 #  exists A flag specifying whether the summaries should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.
 #  silent A flag specifying whether to suppress warnings.
 
-#rename sma_evaluate or sma_assess
-sma_evaluate <- function(object, 
+sma_assess <- function(object, 
                           measures=c("bias", "mse", "cp.quantile"), 
                           estimator=mean, 
                           alpha=0.05,

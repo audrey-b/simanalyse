@@ -15,7 +15,7 @@ test_that("sma_analyse_bayesian",{
   
   #summarise_within(result, aggregate_FUN=var)
   
-  #sma_evaluate(result, "Epsd", parameters=params, monitor="mu")
+  #sma_assess(result, "Epsd", parameters=params, monitor="mu")
 })
 
 test_that("save analyses to files",{

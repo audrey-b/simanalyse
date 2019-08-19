@@ -117,7 +117,8 @@ result <- sma_analyse_bayesian(data = dat,
 #> Initializing model
 ```
 
-Derive posterior samples for new parameters
+Derive posterior samples for new parameters and apply the same
+transformation to the true parameter values.
 
 ``` r
 sma_derive(result, "mu2=mu^2")
@@ -147,12 +148,20 @@ sma_derive(result, "mu2=mu^2")
 #> [1] 0.1596828
 #> 
 #> an nlists object of 9 nlist objects each with 2 natomic elements
+sma_derive(params, "mu2=mu^2")
+#> $mu
+#> [1] 0
+#> 
+#> $mu2
+#> [1] 0
+#> 
+#> an nlist object with 2 natomic elements
 ```
 
 Evaluate the performance of the model using the 3 analyses
 
 ``` r
-sma_evaluate(result, parameters=params)
+sma_assess(result, parameters=params)
 #> $bias.mu
 #> [1] -0.09627386
 #> 
@@ -169,7 +178,7 @@ You may also create customized performance measures. The example below
 shows how to reproduce the results above with custom code.
 
 ``` r
-sma_evaluate(result,
+sma_assess(result,
               measures = "", 
               parameters = params, 
               custom_FUNS = list(estimator = mean,
@@ -219,7 +228,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-15 21:39:28] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-19 14:27:42] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -230,7 +239,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-15 21:39:29] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-19 14:27:42] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -241,7 +250,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-15 21:39:29] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-19 14:27:42] 'data0000003.rds'
 #> [1] TRUE
 ```
 
