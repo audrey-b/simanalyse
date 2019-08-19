@@ -93,9 +93,9 @@ make_expr_and_FUNS <- function(measures,
     aggregate.FUNS %<>% append(list(Epse = sd))
   }
   if(sum(c("cp.quantile", "cp.length", "all") %in% measures) > 0){
-    cp.low.with.alpha = function(x) do.call("cp.low",list(x,"alpha"=alpha))
-    cp.high.with.alpha = function(x) do.call("cp.high",list(x,"alpha"=alpha))
-    aggregate.FUNS %<>% append(list(cp.low = cp.low.with.alpha, cp.high = cp.high.with.alpha))
+    cp.lower.with.alpha = function(x) do.call("cp.lower",list(x,"alpha"=alpha))
+    cp.upper.with.alpha = function(x) do.call("cp.upper",list(x,"alpha"=alpha))
+    aggregate.FUNS %<>% append(list(cp.lower = cp.lower.with.alpha, cp.upper = cp.upper.with.alpha))
   }
   
   #expr
@@ -106,13 +106,13 @@ make_expr_and_FUNS <- function(measures,
     expr=paste(c(expr, "mse = (estimator - parameters)^2"), collapse=" \n ", sep="")
   }
   if(sum(c("cp.quantile", "all") %in% measures) > 0){
-    expr=paste(c(expr, "cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.high), 1, 0)"), collapse=" \n ", sep="")
+    expr=paste(c(expr, "cp.quantile = ifelse((parameters >= cp.lower) & (parameters <= cp.upper), 1, 0)"), collapse=" \n ", sep="")
   }
   if(sum(c("E", "cv", "all") %in% measures) > 0){
     expr=paste(c(expr, "E = estimator"), collapse=" \n ", sep="")
   }
   if(sum(c("cp.length", "all") %in% measures) > 0){
-    expr=paste(c(expr, "cp.length = cp.high - cp.low"), collapse=" \n ", sep="")
+    expr=paste(c(expr, "cp.length = cp.upper - cp.lower"), collapse=" \n ", sep="")
   }
   
   #derive

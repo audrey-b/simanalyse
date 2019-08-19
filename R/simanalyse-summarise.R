@@ -34,12 +34,41 @@ sma_summarise <- function(object,
                           alpha=0.05,
                           custom_funs = list()) {
   
-  object=object
-  measures=measures
-  monitor=monitor
-  alpha=alpha
-  custom_funs=list(mean=mean, median=median)
-  aggregate.FUNS=custom_funs
+  chk_is(object, class=c("mcmcr", "mcmcrs"))
+  chk_is(measures, class="character")
+  chk_string(monitor)
+  chk_proportion(alpha)
+  chk_list(custom_funs)
+  lapply(custom_funs, chk_function)
+  
+  aggregate.FUNS = list()
+    
+  if("mean" %in% measures){
+    aggregate.FUNS %<>% append(list("mean"=mean))
+  }
+  if("median" %in% measures){
+    aggregate.FUNS %<>% append(list("median"=median))
+  }
+  if("var" %in% measures){
+    aggregate.FUNS %<>% append(list("var"=var))
+  }
+  if("sd" %in% measures){
+    aggregate.FUNS %<>% append(list("sd"=sd))
+  }
+  if("lower.q" %in% measures){
+    lower.q = function(x) do.call("cp.lower",list(x,"alpha"=alpha))
+    aggregate.FUNS %<>% append(list("lower.q"=lower.q))
+  }
+  if("upper.q" %in% measures){
+    upper.q = function(x) do.call("cp.upper",list(x,"alpha"=alpha))
+    aggregate.FUNS %<>% append(list("upper.q"=lower.q))
+  }
+  if("q1" %in% measures){
+    aggregate.FUNS %<>% append(list("q1"= function(x) quantile(x, 0.25)))
+  }
+  if("q3" %in% measures){
+    aggregate.FUNS %<>% append(list("q3"= function(x) quantile(x, 0.75)))
+  }
   
   if(class(object) == "mcmcr") object <- as.nlists(collapse_chains(object))
   if(class(object) == "mcmcrs") object <- lapply(object, function(x) as.nlists(collapse_chains(x)))
