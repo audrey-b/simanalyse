@@ -67,7 +67,7 @@ results <- sma_analyse_bayesian(sims = sims,
                                 n.adapt = 100,
                                 n.burnin = 0,
                                 n.iter = 3,
-                                monitor = "sigma")
+                                monitor = names(params))
 ```
 
 Derive posterior samples for new parameters. To assess the performance of the method for those new parameters (e.g. bias), the same transformation must be applied to the true parameter values.
@@ -111,7 +111,7 @@ sma_analyse_bayesian(code = code,
                      n.adapt = 101,
                      n.burnin = 0,
                      n.iter = 3,
-                     monitor = "sigma",
+                     monitor = names(params),
                      path.read = tempdir(),
                      path.save = tempdir())
 ```
