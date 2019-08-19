@@ -11,5 +11,11 @@ test_that("sma_summarise works", {
   expect_identical(length(summary.res), 2L) 
   expect_equal(summary.res[[1]]$mean$variance, 4.491454, tolerance=0.00001) 
   expect_equal(summary.res[[2]]$mean$variance, 4.41608, tolerance=0.00001) 
+  
+  summary.res2 <- sma_summarise(res, 
+                                measures = "", 
+                                custom_funs = list("mean"=mean),
+                                monitor="variance")
+  expect_identical(summary.res, summary.res2)
 })
 

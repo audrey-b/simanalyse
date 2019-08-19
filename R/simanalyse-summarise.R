@@ -70,6 +70,10 @@ sma_summarise <- function(object,
     aggregate.FUNS %<>% append(list("q3"= function(x) quantile(x, 0.75)))
   }
   
+  if(length(custom_funs)>0) aggregate.FUNS %<>% append(custom_funs)
+  
+  
+  if(monitor != ".*") object <- subset(object, pars=monitor)
   if(class(object) == "mcmcr") object <- as.nlists(collapse_chains(object))
   if(class(object) == "mcmcrs") object <- lapply(object, function(x) as.nlists(collapse_chains(x)))
   
