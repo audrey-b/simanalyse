@@ -5,7 +5,7 @@ test_that("sma_assess",{
   dat <- sims_simulate("a ~ dt(theta[1],theta[2], df)",
                        parameters = parameters,
                        nsims=2)
-  result <- sma_analyse_bayesian(data=dat,
+  result <- sma_analyse_bayesian(sims=dat,
                                  code = "a ~ dt(theta[1],theta[2], df)
                                           theta[1] ~ dunif(-3,3)
                                           theta[2] ~ dunif(0,3)
@@ -29,7 +29,7 @@ test_that("custom expr and FUNS",{
   dat <- sims::sims_simulate("a ~ dnorm(mu, 1)",
                              parameters = parameters,
                              nsims=2)
-  result <- sma_analyse_bayesian(data=dat,
+  result <- sma_analyse_bayesian(sims=dat,
                                  code = "a ~ dnorm(mu, 1)
                                          mu ~ dunif(-3,3)",
                                  n.adapt = 101,
@@ -38,7 +38,7 @@ test_that("custom expr and FUNS",{
                                  monitor="mu")
   result_method1 <- sma_assess(result, measures="",
                                parameters=parameters,
-                               custom_FUNS= list(estimator = mean),
+                               custom_funs= list(estimator = mean),
                                custom_expr_before= "mse = (estimator - parameters)^2",
                                custom_expr_after= "rmse = sqrt(mse)")
   result_method2 <- sma_assess(result, measures=c("mse","rmse"), parameters=parameters)

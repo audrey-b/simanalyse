@@ -2,7 +2,7 @@
 #'
 #' Analyse data for a simulation study. Allows data to be read from files and results to be written to files.
 #' 
-#' @param data An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.
+#' @param sims An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.
 #' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
 #' @param code.add A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.
 #' @param code.values A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
@@ -24,8 +24,8 @@
 #' @examples
 #'  set.seed(10L)
 #'  code <- "a ~ dnorm(mu,1)"
-#'  dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
-#'  result <- sma_analyse_bayesian(data=dat,
+#'  sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
+#'  result <- sma_analyse_bayesian(sims=sims,
 #'                                        code = code,
 #'                                        code.add = "mu ~ dunif(-3,3)",
 #'                                        n.adapt = 101,
@@ -33,7 +33,7 @@
 #'                                        n.iter = 101,
 #'                                        monitor = "mu")
 
-sma_analyse_bayesian <- function(data = NULL,
+sma_analyse_bayesian <- function(sims = NULL,
                                  code,
                                  code.add="",
                                  code.values="",
@@ -49,11 +49,11 @@ sma_analyse_bayesian <- function(data = NULL,
                                  path.read = NULL,
                                  path.save = NULL) {
   
-  if(!is.null(data)){
-    if(is.nlist(data)) data <- nlists(data)
-    check_nlists(data)
-    lapply(data, check_nlist)
-    n.data <- length(data)
+  if(!is.null(sims)){
+    if(is.nlist(sims)) sims <- nlists(sims)
+    check_nlists(sims)
+    lapply(sims, check_nlist)
+    n.sims <- length(sims)
   }
   
   
@@ -63,7 +63,7 @@ sma_analyse_bayesian <- function(data = NULL,
   check_string(package)
   if(!is.null(path.read)){
     check_string(path.read)
-    n.data <- length(sims_data_files(path.read))
+    n.sims <- length(sims_data_files(path.read))
   }
   if(!is.null(path.save)) check_string(path.save)
   
@@ -82,16 +82,16 @@ sma_analyse_bayesian <- function(data = NULL,
   
   check_scalar(seed, c(-.max_integer, .max_integer))
 
-  seeds <- rinteger(n.data)
+  seeds <- rinteger(n.sims)
   
   res.list <- list(nlists(nlist()))
   
   code %<>% prepare_code(code.add, code.values)
   
   #jags
-  if(!is.null(data)){
-    for(i in 1:n.data){
-      res.list[[i]] <- analyse_dataset_bayesian(nlistdata=data[[i]], 
+  if(!is.null(sims)){
+    for(i in 1:n.sims){
+      res.list[[i]] <- analyse_dataset_bayesian(nlistdata=sims[[i]], 
                                                 code=code, monitor=monitor,
                                                 inits=inits, n.chains=n.chains,
                                                 n.adapt=n.adapt, n.burnin=n.burnin, 

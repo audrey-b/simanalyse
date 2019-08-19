@@ -58,12 +58,12 @@ params <- nlist(sigma = 2)
 constants <- nlist(mu = 0)
 code <- "for(i in 1:10){
           a[i] ~ dnorm(mu, 1/sigma^2)}"
-dat <- sims::sims_simulate(code, 
+sims <- sims::sims_simulate(code, 
                            parameters = params, 
                            constants = constants,
                            nsims = 3,
                            silent = TRUE)
-print(dat)
+print(sims)
 #> $a
 #>  [1] -2.54871809 -0.82385556 -0.41040854  0.07698506  2.14864217
 #>  [6] -0.29359147 -1.24805791  0.07712952 -1.09009556 -0.41968340
@@ -79,13 +79,13 @@ demonstration purposes)
 
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
-result <- sma_analyse_bayesian(data = dat,
-                               code = code,
-                               code.add = prior,
-                               n.adapt = 100,
-                               n.burnin = 0,
-                               n.iter = 3,
-                               monitor = "sigma")
+results <- sma_analyse_bayesian(sims = sims,
+                                code = code,
+                                code.add = prior,
+                                n.adapt = 100,
+                                n.burnin = 0,
+                                n.iter = 3,
+                                monitor = "sigma")
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -122,8 +122,8 @@ of the method for those new parameters (e.g. bias), the same
 transformation must be applied to the true parameter values.
 
 ``` r
-derived.result <- sma_derive(result, "var=sigma^2", monitor="var")
-print(derived.result)
+results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
+print(results.derived)
 #> $mcmcr1
 #> $var
 #> [1] 16.5214
@@ -146,18 +146,19 @@ print(derived.result)
 #> 
 #> nchains:  3 
 #> niters:  3
-derived.params <- sma_derive(params, "var=sigma^2", monitor="var")
-print(derived.params)
+
+params.derived <- sma_derive(params, "var=sigma^2", monitor="var")
+print(params.derived)
 #> $var
 #> [1] 4
 #> 
 #> an nlist object with 1 natomic element
 ```
 
-Evaluate the performance of the model using the 3 analyses
+Assess the performance of the model using the 3 analyses
 
 ``` r
-sma_assess(derived.result, parameters=derived.params)
+sma_assess(results.derived, parameters=params.derived)
 #> $bias.var
 #> [1] 3.630788
 #> 
@@ -170,14 +171,14 @@ sma_assess(derived.result, parameters=derived.params)
 #> an nlist object with 3 natomic elements
 ```
 
-You may also create customized performance measures. The example below
-shows how to reproduce the results above with custom code.
+You may also create custom performance measures. The example below shows
+how to reproduce the results above with custom code.
 
 ``` r
-sma_assess(derived.result,
+sma_assess(results.derived,
               measures = "", 
-              parameters = derived.params, 
-              custom_FUNS = list(estimator = mean,
+              parameters = params.derived, 
+              custom_funs = list(estimator = mean,
                                  cp.low = function(x) quantile(x, 0.025),
                                  cp.upp = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
@@ -224,7 +225,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-19 19:03:15] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-19 19:46:31] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -235,7 +236,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-19 19:03:15] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-19 19:46:32] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -246,7 +247,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-19 19:03:15] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-19 19:46:32] 'data0000003.rds'
 #> [1] TRUE
 ```
 

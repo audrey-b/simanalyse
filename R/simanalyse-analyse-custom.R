@@ -2,7 +2,7 @@
 #'
 #' Analyse data for a simulation study. If path is supplied, saves a hidden file with the information on the analysis.
 #' 
-#' @param data A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.
+#' @param sims A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.
 #' @param FUN An R function to analyse the data. It should contain an argument called data which takes an nlist of the data.
 #' @param path A string specifying the path to the directory where the data sets are saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
 #' @param seed An integer specifying the random seed to use for analysing the data.
@@ -14,21 +14,21 @@
 #' @export
 #'
 #' @examples
-#' dat <- sims::sims_simulate("a ~ dnorm(0,1)")
-#' sma_analyse_custom(dat, FUN=function(data, arg) data[arg], arg="a")
+#' sims <- sims::sims_simulate("a ~ dnorm(0,1)")
+#' sma_analyse_custom(sims, FUN=function(sims, arg) sims[arg], arg="a")
 
-sma_analyse_custom <- function(data,
+sma_analyse_custom <- function(sims,
                                       FUN,
                                       path,
                                       seed,
                                       exists,
                                       silent,
                                       ...) {
-  check_nlists(data)
-  lapply(data, check_nlist)
+  check_nlists(sims)
+  lapply(sims, check_nlist)
   
-  if(!missing(data)) lapply(data, 
-                                function(data, ...) FUN(data=data, ...), 
+  if(!missing(sims)) lapply(sims, 
+                                function(sims, ...) FUN(sims=sims, ...), 
                                 ...)
   
 }

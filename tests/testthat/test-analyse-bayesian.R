@@ -3,7 +3,7 @@ test_that("sma_analyse_bayesian",{
   set.seed(10L)
   params <- nlist(mu=0)
   dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
-  result <- sma_analyse_bayesian(data=dat,
+  result <- sma_analyse_bayesian(sims=dat,
                                  code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
                                  n.adapt = 101,

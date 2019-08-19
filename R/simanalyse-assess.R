@@ -15,8 +15,8 @@
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.
 #' @param alpha scalar representing the alpha level used to construct credible intervals. Default is 0.05.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
-#' @param custom_FUNS A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).
-#' @param custom_expr_before A string of R code to derive custom measures. This code is used BEFORE averaging over all simulations. E.g. "mse = (posteriormedian - parameters)^2". Functions from \code{custom_FUNS} may be used as well as the keywords 'parameters' (the true values of the parameters) and 'estimator' (the estimator defined in \code{estimator}).
+#' @param custom_funs A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).
+#' @param custom_expr_before A string of R code to derive custom measures. This code is used BEFORE averaging over all simulations. E.g. "mse = (posteriormedian - parameters)^2". Functions from \code{custom_funs} may be used as well as the keywords 'parameters' (the true values of the parameters) and 'estimator' (the estimator defined in \code{estimator}).
 #' @param custom_expr_after A string of R code to derive additional custom measures. This code is used AFTER averaging over all simulations. E.g. "rmse = sqrt(mse)". Measures calculated from \code{custom_expr_before} may be used as well as the keyword 'parameters' (the true values of the parameters). 
 # @param summaries A nlists of previously calculated summaries. Providing these will speed up this function, as they won't be recalculated.
 #' @return A flag.
@@ -27,7 +27,7 @@
 # dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
 #                            parameters = params, 
 #                            nsims=5)
-# result <- sma_analyse_bayesian(data=dat,
+# result <- sma_analyse_bayesian(sims=dat,
 #                                       code = "a ~ dnorm(mu, 1)
 #                                               mu ~ dunif(-3,3)",
 #                                       n.adapt = 101,
@@ -38,7 +38,7 @@
 # sma_assess(result, 
 # measures="", 
 # parameters = params, 
-# custom_FUNS = list(posteriormedian = median),
+# custom_funs = list(posteriormedian = median),
 # custom_expr_before = "mse = (posteriormedian - parameters)^2",
 # custom_expr_after = "rmse = sqrt(mse)")
 
@@ -55,7 +55,7 @@ sma_assess <- function(object,
                           alpha=0.05,
                           parameters,
                           monitor=".*",
-                          custom_FUNS,
+                          custom_funs,
                           custom_expr_before="",
                           custom_expr_after=""){
         
@@ -72,17 +72,17 @@ sma_assess <- function(object,
         check_string(custom_expr_before)
         check_string(custom_expr_after)
         
-        if(!missing(custom_FUNS)){
-                check_list(custom_FUNS)
-                lapply(custom_FUNS, check_function)
-        }else custom_FUNS=NULL
+        if(!missing(custom_funs)){
+                check_list(custom_funs)
+                lapply(custom_funs, check_function)
+        }else custom_funs=NULL
         
         if(monitor != ".*"){object %<>% lapply(subset, select=monitor)
                 #parameters %<>% parameters[monitor]
         }
         
         assess_all_measures(object, 
-                               make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_FUNS, custom_expr_before, custom_expr_after), 
+                               make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
                                parameters) %>% return
 }
 

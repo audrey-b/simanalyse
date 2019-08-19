@@ -4,10 +4,10 @@
 \alias{sma_analyse_custom}
 \title{Analyse data for a simulation study}
 \usage{
-sma_analyse_custom(data, FUN, path, seed, exists, silent, ...)
+sma_analyse_custom(sims, FUN, path, seed, exists, silent, ...)
 }
 \arguments{
-\item{data}{A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.}
+\item{sims}{A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.}
 
 \item{FUN}{An R function to analyse the data. It should contain an argument called data which takes an nlist of the data.}
 
@@ -28,6 +28,6 @@ A flag.
 Analyse data for a simulation study. If path is supplied, saves a hidden file with the information on the analysis.
 }
 \examples{
-dat <- sims::sims_simulate("a ~ dnorm(0,1)")
-sma_analyse_custom(dat, FUN=function(data, arg) data[arg], arg="a")
+sims <- sims::sims_simulate("a ~ dnorm(0,1)")
+sma_analyse_custom(sims, FUN=function(sims, arg) sims[arg], arg="a")
 }

@@ -4,13 +4,13 @@
 \alias{sma_analyse_bayesian}
 \title{Analyse data for a simulation study}
 \usage{
-sma_analyse_bayesian(data = NULL, code, code.add = "",
+sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
   n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3,
   seed = rinteger(), path.read = NULL, path.save = NULL)
 }
 \arguments{
-\item{data}{An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.}
+\item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.}
 
 \item{code}{A string of code to analyse the data. JAGS code must not be in a data or model block.}
 
@@ -49,8 +49,8 @@ Analyse data for a simulation study. Allows data to be read from files and resul
 \examples{
  set.seed(10L)
  code <- "a ~ dnorm(mu,1)"
- dat <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
- result <- sma_analyse_bayesian(data=dat,
+ sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
+ result <- sma_analyse_bayesian(sims=sims,
                                        code = code,
                                        code.add = "mu ~ dunif(-3,3)",
                                        n.adapt = 101,
