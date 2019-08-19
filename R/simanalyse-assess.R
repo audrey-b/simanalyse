@@ -56,20 +56,22 @@ sma_assess <- function(object,
                           parameters,
                           monitor=".*",
                           custom_FUNS,
-                          custom_expr_before,
-                          custom_expr_after=NULL){
+                          custom_expr_before="",
+                          custom_expr_after=""){
         
-        object <-  object %>% as.mcmcr() %>% collapse_chains() %>% as.nlists #temporary fix
+        object %<>% lapply(function(x) as.nlists(collapse_chains(x)))
         
-        check_list(object) #lapply checks needs to be added
+        chk_list(object)
+        lapply(object, chk_is, class="nlists")
         check_character(measures)
         check_function(estimator)
         check_nlist(parameters)
         check_chr(monitor)
         check_scalar(alpha) #how can I print error is not between zero and 1?
         
-        if(!missing(custom_expr_before)){check_string(custom_expr_before)} else custom_expr_before=""
-        if(!missing(custom_expr_after)){check_string(custom_expr_after)} else custom_expr_after=""
+        check_string(custom_expr_before)
+        check_string(custom_expr_after)
+        
         if(!missing(custom_FUNS)){
                 check_list(custom_FUNS)
                 lapply(custom_FUNS, check_function)

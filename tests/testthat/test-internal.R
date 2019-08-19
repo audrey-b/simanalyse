@@ -45,31 +45,7 @@ test_that("summarise one measure - bias",{
 })
 
 
-# 
-# 
-# test_that("custom expr and FUNS",{
-#   set.seed(10L)
-#   parameters <- nlist(mu=0)
-#   dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
-#                              parameters = parameters, 
-#                              nsims=2)
-#   result <- sma_analyse_bayesian(data=dat,
-#                                  code = "a ~ dnorm(mu, 1)
-#                                          mu ~ dunif(-3,3)",
-#                                  n.adapt = 101,
-#                                  n.burnin = 0,
-#                                  n.iter = 101,
-#                                  monitor="mu")
-#   result_method1 <- sma_assess(result, measures="", 
-#                                   parameters=parameters, 
-#                                   custom_FUNS= list(estimator = mean),
-#                                   custom_expr_before= "mse = (estimator - parameters)^2",
-#                                   custom_expr_after= "rmse = sqrt(mse)")
-#   result_method2 <- sma_assess(result, measures=c("mse","rmse"), parameters=parameters)
-#   
-#   expect_identical(result_method1, result_method2)
-#   
-# })
+
 
 
 test_that("analyse_dataset_bayesian with data works",{

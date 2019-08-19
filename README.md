@@ -117,59 +117,55 @@ result <- sma_analyse_bayesian(data = dat,
 #> Initializing model
 ```
 
-Derive posterior samples for new parameters and apply the same
-transformation to the true parameter values.
+Derive posterior samples for new parameters. To assess the performance
+of the method for those new parameters (e.g. bias), the same
+transformation must be applied to the true parameter values.
 
 ``` r
-sma_derive(result, "mu2=mu^2")
-#> [[1]]
-#> $mu
-#> [1] -0.07532
-#> 
+derived.result <- sma_derive(result, "mu2=mu^2", monitor="mu2")
+print(derived.result)
+#> $mcmcr1
 #> $mu2
-#> [1] 0.01605921
+#> [1] 0.002846049
 #> 
-#> an nlists object of 9 nlist objects each with 2 natomic elements
+#> nchains:  3 
+#> niters:  3 
 #> 
-#> [[2]]
-#> $mu
-#> [1] 0.06495014
 #> 
+#> $mcmcr2
 #> $mu2
-#> [1] 0.01603629
+#> [1] 0.0001716579
 #> 
-#> an nlists object of 9 nlist objects each with 2 natomic elements
+#> nchains:  3 
+#> niters:  3 
 #> 
-#> [[3]]
-#> $mu
-#> [1] -0.2784517
 #> 
+#> $mcmcr3
 #> $mu2
-#> [1] 0.1596828
+#> [1] 0.07554253
 #> 
-#> an nlists object of 9 nlist objects each with 2 natomic elements
-sma_derive(params, "mu2=mu^2")
-#> $mu
-#> [1] 0
-#> 
+#> nchains:  3 
+#> niters:  3
+derived.params <- sma_derive(params, "mu2=mu^2", monitor="mu2")
+print(derived.params)
 #> $mu2
 #> [1] 0
 #> 
-#> an nlist object with 2 natomic elements
+#> an nlist object with 1 natomic element
 ```
 
 Evaluate the performance of the model using the 3 analyses
 
 ``` r
-sma_assess(result, parameters=params)
-#> $bias.mu
-#> [1] -0.09627386
+sma_assess(derived.result, parameters=derived.params)
+#> $bias.mu2
+#> [1] 0.06392611
 #> 
-#> $cp.quantile.mu
-#> [1] 1
+#> $cp.quantile.mu2
+#> [1] 0
 #> 
-#> $mse.mu
-#> [1] 0.02914233
+#> $mse.mu2
+#> [1] 0.008671223
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -178,23 +174,23 @@ You may also create customized performance measures. The example below
 shows how to reproduce the results above with custom code.
 
 ``` r
-sma_assess(result,
+sma_assess(derived.result,
               measures = "", 
-              parameters = params, 
+              parameters = derived.params, 
               custom_FUNS = list(estimator = mean,
                                  cp.low = function(x) quantile(x, 0.025),
                                  cp.upp = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
-#> $bias.mu
-#> [1] -0.09627386
+#> $bias.mu2
+#> [1] 0.06392611
 #> 
-#> $cp.quantile.mu
-#> [1] 1
+#> $cp.quantile.mu2
+#> [1] 0
 #> 
-#> $mse.mu
-#> [1] 0.02914233
+#> $mse.mu2
+#> [1] 0.008671223
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -228,7 +224,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-19 14:27:42] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-19 18:52:16] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -239,7 +235,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-19 14:27:42] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-19 18:52:16] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -250,7 +246,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-19 14:27:42] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-08-19 18:52:16] 'data0000003.rds'
 #> [1] TRUE
 ```
 

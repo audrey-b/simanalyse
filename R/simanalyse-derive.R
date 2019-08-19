@@ -4,7 +4,7 @@
 #' 
 #' @param object One of either nlists, mcmc or mcmc.list or a list of those. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
-#' @param monitor  A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
+#' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 
 # @param append A flag indicating whether to return the derived parameters along with the original ones.
 # @param parallel An integer specifying the number of CPU cores to use for generating the datasets in parallel. Defaul is 1 (not parallel).
@@ -25,12 +25,30 @@
 #' sma_derive(parameters, "sd=sqrt(variance)")
 
 sma_derive <- function(object, code, monitor=".*") {
-
-  if(class(object)=="list"){
-    lapply(object, mcmc_derive, expr=code, monitor=monitor, primary=TRUE) %>% return
-  } else{
-    mcmc_derive(object, code, monitor=monitor, primary=TRUE) %>% return
+  
+  #do not monitor non-primary variables that are not in monitor
+  monitor.non.primary <- ".*" 
+  if(!(".*" %in% monitor)){
+  if(class(object) %in% c("nlist", "mcmcr")){
+    primary.params <- names(object)
+    }else{
+      primary.params <- names(object[[1]])
+    }
+  monitor.non.primary <- monitor[!(primary.params %in% monitor)]
   }
+
+  if(class(object)=="mcmcrs"){
+    new_obj <- lapply(object, mcmc_derive, expr=code, monitor=monitor.non.primary, primary=TRUE)
+    if(monitor!=".*") new_obj <- lapply(new_obj, subset, pars=monitor) #remove primary that are not in monitor
+  }else if(class(object)=="mcmcr"){
+    new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, primary=TRUE)    
+    if(monitor!=".*") new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
+  }else if(class(object)=="nlist"){
+    new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, primary=TRUE)    
+    if(monitor!=".*") new_obj <- subset(new_obj, select=monitor) #remove primary that are not in monitor
+  }
+  
+  return(new_obj)
          
 }
 

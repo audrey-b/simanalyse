@@ -6,7 +6,7 @@
 \usage{
 sma_assess(object, measures = c("bias", "mse", "cp.quantile"),
   estimator = mean, alpha = 0.05, parameters, monitor = ".*",
-  custom_FUNS, custom_expr_before, custom_expr_after = NULL)
+  custom_FUNS, custom_expr_before = "", custom_expr_after = "")
 }
 \arguments{
 \item{object}{A list of nlists object of results or a single nlists of results.}
