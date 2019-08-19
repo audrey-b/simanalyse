@@ -97,7 +97,7 @@ sma_analyse_bayesian <- function(data = NULL,
                                                 n.adapt=n.adapt, n.burnin=n.burnin, 
                                                 n.iter=n.iter, thin=thin,
                                                 seed=seeds[i])}
-    return(res.list)
+    return(as.mcmcrs(res.list))
   }else analyse_to_file(code=code, monitor=monitor,
                         inits=inits, n.chains=n.chains,
                         n.adapt=n.adapt, n.burnin=n.burnin, 

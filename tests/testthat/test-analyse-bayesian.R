@@ -10,10 +10,10 @@ test_that("sma_analyse_bayesian",{
                                  n.burnin = 0,
                                  n.iter = 101,
                                  monitor = "mu")
-  expect_true(class(result)=="list")
-  expect_equal(result[[1]][1][[1]]$mu, -1.817165, tolerance = 0.000001)
+  expect_true(class(result)=="mcmcrs")
+  expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
   
-  #summarise_within(result, aggregate_FUN=var)
+  #assess_within(result, aggregate_FUN=var)
   
   #sma_assess(result, "Epsd", parameters=params, monitor="mu")
 })

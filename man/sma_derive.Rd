@@ -14,7 +14,7 @@ sma_derive(object, code, monitor = ".*")
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}
 }
 \value{
-A flag.
+An object of the same class as \code{object}
 }
 \description{
 Apply R code to derive new variables.

@@ -3,11 +3,10 @@
 #'
 #' Derive new variables from the results of analyses
 #' 
-#' @param object A list of nlists object of results or a single nlists of results. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.
+#' @param object An mcmcr or mcmcrs object.
 #' @param measures A vector of strings indicating which functions to calculate over the mcmc samples. Strings may include "mean", 
 #' "median", "lower.q" (lower bound of the quantile-based credible interval), "upper.q" (upper bound of the quantile-based 
 #' credible interval), "var", "sd", "q1" (1st quartile), "q3" (3rd quartile)
-#' @param parameters An nlist of the true values of the parameters in \code{object}. Optional, but must be passed if \code{sma_assess} is to be used.
 #' @param alpha scalar representing the alpha level used to construct credible intervals. Default is 0.05.
 #' @param monitor  A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param custom_funs A named list of functions to calculate over the mcmc samples. This optional argument can be used to calculate
@@ -29,40 +28,24 @@
 # n.adapt=100, n.burnin=0, n.iter=3, monitor="variance")
 # sma_derive(res, "sd=sqrt(variance)")
 
-# sma_derive <- function(object, code, 
-#                           measures=c("mean", "lower.q", "upper.q"), 
-#                           parameters=nlist::nlist(), monitor=".*", alpha=0.05,
-#                           custom_funs = list()) {
-#   
-#   #need to add checks
-#   parameters=parameters #tmp
-#   measures=measures #tmp
-#   custom_funs=custom_funs #tmp
-#   
-#   #apply code to parameters to derive new variables
-#   
-#   if(length(parameters)!=0) derived.parameters <- derive_one(parameters, code=code)
-#   
-#   #apply code to object to derive new variables, keep only monitor
-#   
-#   if(is.nlists(object)){
-#     derived.object <- derive_one(object, code=code) 
-#     if(length(parameters)!=0) derived.object %<>% c(derived.parameters)
-#     if(monitor != ".*"){derived.object %<>% subset(select=monitor)}
-#   } else{
-#     derived.object <- lapply(object, derive_one, code=code)
-#     if(length(parameters)!=0) derived.object %<>% lapply(obj=derived.parameters)
-#     if(monitor != ".*"){derived.object %<>% lapply(subset, select=monitor)}
-#   }
-#   return(derived.object)
-#   #apply measures and custom_funs to calculate summaries over the derived object
-#   
-#   
-#   
-#   
-#   #combine the two nlist with c() through lapply on index i when parameters are used
-#   
-#   
-#   
-# }
-# 
+sma_summarise <- function(object,
+                          measures=c("mean", "lower.q", "upper.q"),
+                          monitor=".*",
+                          alpha=0.05,
+                          custom_funs = list()) {
+  
+  object=object
+  measures=measures
+  monitor=monitor
+  alpha=alpha
+  custom_funs=list(mean=mean, median=median)
+  aggregate.FUNS=custom_funs
+  
+  if(class(object) == "mcmcr") object <- as.nlists(collapse_chains(object))
+  if(class(object) == "mcmcrs") object <- lapply(object, function(x) as.nlists(collapse_chains(x)))
+  
+  lapply(object, summarise_one_result, aggregate.FUNS)
+  
+
+}
+

@@ -40,23 +40,3 @@ The results are compared with the true parameter values by calculating performan
 such as bias, mean square error and coverage probability.
 R code can be used to customize the performance measures
 }
-\examples{
-params <- nlist(mu=0)
-dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
-                           parameters = params, 
-                           nsims=5)
-result <- sma_analyse_bayesian(data=dat,
-                                      code = "a ~ dnorm(mu, 1)
-                                              mu ~ dunif(-3,3)",
-                                      n.adapt = 101,
-                                      n.burnin = 0,
-                                      n.iter = 101,
-                                      monitor="mu")
-sma_assess(result, parameters=params)
-sma_assess(result, 
-measures="", 
-parameters = params, 
-custom_FUNS = list(posteriormedian = median),
-custom_expr_before = "mse = (posteriormedian - parameters)^2",
-custom_expr_after = "rmse = sqrt(mse)")
-}

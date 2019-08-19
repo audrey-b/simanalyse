@@ -26,7 +26,7 @@ test_that("summarise one measure - bias",{
   listnlists <- list(nlists1,nlists2)
   #bias
   expr="error = estimator - parameters"
-  result <- lapply(listnlists, summarise_within, expr, aggregate.FUNS, parameters) %>%
+  result <- lapply(listnlists, assess_within, expr, aggregate.FUNS, parameters) %>%
     as.nlists()
   error.mu1 <- c(mean(mu11), mean(mu12)) - parameters$mu
   error.mu2 <- c(mean(mu21), mean(mu22)) - parameters$mu
@@ -39,37 +39,37 @@ test_that("summarise one measure - bias",{
   
   expr_FUN <- make_expr_and_FUNS("bias", estimator = mean, parameters=parameters)
   expect_identical(expr_FUN[["expr"]], "bias = estimator - parameters")
-  result2 <- summarise_all_measures(listnlists, expr_FUN, parameters=parameters)
+  result2 <- assess_all_measures(listnlists, expr_FUN, parameters=parameters)
   expect_identical(result2, nlist(bias.mu = (error.mu1+error.mu2)/2,
                                   bias.theta = (error.theta1+error.theta2)/2))
 })
 
 
-
-
-test_that("custom expr and FUNS",{
-  set.seed(10L)
-  parameters <- nlist(mu=0)
-  dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
-                             parameters = parameters, 
-                             nsims=2)
-  result <- sma_analyse_bayesian(data=dat,
-                                 code = "a ~ dnorm(mu, 1)
-                                         mu ~ dunif(-3,3)",
-                                 n.adapt = 101,
-                                 n.burnin = 0,
-                                 n.iter = 101,
-                                 monitor="mu")
-  result_method1 <- sma_assess(result, measures="", 
-                                  parameters=parameters, 
-                                  custom_FUNS= list(estimator = mean),
-                                  custom_expr_before= "mse = (estimator - parameters)^2",
-                                  custom_expr_after= "rmse = sqrt(mse)")
-  result_method2 <- sma_assess(result, measures=c("mse","rmse"), parameters=parameters)
-  
-  expect_identical(result_method1, result_method2)
-  
-})
+# 
+# 
+# test_that("custom expr and FUNS",{
+#   set.seed(10L)
+#   parameters <- nlist(mu=0)
+#   dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
+#                              parameters = parameters, 
+#                              nsims=2)
+#   result <- sma_analyse_bayesian(data=dat,
+#                                  code = "a ~ dnorm(mu, 1)
+#                                          mu ~ dunif(-3,3)",
+#                                  n.adapt = 101,
+#                                  n.burnin = 0,
+#                                  n.iter = 101,
+#                                  monitor="mu")
+#   result_method1 <- sma_assess(result, measures="", 
+#                                   parameters=parameters, 
+#                                   custom_FUNS= list(estimator = mean),
+#                                   custom_expr_before= "mse = (estimator - parameters)^2",
+#                                   custom_expr_after= "rmse = sqrt(mse)")
+#   result_method2 <- sma_assess(result, measures=c("mse","rmse"), parameters=parameters)
+#   
+#   expect_identical(result_method1, result_method2)
+#   
+# })
 
 
 test_that("analyse_dataset_bayesian with data works",{
@@ -83,8 +83,8 @@ test_that("analyse_dataset_bayesian with data works",{
                                      n.iter = 101,
                                      monitor = "mu",
                                      seed = 10)
-  expect_true(class(result)=="nlists")
-  expect_equal(result[[1]] %>% as.numeric, -3.944967, tolerance = 0.000001)
+  expect_true(class(result)=="mcmcr")
+  expect_equal(result$mu[1] %>% as.numeric, -3.944967, tolerance = 0.000001)
 })
 
 test_that("analyse_dataset_bayesian works",{
@@ -94,8 +94,8 @@ test_that("analyse_dataset_bayesian works",{
                                      n.iter = 101,
                                      monitor = "a",
                                      seed = 10)
-  expect_true(class(result)=="nlists")
-  expect_equal(result[[1]] %>% as.numeric, -1.636731, tolerance = 0.000001)
+  expect_true(class(result)=="mcmcr")
+  expect_equal(result$a[1] %>% as.numeric, -1.636731, tolerance = 0.000001)
 })
 
 

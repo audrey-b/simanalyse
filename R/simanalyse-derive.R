@@ -11,7 +11,7 @@
 # @param path A string specifying the path to the directory to save the data sets in. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
 # @param silent A flag specifying whether to suppress warnings.
 
-#' @return A flag.
+#' @return An object of the same class as \code{object}
 #' @export
 #'
 #' @examples
@@ -29,7 +29,7 @@ sma_derive <- function(object, code, monitor=".*") {
   if(class(object)=="list"){
     lapply(object, mcmc_derive, expr=code, monitor=monitor, primary=TRUE) %>% return
   } else{
-    mcmc_derive(object, code, monitor=monitor, primary=TRUE)
+    mcmc_derive(object, code, monitor=monitor, primary=TRUE) %>% return
   }
          
 }

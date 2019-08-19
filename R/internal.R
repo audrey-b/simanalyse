@@ -46,9 +46,9 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   
   sample <- rjags::jags.samples(model, variable.names = monitor, n.iter = n.iter, thin=thin)
   
-  nlists <-  sample %>% as.mcmcr() %>% collapse_chains() %>% as.nlists
+  #nlists <-  sample %>% as.mcmcr() %>% collapse_chains() %>% as.nlists
   
-  return(nlists)
+  return(as.mcmcr(sample))
   #saveRDS(nlist, file.path(path, data_file_name(sim)))
   #data_file_name <- function(sim) p0("data", sprintf("%07d", sim), ".rds")
   
@@ -145,16 +145,16 @@ make_expr_and_FUNS <- function(measures,
   return(list(expr=expr, aggregate.FUNS=aggregate.FUNS, derive_expr=derive_expr))
 }
 
-summarise_all_measures <- function(listnlists, 
+assess_all_measures <- function(listnlists, 
                                    expr_FUNS, 
                                    parameters){
   
   listnlists %>% 
-    lapply(summarise_within, expr_FUNS[["expr"]], 
+    lapply(assess_within, expr_FUNS[["expr"]], 
            expr_FUNS[["aggregate.FUNS"]], 
            parameters) %>%
     as.nlists() %>%
-    summarise_across(mean) %>%
+    assess_across(mean) %>%
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
                     parameters) %>%
@@ -174,7 +174,7 @@ derive_measures <- function(nlist, derive_expr, keywords, parameters){
   }else{return(nlist)}
 }
 
-summarise_across <- function(summary.nlist, FUN){
+assess_across <- function(summary.nlist, FUN){
   summary.nlist %>% 
     aggregate(FUN = mean) %>%
     return
@@ -190,11 +190,16 @@ expand_expr <- function(expr, keywords, monitor, parameters){
     return
 }
 
-summarise_within <- function(nlists, expr, aggregate.FUNS, parameters){
+summarise_one_result <- function(nlists, aggregate.FUNS){
+  aggregate.FUNS %>% 
+    lapply(function(FUN, nlists) aggregate(nlists, FUN), nlists)
+}
+
+assess_within <- function(nlists, expr, aggregate.FUNS, parameters){
   monitor = nlists[[1]] %>% names()
   #calculate aggregates
-  aggregate.list <- aggregate.FUNS %>% 
-    lapply(function(FUN, nlists) aggregate(nlists, FUN), nlists) %>%
+  aggregate.list <- nlists %>% 
+    summarise_one_result(aggregate.FUNS)%>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as.nlist()
   #apply expr
