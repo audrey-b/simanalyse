@@ -63,7 +63,7 @@ test_that("save analyses to files",{
  })
 
  
- test_that("inits is a function",{
+ test_that("inits is a function and reproducible",{
    set.seed(10L)
    code <- "a ~ dnorm(mu,1)"
    sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
@@ -74,7 +74,8 @@ test_that("save analyses to files",{
      tt = rnorm(1, 0, 1)
      return(list("mu"=mu, "tt"=tt))
    }
-   result <- sma_analyse_bayesian(sims=sims,
+   set.seed(99L)
+   result1 <- sma_analyse_bayesian(sims=sims,
                                   code = code,
                                   code.add = prior,
                                   n.adapt = 101,
@@ -83,4 +84,15 @@ test_that("save analyses to files",{
                                   n.chains=3,
                                   monitor = c("mu", "tt"),
                                   inits=inits.fun)
+   set.seed(99L)
+   result2 <- sma_analyse_bayesian(sims=sims,
+                                   code = code,
+                                   code.add = prior,
+                                   n.adapt = 101,
+                                   n.burnin = 0,
+                                   n.iter = 1,
+                                   n.chains=3,
+                                   monitor = c("mu", "tt"),
+                                   inits=inits.fun)
+   expect_identical(result1, result2)
  })

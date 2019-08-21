@@ -19,6 +19,8 @@ add_model_block <- function(code){
 
 set_seed_inits <- function(seed, inits, n.chains) {
   
+  set.seed(seed)
+  
   if(class(inits)=="function"){
     if(!is.null(names(as.list(args(inits)))[1])){
       inits = lapply(1:n.chains, inits)
@@ -29,13 +31,11 @@ set_seed_inits <- function(seed, inits, n.chains) {
   
   if(length(inits)==0){ #default inits
     
-    set.seed(seed)
     inits$.RNG.name <- "base::Wichmann-Hill"
     inits$.RNG.seed <- abs(as.integer(rinteger()))
     
   }else if(!chk_list(inits[[1]], err=FALSE)){ #1 set of inits, same for each chain
     
-    set.seed(seed)
     inits$.RNG.name <- "base::Wichmann-Hill"
     inits$.RNG.seed <- abs(as.integer(rinteger()))
     
