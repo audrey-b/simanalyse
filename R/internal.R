@@ -17,8 +17,15 @@ add_model_block <- function(code){
 }
 
 
-set_seed_inits <- function(seed, inits) {
+set_seed_inits <- function(seed, inits, n.chains) {
   
+  if(class(inits)=="function"){
+    if(!is.null(names(as.list(args(inits)))[1])){
+      inits = lapply(1:n.chains, inits)
+    }else{
+      inits = lapply(1:n.chains, function(x) inits())
+    }
+  }
   
   if(length(inits)==0){ #default inits
     
@@ -26,7 +33,7 @@ set_seed_inits <- function(seed, inits) {
     inits$.RNG.name <- "base::Wichmann-Hill"
     inits$.RNG.seed <- abs(as.integer(rinteger()))
     
-  }else if(!chk_list(inits[[1]], err=FALSE)){ #1 set of inits
+  }else if(!chk_list(inits[[1]], err=FALSE)){ #1 set of inits, same for each chain
     
     set.seed(seed)
     inits$.RNG.name <- "base::Wichmann-Hill"
@@ -64,7 +71,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   
   code %<>% add_model_block() %>% textConnection
   
-  inits <- set_seed_inits(seed, inits)
+  inits <- set_seed_inits(seed, inits, n.chains)
   
   model <- rjags::jags.model(code, data = nlistdata, inits = inits,
                              

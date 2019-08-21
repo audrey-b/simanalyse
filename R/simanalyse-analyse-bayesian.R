@@ -9,7 +9,7 @@
 #' @param package A string with the name of the R package to analyse the data. Currently, only "rjags" is implemented.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.
 #' @param n.chains An integer greater than zero specifying the number of MCMC chains to run
-#' @param inits A list. Initial values for the MCMC chains
+#' @param inits A list or a function. Initial values for the MCMC chains. If specifying a function, it should either have no arguments, or have a single argument named chain. In the latter case, the supplied function is called with the chain number as argument. In this way, initial values may be generated that depend systematically on the chain number.
 #' @param n.adapt An integer specifying the number of adaptations for each analysis
 #' @param n.burnin An integer specifying the number of burn-in iterations for each analysis (following the adaptation phase)
 #' @param n.iter An integer specifying the number of iterations for each analysis (following the burn-in phase)
@@ -71,7 +71,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   check_character(monitor)
   
-  check_list(inits)
+  chk_is(inits, class=c("list", "function"))
   #lapply(check_) need to figure out
   
   check_pos_int(n.chains, coerce=TRUE)

@@ -22,7 +22,7 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.}
 
-\item{inits}{A list. Initial values for the MCMC chains}
+\item{inits}{A list or a function. Initial values for the MCMC chains. If specifying a function, it should either have no arguments, or have a single argument named chain. In the latter case, the supplied function is called with the chain number as argument. In this way, initial values may be generated that depend systematically on the chain number.}
 
 \item{n.adapt}{An integer specifying the number of adaptations for each analysis}
 

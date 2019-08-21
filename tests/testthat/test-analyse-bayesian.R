@@ -42,7 +42,7 @@ test_that("save analyses to files",{
 })
 
 
- test_that("monitor is a list of inits for multiple chains",{
+ test_that("inits is a list of inits for multiple chains",{
    set.seed(10L)
    code <- "a ~ dnorm(mu,1)"
    sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
@@ -62,4 +62,25 @@ test_that("save analyses to files",{
                                   inits=list(inits1, inits2, inits3))
  })
 
-
+ 
+ test_that("inits is a function",{
+   set.seed(10L)
+   code <- "a ~ dnorm(mu,1)"
+   sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
+   prior = "mu ~ dunif(-3,3)
+           tt ~ dnorm(0,1)"
+   inits.fun <- function(){
+     mu = runif(1, -3, 3)
+     tt = rnorm(1, 0, 1)
+     return(list("mu"=mu, "tt"=tt))
+   }
+   result <- sma_analyse_bayesian(sims=sims,
+                                  code = code,
+                                  code.add = prior,
+                                  n.adapt = 101,
+                                  n.burnin = 0,
+                                  n.iter = 1,
+                                  n.chains=3,
+                                  monitor = c("mu", "tt"),
+                                  inits=inits.fun)
+ })
