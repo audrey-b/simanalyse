@@ -17,7 +17,8 @@ Imports:
   magrittr,
   stringr,
   rjags,
-  batchr
+  batchr,
+  parallel
 Suggests: 
     covr,
     testthat

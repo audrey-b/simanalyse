@@ -50,9 +50,10 @@ Analyse data for a simulation study. Allows data to be read from files and resul
  set.seed(10L)
  code <- "a ~ dnorm(mu,1)"
  sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
+ prior = "mu ~ dunif(-3,3)"
  result <- sma_analyse_bayesian(sims=sims,
                                        code = code,
-                                       code.add = "mu ~ dunif(-3,3)",
+                                       code.add = prior,
                                        n.adapt = 101,
                                        n.burnin = 0,
                                        n.iter = 101,

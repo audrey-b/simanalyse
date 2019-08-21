@@ -19,11 +19,39 @@ add_model_block <- function(code){
 
 set_seed_inits <- function(seed, inits) {
   
-  set.seed(seed)
   
-  inits$.RNG.name <- "base::Wichmann-Hill"
-  
-  inits$.RNG.seed <- abs(as.integer(rinteger()))
+  if(length(inits)==0){ #default inits
+    
+    set.seed(seed)
+    inits$.RNG.name <- "base::Wichmann-Hill"
+    inits$.RNG.seed <- abs(as.integer(rinteger()))
+    
+  }else if(!chk_list(inits[[1]], err=FALSE)){ #1 set of inits
+    
+    set.seed(seed)
+    inits$.RNG.name <- "base::Wichmann-Hill"
+    inits$.RNG.seed <- abs(as.integer(rinteger()))
+    
+  }else{ #more than 1 set of inits
+    
+    set.seed(seed, "L'Ecuyer-CMRG")
+    
+    n.lists <- length(inits)
+    stream <- .Random.seed
+    load.module("lecuyer")
+    # list.factories(type="rng")
+    
+    for(i in 1:n.lists){
+      inits[[i]]$.RNG.name <- "lecuyer::RngStream"
+      inits[[i]]$.RNG.state <- stream[-1]
+      stream <- nextRNGStream(stream)
+    }  
+    
+    
+    RNGversion(getRversion())
+    
+    
+  }
   
   inits
   
@@ -55,19 +83,6 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   
 }
 
-as_natomic_mcarray <- function(x) {
-  
-  dim <- dim(x)
-  
-  ndim <- length(dim)
-  
-  x <- as.vector(x)
-  
-  dim(x) <- dim(x)[-c(ndim-1L,ndim)]
-  
-  x
-  
-}
 
 # analyse_datasets_bayesian <- function(nlistsdata)
 
@@ -146,8 +161,8 @@ make_expr_and_FUNS <- function(measures,
 }
 
 assess_all_measures <- function(listnlists, 
-                                   expr_FUNS, 
-                                   parameters){
+                                expr_FUNS, 
+                                parameters){
   
   listnlists %>% 
     lapply(assess_within, expr_FUNS[["expr"]], 

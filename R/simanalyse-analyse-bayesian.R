@@ -25,9 +25,10 @@
 #'  set.seed(10L)
 #'  code <- "a ~ dnorm(mu,1)"
 #'  sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
+#'  prior = "mu ~ dunif(-3,3)"
 #'  result <- sma_analyse_bayesian(sims=sims,
 #'                                        code = code,
-#'                                        code.add = "mu ~ dunif(-3,3)",
+#'                                        code.add = prior,
 #'                                        n.adapt = 101,
 #'                                        n.burnin = 0,
 #'                                        n.iter = 101,
@@ -81,7 +82,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   check_dbl(thin) #1 to max iter?
   
   check_scalar(seed, c(-.max_integer, .max_integer))
-
+  
   seeds <- rinteger(n.sims)
   
   res.list <- list(nlists(nlist()))
@@ -97,11 +98,17 @@ sma_analyse_bayesian <- function(sims = NULL,
                                                 n.adapt=n.adapt, n.burnin=n.burnin, 
                                                 n.iter=n.iter, thin=thin,
                                                 seed=seeds[i])}
+    
+    if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     return(as.mcmcrs(res.list))
-  }else analyse_to_file(code=code, monitor=monitor,
+    
+  }else{analyse_to_file(code=code, monitor=monitor,
                         inits=inits, n.chains=n.chains,
                         n.adapt=n.adapt, n.burnin=n.burnin, 
                         n.iter=n.iter, thin=thin,
-                        seeds=seeds, path.read=path.read, path.save=path.save) #will this use the same seeds as above??? I think this will need to be fixed
-  
+                        seeds=seeds, path.read=path.read, path.save=path.save)  
+    
+    if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
+  }
 }
+
