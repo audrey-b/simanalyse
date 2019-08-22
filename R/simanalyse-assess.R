@@ -65,7 +65,7 @@ sma_assess <- function(object,
         lapply(object, chk_is, class="nlists")
         check_character(measures)
         check_function(estimator)
-        check_nlist(parameters)
+        chk_is(parameters, "nlist")
         check_chr(monitor)
         check_scalar(alpha) #how can I print error is not between zero and 1?
         

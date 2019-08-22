@@ -52,8 +52,8 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   if(!is.null(sims)){
     if(is.nlist(sims)) sims <- nlists(sims)
-    check_nlists(sims)
-    lapply(sims, check_nlist)
+    chk_is(sims, class="nlists")
+    lapply(sims, chk_is, class="nlist")
     n.sims <- length(sims)
   }
   

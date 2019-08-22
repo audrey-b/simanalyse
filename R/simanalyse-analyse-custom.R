@@ -24,8 +24,8 @@ sma_analyse_custom <- function(sims,
                                       exists,
                                       silent,
                                       ...) {
-  check_nlists(sims)
-  lapply(sims, check_nlist)
+  chk_is(sims, "nlists")
+  lapply(sims, chk_is, "nlist")
   
   if(!missing(sims)) lapply(sims, 
                                 function(sims, ...) FUN(sims=sims, ...), 
