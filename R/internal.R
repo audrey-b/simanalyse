@@ -1,15 +1,3 @@
-# prepare_code <- function(code, append=NULL, ...){
-#   
-#   if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
-#     err("jags code must not be in a data or model block")
-#   
-#   code %>% 
-#     paste(append, sep = " \n ") %>% 
-#     sprintf(...) %>%
-#     add_model_block()
-#   
-# }
-
 add_model_block <- function(code){
   
   sprintf("model{\n\n%s\n\n}", code)
@@ -56,8 +44,7 @@ set_seed_inits <- function(seed, inits, n.chains) {
     
     
     RNGversion(getRversion())
-    
-    
+
   }
   
   inits
@@ -87,11 +74,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   #saveRDS(nlist, file.path(path, data_file_name(sim)))
   #data_file_name <- function(sim) p0("data", sprintf("%07d", sim), ".rds")
   
-  
 }
-
-
-# analyse_datasets_bayesian <- function(nlistsdata)
 
 make_expr_and_FUNS <- function(measures, 
                                parameters, 
@@ -272,24 +255,26 @@ prepare_code <- function(code, code.add, code.values){
     return
 }
 
-fun.batchr.analyse <- function(file, path.save, seeds, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
+fun.batchr <- function(file, path.save, seeds, sma.fun, suffix, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
   base.name <- basename(file)
-  seed = seeds[str_extract(base.name, "[[:digit:]]+") %>% as.integer()]
+  id <- str_extract(base.name, "[[:digit:]]+") %>% as.integer()
+  prefix <- str_split(base.name, "[[:digit:]]+")[[1]][1] #kinda hacky, could have only one line of code for id and prefix
   readRDS(file) %>%
-    sma_analyse_bayesian(seed=seed, ...) %>%
-    saveRDS(file.path(path.save, sub("data", "analys", base.name)))
+    sma.fun(seed=seeds[id], ...) %>%
+    saveRDS(file.path(path.save, sub(prefix, suffix, base.name)))
 }
 
-analyse_to_file <- function(path.read, path.save, seeds, ...){
+sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, seeds, ...){
   
-  saving.dir <- path.save
-  if(!dir.exists(saving.dir)) dir.create(saving.dir)
-  batch_process(fun.batchr.analyse, 
+  if(!dir.exists(path.save)) dir.create(path.save)
+  batch_process(fun = fun.batchr, 
                 path=path.read,
-                regexp="^data\\d{7,7}.rds$", 
+                regexp=p0("^", prefix, "\\d{7,7}.rds$"), 
                 ask=FALSE,
                 path.save = path.save,
                 seeds = seeds,
+                sma.fun = sma.fun,
+                suffix = suffix,
                 ...)
 }
 
@@ -302,26 +287,4 @@ derive_one <- function(object.nlists, code){
   #if(monitor != ".*") return(subset(derived_obj, select=monitor))
   #return(derived_obj)
 }
-
-# 
-# extract_measure_from_summary <- function(summaries, word, monitor){
-#   indices <- summaries %>% 
-#     names %>%
-#     startsWith(p0(word,".")) %>% 
-#     which()
-#   measure_res = summaries[indices]
-#   #monitor= measure_res %>% 
-#   #  names %>% 
-#   #  sub(pattern='.*\\.', replacement='')
-#   names(measure_res)=monitor
-#   return(measure_res)
-# }
-# 
-# summary_reformat <- function(summaries, measures, monitor){
-#   measures %>% 
-#     lapply(extract_measure_from_summary, 
-#            summaries=summaries,
-#            monitor=monitor) %>%
-#     set_names(measures)
-# }
-# 
+ 

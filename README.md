@@ -225,7 +225,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-19 20:33:12] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-08-22 22:07:34] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -236,7 +236,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-19 20:33:12] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-08-22 22:07:34] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -247,8 +247,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-19 20:33:12] 'data0000003.rds'
-#> [1] TRUE
+#> SUCCESS 3/3/0 [2019-08-22 22:07:34] 'data0000003.rds'
 ```
 
 ## Contribution

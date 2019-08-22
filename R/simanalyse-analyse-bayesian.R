@@ -16,7 +16,7 @@
 #' @param thin A numeric scalar of at least 1 specifying the thinning factor. Default is 1.
 #' @param seed An integer. The random seed to use for analysing the data.
 #' @param path.read A string. If data is NULL, data is read from that path on disk.
-#' @param path.save A string specifying the path to the directory to save the results in. By default path = NULL the results are not saved but are returned as a list of nlists objects.
+#' @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
 #' 
 #' @return A flag.
 #' @export
@@ -90,7 +90,8 @@ sma_analyse_bayesian <- function(sims = NULL,
   code %<>% prepare_code(code.add, code.values)
   
   #jags
-  if(!is.null(sims)){
+  if(is.null(path.save)){
+    if(!is.null(path.read) & is.null(sims)) sims <- sims_data(path.read)
     for(i in 1:n.sims){
       res.list[[i]] <- analyse_dataset_bayesian(nlistdata=sims[[i]], 
                                                 code=code, monitor=monitor,
@@ -102,11 +103,13 @@ sma_analyse_bayesian <- function(sims = NULL,
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     return(as.mcmcrs(res.list))
     
-  }else{analyse_to_file(code=code, monitor=monitor,
+  }else{sma_batchr(sma.fun=analyse_dataset_bayesian, seeds=seeds, 
+                        path.read=path.read, path.save=path.save,
+                        prefix="data", suffix="analys",
+                        code=code, monitor=monitor,
                         inits=inits, n.chains=n.chains,
                         n.adapt=n.adapt, n.burnin=n.burnin, 
-                        n.iter=n.iter, thin=thin,
-                        seeds=seeds, path.read=path.read, path.save=path.save)  
+                        n.iter=n.iter, thin=thin)  
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
   }

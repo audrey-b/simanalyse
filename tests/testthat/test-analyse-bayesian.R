@@ -27,7 +27,8 @@ test_that("save analyses to files",{
   sims_simulate("a ~ dnorm(mu,1)", 
                 parameters = params, 
                 nsims=2,
-                path=tempdir)
+                path=tempdir,
+                exists=NA)
   sims_data_files(tempdir)
   
   sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
@@ -37,7 +38,8 @@ test_that("save analyses to files",{
                        n.iter = 101,
                        monitor = "mu",
                        path.read = tempdir,
-                       path.save = file.path(tempdir, "analyses"))
+                       path.save = file.path(tempdir, "analyses"),
+                       seed=56L)
   
 })
 

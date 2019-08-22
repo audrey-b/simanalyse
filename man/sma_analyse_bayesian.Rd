@@ -38,7 +38,7 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 
 \item{path.read}{A string. If data is NULL, data is read from that path on disk.}
 
-\item{path.save}{A string specifying the path to the directory to save the results in. By default path = NULL the results are not saved but are returned as a list of nlists objects.}
+\item{path.save}{A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.}
 }
 \value{
 A flag.
