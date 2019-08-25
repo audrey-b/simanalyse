@@ -14,9 +14,9 @@ test_that("sma_analyse_bayesian",{
   expect_true(class(result)=="mcmcrs")
   expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
   
-  #assess_within(result, aggregate_FUN=var)
+  #evaluate_within(result, aggregate_FUN=var)
   
-  #sma_assess(result, "Epsd", parameters=params, monitor="mu")
+  #sma_evaluate(result, "Epsd", parameters=params, monitor="mu")
 })
 
 test_that("save analyses to files",{

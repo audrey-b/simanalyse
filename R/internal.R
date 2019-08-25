@@ -150,16 +150,16 @@ make_expr_and_FUNS <- function(measures,
   return(list(expr=expr, aggregate.FUNS=aggregate.FUNS, derive_expr=derive_expr))
 }
 
-assess_all_measures <- function(listnlists, 
+evaluate_all_measures <- function(listnlists, 
                                 expr_FUNS, 
                                 parameters){
   
   listnlists %>% 
-    lapply(assess_within, expr_FUNS[["expr"]], 
+    lapply(evaluate_within, expr_FUNS[["expr"]], 
            expr_FUNS[["aggregate.FUNS"]], 
            parameters) %>%
     as.nlists() %>%
-    assess_across(mean) %>%
+    evaluate_across(mean) %>%
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
                     parameters) %>%
@@ -179,7 +179,7 @@ derive_measures <- function(nlist, derive_expr, keywords, parameters){
   }else{return(nlist)}
 }
 
-assess_across <- function(summary.nlist, FUN){
+evaluate_across <- function(summary.nlist, FUN){
   summary.nlist %>% 
     aggregate(FUN = mean) %>%
     return
@@ -200,7 +200,7 @@ summarise_one_result <- function(nlists, aggregate.FUNS){
     lapply(function(FUN, nlists) aggregate(nlists, FUN), nlists)
 }
 
-assess_within <- function(nlists, expr, aggregate.FUNS, parameters){
+evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
   monitor = nlists[[1]] %>% names()
   #calculate aggregates
   aggregate.list <- nlists %>% 

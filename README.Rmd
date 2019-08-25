@@ -70,7 +70,7 @@ results <- sma_analyse_bayesian(sims = sims,
                                 monitor = names(params))
 ```
 
-Derive posterior samples for new parameters. To assess the performance of the method for those new parameters (e.g. bias), the same transformation must be applied to the true parameter values.
+Derive posterior samples for new parameters. To evaluate the performance of the method for those new parameters (e.g. bias), the same transformation must be applied to the true parameter values.
 ```{r}
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
@@ -79,13 +79,13 @@ params.derived <- sma_derive(params, "var=sigma^2", monitor="var")
 print(params.derived)
 ```
 
-Assess the performance of the model using the 3 analyses
+Evaluate the performance of the model using the 3 analyses
 ```{r}
-sma_assess(results.derived, parameters=params.derived)
+sma_evaluate(results.derived, parameters=params.derived)
 ```
 You may also create custom performance measures. The example below shows how to reproduce the results above with custom code.
 ```{r}
-sma_assess(results.derived,
+sma_evaluate(results.derived,
               measures = "", 
               parameters = params.derived, 
               custom_funs = list(estimator = mean,

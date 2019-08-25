@@ -26,7 +26,7 @@ test_that("summarise one measure - bias",{
   listnlists <- list(nlists1,nlists2)
   #bias
   expr="error = estimator - parameters"
-  result <- lapply(listnlists, assess_within, expr, aggregate.FUNS, parameters) %>%
+  result <- lapply(listnlists, evaluate_within, expr, aggregate.FUNS, parameters) %>%
     as.nlists()
   error.mu1 <- c(mean(mu11), mean(mu12)) - parameters$mu
   error.mu2 <- c(mean(mu21), mean(mu22)) - parameters$mu
@@ -39,7 +39,7 @@ test_that("summarise one measure - bias",{
   
   expr_FUN <- make_expr_and_FUNS("bias", estimator = mean, parameters=parameters)
   expect_identical(expr_FUN[["expr"]], "bias = estimator - parameters")
-  result2 <- assess_all_measures(listnlists, expr_FUN, parameters=parameters)
+  result2 <- evaluate_all_measures(listnlists, expr_FUN, parameters=parameters)
   expect_identical(result2, nlist(bias.mu = (error.mu1+error.mu2)/2,
                                   bias.theta = (error.theta1+error.theta2)/2))
 })
