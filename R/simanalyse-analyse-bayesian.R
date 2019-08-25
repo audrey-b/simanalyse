@@ -14,6 +14,8 @@
 #' @param n.burnin An integer specifying the number of burn-in iterations for each analysis (following the adaptation phase)
 #' @param n.iter An integer specifying the number of iterations for each analysis (following the burn-in phase)
 #' @param thin A numeric scalar of at least 1 specifying the thinning factor. Default is 1.
+#' @param deviance A flag. Indicates whether to monitor deviance for future DIC calculation.
+# @param pD A flag. Indicates whether to monitor pD for future DIC calculation.
 #' @param seed An integer. The random seed to use for analysing the data.
 #' @param path.read A string. If data is NULL, data is read from that path on disk.
 #' @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
@@ -46,9 +48,11 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  n.iter,
                                  thin=1,
                                  n.chains=3,
+                                 deviance = TRUE,
+                                 #pD = FALSE,
                                  seed=rinteger(),
                                  path.read = NULL,
-                                 path.save = NULL) {
+                                 path.save = NULL){
   
   if(!is.null(sims)){
     if(is.nlist(sims)) sims <- nlists(sims)
@@ -89,6 +93,12 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   code %<>% prepare_code(code.add, code.values)
   
+  if(deviance == TRUE){
+    load.module("dic")
+    monitor <- unique(c(monitor, "deviance"))
+  }
+  #if(pD == TRUE) monitor <- unique(c(monitor, "pD"))
+  
   #jags
   if(is.null(path.save)){
     if(!is.null(path.read) & is.null(sims)) sims <- sims_data(path.read)
@@ -101,17 +111,20 @@ sma_analyse_bayesian <- function(sims = NULL,
                                                 seed=seeds[i])}
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
+    if(deviance == TRUE) unload.module("dic")
     return(as.mcmcrs(res.list))
     
   }else{sma_batchr(sma.fun=analyse_dataset_bayesian, seeds=seeds, 
-                        path.read=path.read, path.save=path.save,
-                        prefix="data", suffix="analys",
-                        code=code, monitor=monitor,
-                        inits=inits, n.chains=n.chains,
-                        n.adapt=n.adapt, n.burnin=n.burnin, 
-                        n.iter=n.iter, thin=thin)  
+                   path.read=path.read, path.save=path.save,
+                   prefix="data", suffix="analys",
+                   code=code, monitor=monitor,
+                   inits=inits, n.chains=n.chains,
+                   n.adapt=n.adapt, n.burnin=n.burnin, 
+                   n.iter=n.iter, thin=thin)  
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
+    if(deviance == TRUE) unload.module("dic")
   }
 }
-
+  
+  

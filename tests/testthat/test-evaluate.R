@@ -14,7 +14,8 @@ test_that("sma_evaluate",{
                                  n.adapt = 100,
                                  n.burnin = 0,
                                  n.iter = 2,
-                                 monitor = c("theta", "df"))
+                                 monitor = c("theta", "df"),
+                                 deviance=FALSE)
   sma_evaluate(result, measures="bias", parameters=parameters, monitor=".*")
   sma_evaluate(result, measures="mse", parameters=parameters, monitor=".*")
   sma_evaluate(result, measures="cp.quantile", parameters=parameters, monitor=".*")
@@ -35,7 +36,8 @@ test_that("custom expr and FUNS",{
                                  n.adapt = 101,
                                  n.burnin = 0,
                                  n.iter = 101,
-                                 monitor="mu")
+                                 monitor="mu",
+                                 deviance=FALSE)
   result_method1 <- sma_evaluate(result, measures="",
                                parameters=parameters,
                                custom_funs= list(estimator = mean),

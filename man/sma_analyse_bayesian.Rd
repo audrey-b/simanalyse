@@ -6,7 +6,7 @@
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
-  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3,
+  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3, deviance = TRUE,
   seed = rinteger(), path.read = NULL, path.save = NULL)
 }
 \arguments{
@@ -33,6 +33,8 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 \item{thin}{A numeric scalar of at least 1 specifying the thinning factor. Default is 1.}
 
 \item{n.chains}{An integer greater than zero specifying the number of MCMC chains to run}
+
+\item{deviance}{A flag. Indicates whether to monitor deviance for future DIC calculation.}
 
 \item{seed}{An integer. The random seed to use for analysing the data.}
 

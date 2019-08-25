@@ -39,7 +39,8 @@ test_that("save analyses to files",{
                        monitor = "mu",
                        path.read = tempdir,
                        path.save = file.path(tempdir, "analyses"),
-                       seed=56L)
+                       seed=56L,
+                       deviance=FALSE)
   
 })
 
@@ -61,7 +62,8 @@ test_that("save analyses to files",{
                                   n.iter = 1,
                                   n.chains=3,
                                   monitor = c("mu", "tt"),
-                                  inits=list(inits1, inits2, inits3))
+                                  inits=list(inits1, inits2, inits3),
+                                  deviance=FALSE)
  })
 
  
@@ -85,7 +87,8 @@ test_that("save analyses to files",{
                                   n.iter = 1,
                                   n.chains=3,
                                   monitor = c("mu", "tt"),
-                                  inits=inits.fun)
+                                  inits=inits.fun,
+                                  deviance=FALSE)
    set.seed(99L)
    result2 <- sma_analyse_bayesian(sims=sims,
                                    code = code,
@@ -95,6 +98,7 @@ test_that("save analyses to files",{
                                    n.iter = 1,
                                    n.chains=3,
                                    monitor = c("mu", "tt"),
-                                   inits=inits.fun)
+                                   inits=inits.fun,
+                                   deviance=FALSE)
    expect_identical(result1, result2)
  })
