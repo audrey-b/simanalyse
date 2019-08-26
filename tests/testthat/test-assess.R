@@ -12,7 +12,7 @@ test_that("sma_assess",{
                               n.burnin=0,
                               n.iter=50,
                               deviance=FALSE)
-  sma_assess(res, "a = mu", sims, code, nsamples=5)
+  sma_assess(res, "a = mu", sims, code, nsamples=5L)
 })
 
 

@@ -39,6 +39,8 @@ sma_assess <- function(object,
   
   data <- data[[1]]
   
+  nsamples <- as.integer(nsamples)
+  
   #collapse chains
   object %<>% 
     mcmcr::as.mcmcr() %>% 
@@ -48,7 +50,7 @@ sma_assess <- function(object,
   sampleids <- sample(1:(mcmcr::niters(object)), nsamples)
   
   #sample
-  sample <- subset(object, iterations=sampleids)
+  sample <- subset(object, iters=sampleids)
   
   #calculate expectations
   expectations <- mcmc_derive(sample, expr=expr)
@@ -56,9 +58,10 @@ sma_assess <- function(object,
   names(expectations) <- p0("expectation.", names(expectations))
   
   #statistic
-  if(statistic == "FT") expr.stat <- "(sqrt(data) - sqrt(expectation))^2"
-  else if(statistic == "LR") expr.stat <- "2*data*log(data/expectation)"
-  else if(statistic == "chi2") expr.stat <- "(data - expectation)^2/expectation" #general case: denom is variance
+  if(statistic == "FT"){expr.stat <- "(sqrt(data) - sqrt(expectation))^2"
+  }else if(statistic == "LR"){ expr.stat <- "2*data*log(data/expectation)"
+  }else if(statistic == "chi2"){ expr.stat <- "(data - expectation)^2/expectation" #general case: denom is variance
+  }
   
   #calculate Freeman-Tukey statistic with data
   expr.FT.1 <- p0("D1 =", expr.stat)
@@ -72,7 +75,7 @@ sma_assess <- function(object,
   for(i in 1L:nsamples){
     simdata[[i]] <- sims_simulate(code, 
                                   constants=constants, 
-                                  parameters=as.nlist(subset(sample, iterations = i)),
+                                  parameters=as.nlist(subset(sample, iters = i)),
                                   nsims=1)[[1]]
   }
   expr.FT.2 <- "D2 = (sqrt(data) - sqrt(expectation))^2"
