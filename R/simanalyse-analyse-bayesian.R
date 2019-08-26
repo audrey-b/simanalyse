@@ -112,7 +112,7 @@ sma_analyse_bayesian <- function(sims = NULL,
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")
-    return(as.mcmcrs(res.list))
+    return((mcmcr::as.mcmcrs(res.list)))
     
   }else{sma_batchr(sma.fun=analyse_dataset_bayesian, seeds=seeds, 
                    path.read=path.read, path.save=path.save,

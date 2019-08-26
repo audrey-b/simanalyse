@@ -70,7 +70,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   
   #nlists <-  sample %>% as.mcmcr() %>% collapse_chains() %>% as.nlists
   
-  return(as.mcmcr(sample))
+  return((mcmcr::as.mcmcr(sample)))
   #saveRDS(nlist, file.path(path, data_file_name(sim)))
   #data_file_name <- function(sim) p0("data", sprintf("%07d", sim), ".rds")
   
@@ -181,7 +181,7 @@ derive_measures <- function(nlist, derive_expr, keywords, parameters){
 
 evaluate_across <- function(summary.nlist, FUN){
   summary.nlist %>% 
-    aggregate(FUN = mean) %>%
+    aggregate(fun = mean) %>%
     return
 }
 

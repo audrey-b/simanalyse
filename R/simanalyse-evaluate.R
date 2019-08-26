@@ -59,7 +59,7 @@ sma_evaluate <- function(object,
                           custom_expr_before="",
                           custom_expr_after=""){
         
-        object %<>% lapply(function(x) as.nlists(collapse_chains(x)))
+        object %<>% lapply(function(x) as.nlists(mcmcr::collapse_chains(x)))
         
         chk_list(object)
         lapply(object, chk_is, class="nlists")

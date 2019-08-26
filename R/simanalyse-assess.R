@@ -41,11 +41,11 @@ sma_assess <- function(object,
   
   #collapse chains
   object %<>% 
-    as.mcmcr %>% 
-    collapse_chains
+    mcmcr::as.mcmcr() %>% 
+    mcmcr::collapse_chains()
   
   #choose iters to sample
-  sampleids <- sample(1:niters(object), nsamples)
+  sampleids <- sample(1:(mcmcr::niters(object)), nsamples)
   
   #sample
   sample <- subset(object, iterations=sampleids)
@@ -77,15 +77,15 @@ sma_assess <- function(object,
   }
   expr.FT.2 <- "D2 = (sqrt(data) - sqrt(expectation))^2"
   all.expr.FT.2 <- expand_expr(expr.FT.2, c("data", "expectation"), monitor, monitor)
-  simdata.mcmcr <- as.mcmcr(simdata)
+  simdata.mcmcr <- mcmcr::as.mcmcr(simdata)
   names(simdata.mcmcr) <- paste0("data.", names(simdata[[1]]))
-  obj <- bind_parameters(expectations, simdata.mcmcr)
+  obj <- mcmcr::bind_parameters(expectations, simdata.mcmcr)
   D2 <- mcmc_derive(obj, all.expr.FT.2)
   
   #Calculate the bayesian p-value
   
   all.expr.p <- expand_expr("p = as.integer(D2 > D1)", c("D1", "D2"), monitor, monitor)
-  zeroones <- bind_parameters(D1, D2) %>% 
+  zeroones <- mcmcr::bind_parameters(D1, D2) %>% 
     mcmc_derive(all.expr.p) %>%
     as.nlists
   p <- aggregate(zeroones, fun=mean)
