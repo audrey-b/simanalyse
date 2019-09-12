@@ -37,7 +37,7 @@ sma_summarise <- function(object,
   chk_is(object, class=c("mcmcr", "mcmcrs"))
   chk_is(measures, class="character")
   chk_string(monitor)
-  chk_proportion(alpha)
+  chk_number(alpha); chk_range(alpha)
   chk_list(custom_funs)
   lapply(custom_funs, chk_function)
   

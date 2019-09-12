@@ -1,6 +1,6 @@
 Package: simanalyse
 Title: A Package to Analyse Simulation Study Data and Summarise the Results 
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person("Audrey", "Beliveau", , "audrey.beliveau@uwaterloo.ca", c("aut", "cre")),
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", c("aut"), comment = c(ORCID = "0000-0002-7683-4592"))
@@ -9,8 +9,8 @@ Description: A Package to Analyse Simulation Study Data and Summarise Results.
 License: GPL-3
 Depends: nlist
 Imports: 
-  chk,
-  sims,
+  chk (>= 0.0.1.9016),
+  sims (>= 0.0.0.9013),
   mcmcr,
   mcmcderive,
   checkr,
