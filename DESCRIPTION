@@ -9,7 +9,7 @@ Description: A Package to Analyse Simulation Study Data and Summarise Results.
 License: GPL-3
 Depends: nlist
 Imports: 
-  chk (>= 0.0.1.9016),
+  chk (>= 0.0.1.9019),
   sims (>= 0.0.0.9013),
   mcmcr,
   mcmcderive,
@@ -17,7 +17,7 @@ Imports:
   magrittr,
   stringr,
   rjags,
-  batchr,
+  batchr (>= 0.0.0.9013),
   parallel
 Suggests: 
     covr,
