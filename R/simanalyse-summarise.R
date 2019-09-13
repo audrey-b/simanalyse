@@ -35,13 +35,11 @@ sma_summarise <- function(object,
                           custom_funs = list()) {
   
   chk_is(object, class=c("mcmcr", "mcmcrs"))
-  chk_is(measures, class="character")
-  chk_is(monitor, class="character")
-  chk_is(alpha, "numeric")
-  chk_range(alpha)
-  chk_is(custom_funs, class="list")
-  lapply(custom_funs, chk_is, class="function")
-  
+  chk_vector(measures); chk_all(measures, chk_string)
+  chk_string(monitor)
+  chk_number(alpha); chk_range(alpha)
+  chk_list(custom_funs); chk_all(custom_funs, chk_function)
+
   aggregate.FUNS = list()
     
   if("mean" %in% measures){

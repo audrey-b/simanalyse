@@ -22,8 +22,8 @@ set_seed_inits <- function(seed, inits, n.chains) {
     inits$.RNG.name <- "base::Wichmann-Hill"
     inits$.RNG.seed <- abs(as.integer(rinteger()))
     
-  }else if(!vld_is(inits[[1]], "list")){ #1 set of inits, same for each chain
-    
+  }else if(!vld_list(inits[[1]])){ #1 set of inits, same for each chain
+
     inits$.RNG.name <- "base::Wichmann-Hill"
     inits$.RNG.seed <- abs(as.integer(rinteger()))
     
