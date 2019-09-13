@@ -34,8 +34,11 @@ sma_derive <- function(object, code, monitor=".*") {
     }else{
       primary.params <- names(object[[1]])
     }
-  monitor.non.primary <- monitor[!(primary.params %in% monitor)]
+    
+  monitor.non.primary <- monitor[!(monitor %in% primary.params)]
   }
+  
+  #if(length(monitor.non.primary) > 1) monitor <- paste(monitor.non.primary, collapse=" | ") #make regular expression
 
   if(class(object)=="mcmcrs"){
     new_obj <- lapply(object, mcmc_derive, expr=code, monitor=monitor.non.primary, primary=TRUE)
@@ -45,7 +48,7 @@ sma_derive <- function(object, code, monitor=".*") {
     if(monitor!=".*") new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
   }else if(class(object)=="nlist"){
     new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, primary=TRUE)    
-    if(monitor!=".*") new_obj <- subset(new_obj, select=monitor) #remove primary that are not in monitor
+    if(monitor!=".*") new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
   }
   
   return(new_obj)

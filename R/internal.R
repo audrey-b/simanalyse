@@ -39,7 +39,7 @@ set_seed_inits <- function(seed, inits, n.chains) {
     for(i in 1:n.lists){
       inits[[i]]$.RNG.name <- "lecuyer::RngStream"
       inits[[i]]$.RNG.state <- stream[-1]
-      stream <- nextRNGStream(stream)
+      stream <- parallel::nextRNGStream(stream)
     }  
     
     

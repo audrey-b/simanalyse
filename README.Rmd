@@ -116,6 +116,17 @@ sma_analyse_bayesian(code = code,
                      path.save = tempdir())
 ```
 
+## Parallelization
+
+Parallelization is achieved using the
+[future](https://github.com/HenrikBengtsson/future) package.
+
+To use all available cores on the local machine simply execute the
+following code before calling `sims_analyse_bayesian()`.
+
+    library(future)
+    plan(multisession)
+
 ## Contribution
 
 Please report any [issues](https://github.com/audrey-b/simanalyse/issues).

@@ -86,6 +86,7 @@ results <- sma_analyse_bayesian(sims = sims,
                                 n.burnin = 0,
                                 n.iter = 3,
                                 monitor = names(params))
+#> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -115,14 +116,24 @@ results <- sma_analyse_bayesian(sims = sims,
 #>    Total graph size: 18
 #> 
 #> Initializing model
+#> 
+#> Module dic unloaded
 ```
 
-Derive posterior samples for new parameters. To assess the performance
+Derive posterior samples for new parameters. To evaluate the performance
 of the method for those new parameters (e.g. bias), the same
 transformation must be applied to the true parameter values.
 
 ``` r
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
+#> Warning: the following parameters were not in expr and so were dropped from
+#> object: 'deviance'
+
+#> Warning: the following parameters were not in expr and so were dropped from
+#> object: 'deviance'
+
+#> Warning: the following parameters were not in expr and so were dropped from
+#> object: 'deviance'
 print(results.derived)
 #> $mcmcr1
 #> $var
@@ -155,10 +166,10 @@ print(params.derived)
 #> an nlist object with 1 natomic element
 ```
 
-Assess the performance of the model using the 3 analyses
+Evaluate the performance of the model using the 3 analyses
 
 ``` r
-sma_assess(results.derived, parameters=params.derived)
+sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
 #> [1] 3.630788
 #> 
@@ -175,7 +186,7 @@ You may also create custom performance measures. The example below shows
 how to reproduce the results above with custom code.
 
 ``` r
-sma_assess(results.derived,
+sma_evaluate(results.derived,
               measures = "", 
               parameters = params.derived, 
               custom_funs = list(estimator = mean,
@@ -215,6 +226,7 @@ sma_analyse_bayesian(code = code,
                      monitor = names(params),
                      path.read = tempdir(),
                      path.save = tempdir())
+#> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -225,7 +237,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-08-22 22:07:34] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-13 19:36:11] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -236,7 +248,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-08-22 22:07:34] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-13 19:36:11] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -247,8 +259,20 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-08-22 22:07:34] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-13 19:36:11] 'data0000003.rds'
+#> Module dic unloaded
 ```
+
+## Parallelization
+
+Parallelization is achieved using the
+[future](https://github.com/HenrikBengtsson/future) package.
+
+To use all available cores on the local machine simply execute the
+following code before calling `sims_analyse_bayesian()`.
+
+    library(future)
+    plan(multisession)
 
 ## Contribution
 

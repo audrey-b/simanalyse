@@ -102,13 +102,12 @@ sma_analyse_bayesian <- function(sims = NULL,
   #jags
   if(is.null(path.save)){
     if(!is.null(path.read) & is.null(sims)) sims <- sims_data(path.read)
-    for(i in 1:n.sims){
-      res.list[[i]] <- analyse_dataset_bayesian(nlistdata=sims[[i]], 
-                                                code=code, monitor=monitor,
-                                                inits=inits, n.chains=n.chains,
-                                                n.adapt=n.adapt, n.burnin=n.burnin, 
-                                                n.iter=n.iter, thin=thin,
-                                                seed=seeds[i])}
+    
+    res.list <- future_pmap(list(nlistdata=sims, seed=seeds), analyse_dataset_bayesian, 
+                           code=code, monitor=monitor,
+                           inits=inits, n.chains=n.chains,
+                           n.adapt=n.adapt, n.burnin=n.burnin, 
+                           n.iter=n.iter, thin=thin)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")
@@ -126,5 +125,4 @@ sma_analyse_bayesian <- function(sims = NULL,
     if(deviance == TRUE) unload.module("dic")
   }
 }
-  
-  
+

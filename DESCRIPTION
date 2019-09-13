@@ -17,10 +17,11 @@ Imports:
   stringr,
   rjags,
   batchr (>= 0.0.0.9013),
-  parallel
+  furrr
 Suggests: 
     covr,
-    testthat
+    testthat,
+    future
 Remotes:
   poissonconsulting/chk,
   poissonconsulting/mcmcr,
