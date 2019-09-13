@@ -101,24 +101,31 @@ sma_evaluate(results.derived,
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 ```
 
-You may also save results to file with
+## Saving to file
+
+When running simulation studies, it is often preferable to save results to file so they can be loaded and modified at a later time. You may save results to file by specifying arguments for the paths to use, as follows:
 
 ```{r}
 set.seed(10L)
+path=tempdir()
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
                     nsims = 3,
                     exists = NA,
-                    path = tempdir())
+                    path = path)
 sma_analyse_bayesian(code = code,
                      code.add = prior,
                      n.adapt = 101,
                      n.burnin = 0,
                      n.iter = 3,
                      monitor = names(params),
-                     path.read = tempdir(),
-                     path.save = tempdir())
+                     path.read = path,
+                     path.save = path)
+sma_derive(code="var=sigma^2", 
+           path.read = path, 
+           path.save = path)
+
 ```
 
 ## Parallelization

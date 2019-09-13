@@ -5,6 +5,8 @@
 #' @param object One of either nlists, mcmc or mcmc.list or a list of those. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
+#' @param path.read A string. If object is NULL, analyses results are read from that path on disk.
+#' @param path.save A string specifying the path to the directory to save the derived results. By default path = NULL and the results are not saved but returned as a list of nlists objects.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 
@@ -26,7 +28,10 @@
 #' sma_derive(res, "sd=sqrt(variance)")
 #' sma_derive(parameters, "sd=sqrt(variance)")
 
-sma_derive <- function(object, code, monitor=".*", progress = FALSE,
+sma_derive <- function(object=NULL, code, monitor=".*", 
+                       path.read = NULL,
+                       path.save = NULL,
+                       progress = FALSE,
                        options = furrr::future_options()) {
   
   #do not monitor non-primary variables that are not in monitor
@@ -43,15 +48,19 @@ sma_derive <- function(object, code, monitor=".*", progress = FALSE,
   
   #if(length(monitor.non.primary) > 1) monitor <- paste(monitor.non.primary, collapse=" | ") #make regular expression
 
-  if(class(object)=="mcmcrs"){
-    new_obj <- future_map(object, mcmc_derive, expr=code, monitor=monitor.non.primary, primary=TRUE, .progress=progress, .options=options)
-    if(monitor!=".*") new_obj <- future_map(new_obj, subset, pars=monitor, .progress=progress, .options=options) #remove primary that are not in monitor
-  }else if(class(object)=="mcmcr" | class(object)=="nlist"){
-    new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, primary=TRUE)    
-    if(monitor!=".*") new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
-  }
-  
-  return(new_obj)
+  if(is.null(path.save)){
+    if(!is.null(path.read) & is.null(object)){
+      files <- list.files(path.read, pattern = "^analys\\d{7,7}[.]rds$")
+      object <- lapply(file.path(path.read, files), readRDS)
+      }
+    sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options, seed = NULL)
+    
+  }else{sma_batchr(sma.fun=sma_derive_internal, 
+                   path.read=path.read, path.save=path.save,
+                   prefix="analys", suffix="deriv",
+                   code=code, monitor=monitor,
+                   monitor.non.primary=monitor.non.primary,
+                   progress=progress, options=options, seeds=NULL)  }
          
 }
 

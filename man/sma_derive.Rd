@@ -4,7 +4,8 @@
 \alias{sma_derive}
 \title{Apply R code to derive new variables.}
 \usage{
-sma_derive(object, code, monitor = ".*", progress = FALSE,
+sma_derive(object = NULL, code, monitor = ".*", path.read = NULL,
+  path.save = NULL, progress = FALSE,
   options = furrr::future_options())
 }
 \arguments{
@@ -13,6 +14,10 @@ sma_derive(object, code, monitor = ".*", progress = FALSE,
 \item{code}{A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}
+
+\item{path.read}{A string. If object is NULL, analyses results are read from that path on disk.}
+
+\item{path.save}{A string specifying the path to the directory to save the derived results. By default path = NULL and the results are not saved but returned as a list of nlists objects.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

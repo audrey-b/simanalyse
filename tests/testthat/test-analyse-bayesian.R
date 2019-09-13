@@ -19,30 +19,7 @@ test_that("sma_analyse_bayesian",{
   #sma_evaluate(result, "Epsd", parameters=params, monitor="mu")
 })
 
-test_that("save analyses to files",{
-  tempdir <- file.path(tempdir(), "sims")
-  unlink(tempdir, recursive = TRUE)
-  set.seed(10L)
-  params <- nlist(mu=0)
-  sims_simulate("a ~ dnorm(mu,1)", 
-                parameters = params, 
-                nsims=2,
-                path=tempdir,
-                exists=NA)
-  sims_data_files(tempdir)
-  
-  sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
-                               mu ~ dunif(-3,3)",
-                       n.adapt = 101,
-                       n.burnin = 0,
-                       n.iter = 101,
-                       monitor = "mu",
-                       path.read = tempdir,
-                       path.save = file.path(tempdir, "analyses"),
-                       seed=56L,
-                       deviance=FALSE)
-  
-})
+
 
 
  test_that("inits is a list of inits for multiple chains",{
