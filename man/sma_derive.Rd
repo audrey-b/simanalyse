@@ -4,8 +4,9 @@
 \alias{sma_derive}
 \title{Apply R code to derive new variables.}
 \usage{
-sma_derive(object = NULL, code, monitor = ".*", path.read = NULL,
-  path.save = NULL, progress = FALSE,
+sma_derive(object = NULL, code, monitor = ".*",
+  path.read = getOption("sims.path"),
+  path.save = getOption("sims.path"), progress = FALSE,
   options = furrr::future_options())
 }
 \arguments{

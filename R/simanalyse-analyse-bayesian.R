@@ -53,8 +53,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  deviance = TRUE,
                                  #pD = FALSE,
                                  seed=rinteger(),
-                                 path.read = NULL,
-                                 path.save = NULL,
+                                 path.read = getOption("sims.path"),
+                                 path.save = getOption("sims.path"),
                                  progress = FALSE,
                                  options = furrr::future_options()){
   

@@ -103,29 +103,26 @@ sma_evaluate(results.derived,
 
 ## Saving to file
 
-When running simulation studies, it is often preferable to save results to file so they can be loaded and modified at a later time. You may save results to file by specifying arguments for the paths to use, as follows:
+When running simulation studies, it is often preferable to save results to file so they can be loaded and modified at a later time. You may save results to file by specifying arguments for the paths to use in each function, or more simply by specifying the path using options(sims.path =), as follows:
 
 ```{r}
 set.seed(10L)
-path=tempdir()
+options(sims.path = tempdir())
+
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
                     nsims = 3,
-                    exists = NA,
-                    path = path)
+                    exists = NA)
+
 sma_analyse_bayesian(code = code,
                      code.add = prior,
                      n.adapt = 101,
                      n.burnin = 0,
                      n.iter = 3,
-                     monitor = names(params),
-                     path.read = path,
-                     path.save = path)
-sma_derive(code="var=sigma^2", 
-           path.read = path, 
-           path.save = path)
+                     monitor = names(params))
 
+sma_derive(code="var=sigma^2")
 ```
 
 ## Parallelization

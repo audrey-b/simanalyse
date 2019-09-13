@@ -214,27 +214,27 @@ sma_evaluate(results.derived,
 
 When running simulation studies, it is often preferable to save results
 to file so they can be loaded and modified at a later time. You may save
-results to file by specifying arguments for the paths to use, as
-follows:
+results to file by specifying arguments for the paths to use in each
+function, or more simply by specifying the path using options(sims.path
+=), as follows:
 
 ``` r
 set.seed(10L)
-path=tempdir()
+options(sims.path = tempdir())
+
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
                     nsims = 3,
-                    exists = NA,
-                    path = path)
+                    exists = NA)
 #> [1] TRUE
+
 sma_analyse_bayesian(code = code,
                      code.add = prior,
                      n.adapt = 101,
                      n.burnin = 0,
                      n.iter = 3,
-                     monitor = names(params),
-                     path.read = path,
-                     path.save = path)
+                     monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -246,7 +246,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-13 22:03:32] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-13 22:27:26] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -257,7 +257,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-13 22:03:32] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-13 22:27:26] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -268,11 +268,10 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-13 22:03:32] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-13 22:27:26] 'data0000003.rds'
 #> Module dic unloaded
-sma_derive(code="var=sigma^2", 
-           path.read = path, 
-           path.save = path)
+
+sma_derive(code="var=sigma^2")
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
 

@@ -7,8 +7,9 @@
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
   n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3, deviance = TRUE,
-  seed = rinteger(), path.read = NULL, path.save = NULL,
-  progress = FALSE, options = furrr::future_options())
+  seed = rinteger(), path.read = getOption("sims.path"),
+  path.save = getOption("sims.path"), progress = FALSE,
+  options = furrr::future_options())
 }
 \arguments{
 \item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.}
