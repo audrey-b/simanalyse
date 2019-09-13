@@ -19,6 +19,8 @@
 #' @param seed An integer. The random seed to use for analysing the data.
 #' @param path.read A string. If data is NULL, data is read from that path on disk.
 #' @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
+#' @param progress A flag specifying whether to print a progress bar.
+#' @param options The future specific options to use with the workers.
 #' 
 #' @return A flag.
 #' @export
@@ -52,7 +54,9 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  #pD = FALSE,
                                  seed=rinteger(),
                                  path.read = NULL,
-                                 path.save = NULL){
+                                 path.save = NULL,
+                                 progress = FALSE,
+                                 options = furrr::future_options()){
   
   if(!is.null(sims)){
     if(is.nlist(sims)) sims <- nlists(sims)
@@ -87,6 +91,9 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   chk_whole_number(seed); chk_range(seed, c(-.max_integer, .max_integer))
   
+  chk_flag(progress)
+  chk_s3_class(options, "future_options")
+  
   seeds <- rinteger(n.sims)
   
   res.list <- list(nlists(nlist()))
@@ -107,7 +114,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                            code=code, monitor=monitor,
                            inits=inits, n.chains=n.chains,
                            n.adapt=n.adapt, n.burnin=n.burnin, 
-                           n.iter=n.iter, thin=thin)
+                           n.iter=n.iter, thin=thin, .progress = progress, .options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")

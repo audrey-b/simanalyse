@@ -6,7 +6,8 @@
 \usage{
 sma_evaluate(object, measures = c("bias", "mse", "cp.quantile"),
   estimator = mean, alpha = 0.05, parameters, monitor = ".*",
-  custom_funs, custom_expr_before = "", custom_expr_after = "")
+  custom_funs, custom_expr_before = "", custom_expr_after = "",
+  progress = FALSE, options = furrr::future_options())
 }
 \arguments{
 \item{object}{A list of nlists object of results or a single nlists of results.}
@@ -30,6 +31,10 @@ sma_evaluate(object, measures = c("bias", "mse", "cp.quantile"),
 \item{custom_expr_before}{A string of R code to derive custom measures. This code is used BEFORE averaging over all simulations. E.g. "mse = (posteriormedian - parameters)^2". Functions from \code{custom_funs} may be used as well as the keywords 'parameters' (the true values of the parameters) and 'estimator' (the estimator defined in \code{estimator}).}
 
 \item{custom_expr_after}{A string of R code to derive additional custom measures. This code is used AFTER averaging over all simulations. E.g. "rmse = sqrt(mse)". Measures calculated from \code{custom_expr_before} may be used as well as the keyword 'parameters' (the true values of the parameters).}
+
+\item{progress}{A flag specifying whether to print a progress bar.}
+
+\item{options}{The future specific options to use with the workers.}
 }
 \value{
 A flag.

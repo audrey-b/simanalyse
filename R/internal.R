@@ -152,19 +152,19 @@ make_expr_and_FUNS <- function(measures,
 
 evaluate_all_measures <- function(listnlists, 
                                 expr_FUNS, 
-                                parameters){
+                                parameters,
+                                progress = FALSE,
+                                options = furrr::future_options()){
   
-  listnlists %>% 
-    lapply(evaluate_within, expr_FUNS[["expr"]], 
-           expr_FUNS[["aggregate.FUNS"]], 
-           parameters) %>%
+  future_map(listnlists, evaluate_within, 
+             expr = expr_FUNS[["expr"]], 
+             aggregate.FUNS = expr_FUNS[["aggregate.FUNS"]], 
+             parameters = parameters, .progress = progress, .options=options) %>%
     as.nlists() %>%
     evaluate_across(mean) %>%
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
                     parameters) %>%
-    #summary_reformat(measures=measures,
-    #                 monitor=names(listnlists)[[1]]) %>%
     return
 }
 

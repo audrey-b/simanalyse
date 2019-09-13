@@ -4,7 +4,8 @@
 \alias{sma_derive}
 \title{Apply R code to derive new variables.}
 \usage{
-sma_derive(object, code, monitor = ".*")
+sma_derive(object, code, monitor = ".*", progress = FALSE,
+  options = furrr::future_options())
 }
 \arguments{
 \item{object}{One of either nlists, mcmc or mcmc.list or a list of those. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.}
@@ -12,6 +13,10 @@ sma_derive(object, code, monitor = ".*")
 \item{code}{A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}
+
+\item{progress}{A flag specifying whether to print a progress bar.}
+
+\item{options}{The future specific options to use with the workers.}
 }
 \value{
 An object of the same class as \code{object}

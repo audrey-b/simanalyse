@@ -7,7 +7,8 @@
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
   n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3, deviance = TRUE,
-  seed = rinteger(), path.read = NULL, path.save = NULL)
+  seed = rinteger(), path.read = NULL, path.save = NULL,
+  progress = FALSE, options = furrr::future_options())
 }
 \arguments{
 \item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.}
@@ -41,6 +42,10 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 \item{path.read}{A string. If data is NULL, data is read from that path on disk.}
 
 \item{path.save}{A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.}
+
+\item{progress}{A flag specifying whether to print a progress bar.}
+
+\item{options}{The future specific options to use with the workers.}
 }
 \value{
 A flag.

@@ -18,6 +18,9 @@
 #' @param custom_funs A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).
 #' @param custom_expr_before A string of R code to derive custom measures. This code is used BEFORE averaging over all simulations. E.g. "mse = (posteriormedian - parameters)^2". Functions from \code{custom_funs} may be used as well as the keywords 'parameters' (the true values of the parameters) and 'estimator' (the estimator defined in \code{estimator}).
 #' @param custom_expr_after A string of R code to derive additional custom measures. This code is used AFTER averaging over all simulations. E.g. "rmse = sqrt(mse)". Measures calculated from \code{custom_expr_before} may be used as well as the keyword 'parameters' (the true values of the parameters). 
+#' @param progress A flag specifying whether to print a progress bar.
+#' @param options The future specific options to use with the workers.
+#' 
 # @param summaries A nlists of previously calculated summaries. Providing these will speed up this function, as they won't be recalculated.
 #' @return A flag.
 #' @export
@@ -50,14 +53,16 @@
 #  silent A flag specifying whether to suppress warnings.
 
 sma_evaluate <- function(object, 
-                          measures=c("bias", "mse", "cp.quantile"), 
-                          estimator=mean, 
-                          alpha=0.05,
-                          parameters,
-                          monitor=".*",
-                          custom_funs,
-                          custom_expr_before="",
-                          custom_expr_after=""){
+                         measures=c("bias", "mse", "cp.quantile"), 
+                         estimator=mean, 
+                         alpha=0.05,
+                         parameters,
+                         monitor=".*",
+                         custom_funs,
+                         custom_expr_before="",
+                         custom_expr_after="",
+                         progress = FALSE,
+                         options = furrr::future_options()){
         
         object %<>% lapply(function(x) as.nlists(mcmcr::collapse_chains(x)))
         
@@ -72,6 +77,9 @@ sma_evaluate <- function(object,
         chk_string(custom_expr_before)
         chk_string(custom_expr_after)
         
+        chk_flag(progress)
+        chk_s3_class(options, "future_options")
+        
         if(!missing(custom_funs)){
                 chk_list(custom_funs)
                 lapply(custom_funs, chk_function)
@@ -82,8 +90,10 @@ sma_evaluate <- function(object,
         }
         
         evaluate_all_measures(object, 
-                               make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
-                               parameters) %>% return
+                              make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
+                              parameters,
+                              progress=progress,
+                              options=options) %>% return
 }
 
 

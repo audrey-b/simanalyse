@@ -27,13 +27,6 @@ knitr::opts_chunk$set(
 
 simanalyse is an R package to analyse simulation study data and summarise results.
 
-## Installation
-
-To install the latest release version from [CRAN](https://cran.r-project.org)
-```r
-install.packages("simanalyse")
-```
-
 To install the latest development version from [GitHub](https://github.com/audrey-b/simanalyse)
 ```r
 #install.packages("remotes")
@@ -41,6 +34,8 @@ remotes::install_github("audrey-b/simanalyse")
 ```
 
 ## Demonstration
+
+### Simulate Data
 
 Simulate 3 datasets using the sims package (we use only 3 datasets for demonstration purposes)
 ```{r}
@@ -58,6 +53,8 @@ sims <- sims::sims_simulate(code,
 print(sims)
 ```
 
+### Analyse Data
+
 Analyse all 3 datasets (here we use only a few iterations for demonstration purposes)
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
@@ -66,18 +63,26 @@ results <- sma_analyse_bayesian(sims = sims,
                                 code.add = prior,
                                 n.adapt = 100,
                                 n.burnin = 0,
-                                n.iter = 3,
+                                n.iter = 1000,
                                 monitor = names(params))
 ```
 
-Derive posterior samples for new parameters. To evaluate the performance of the method for those new parameters (e.g. bias), the same transformation must be applied to the true parameter values.
+### Derive new parameters (if required)
+
+Derive posterior samples for new parameters. 
 ```{r}
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
+```
 
+The same transformation must be applied to the true parameter values for eventually evaluating the performance (e.g. bias) of the method for those new parameters, 
+
+```{r}
 params.derived <- sma_derive(params, "var=sigma^2", monitor="var")
 print(params.derived)
 ```
+
+### Summarise the results of the simulation study 
 
 Evaluate the performance of the model using the 3 analyses
 ```{r}
@@ -122,7 +127,7 @@ Parallelization is achieved using the
 [future](https://github.com/HenrikBengtsson/future) package.
 
 To use all available cores on the local machine simply execute the
-following code before calling `sims_analyse_bayesian()`.
+following code before calling `sims_analyse_bayesian()`, `sims_analyse_derive()` and/or `sims_analyse_evaluate()`.
 
     library(future)
     plan(multisession)

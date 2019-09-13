@@ -25,15 +25,6 @@ status](https://www.r-pkg.org/badges/version/simanalyse)](https://cran.r-project
 simanalyse is an R package to analyse simulation study data and
 summarise results.
 
-## Installation
-
-To install the latest release version from
-[CRAN](https://cran.r-project.org)
-
-``` r
-install.packages("simanalyse")
-```
-
 To install the latest development version from
 [GitHub](https://github.com/audrey-b/simanalyse)
 
@@ -43,6 +34,8 @@ remotes::install_github("audrey-b/simanalyse")
 ```
 
 ## Demonstration
+
+### Simulate Data
 
 Simulate 3 datasets using the sims package (we use only 3 datasets for
 demonstration purposes)
@@ -74,6 +67,8 @@ print(sims)
 #> an nlists object of 3 nlist objects each with 2 natomic elements
 ```
 
+### Analyse Data
+
 Analyse all 3 datasets (here we use only a few iterations for
 demonstration purposes)
 
@@ -84,7 +79,7 @@ results <- sma_analyse_bayesian(sims = sims,
                                 code.add = prior,
                                 n.adapt = 100,
                                 n.burnin = 0,
-                                n.iter = 3,
+                                n.iter = 1000,
                                 monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
@@ -120,44 +115,50 @@ results <- sma_analyse_bayesian(sims = sims,
 #> Module dic unloaded
 ```
 
-Derive posterior samples for new parameters. To evaluate the performance
-of the method for those new parameters (e.g. bias), the same
-transformation must be applied to the true parameter values.
+### Derive new parameters (if required)
+
+Derive posterior samples for new parameters.
 
 ``` r
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
-#> Warning: the following parameters were not in expr and so were dropped from
-#> object: 'deviance'
+#> Warning: The following parameters were not in expr and so were dropped from
+#> object: 'deviance'.
 
-#> Warning: the following parameters were not in expr and so were dropped from
-#> object: 'deviance'
+#> Warning: The following parameters were not in expr and so were dropped from
+#> object: 'deviance'.
 
-#> Warning: the following parameters were not in expr and so were dropped from
-#> object: 'deviance'
+#> Warning: The following parameters were not in expr and so were dropped from
+#> object: 'deviance'.
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 16.5214
+#> [1] 6.155803
 #> 
 #> nchains:  3 
-#> niters:  3 
+#> niters:  1000 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 5.690343
+#> [1] 4.905793
 #> 
 #> nchains:  3 
-#> niters:  3 
+#> niters:  1000 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 2.819938
+#> [1] 4.000659
 #> 
 #> nchains:  3 
-#> niters:  3
+#> niters:  1000
+```
 
+The same transformation must be applied to the true parameter values for
+eventually evaluating the performance (e.g. bias) of the method for
+those new parameters,
+
+``` r
 params.derived <- sma_derive(params, "var=sigma^2", monitor="var")
 print(params.derived)
 #> $var
@@ -166,18 +167,20 @@ print(params.derived)
 #> an nlist object with 1 natomic element
 ```
 
+### Summarise the results of the simulation study
+
 Evaluate the performance of the model using the 3 analyses
 
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 3.630788
+#> [1] 1.887762
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 34.41747
+#> [1] 4.737858
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -196,13 +199,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 3.630788
+#> [1] 1.887762
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 34.41747
+#> [1] 4.737858
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -237,7 +240,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-13 19:36:11] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-13 20:45:03] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -248,7 +251,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-13 19:36:11] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-13 20:45:03] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -259,7 +262,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-13 19:36:11] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-13 20:45:03] 'data0000003.rds'
 #> Module dic unloaded
 ```
 
@@ -269,7 +272,8 @@ Parallelization is achieved using the
 [future](https://github.com/HenrikBengtsson/future) package.
 
 To use all available cores on the local machine simply execute the
-following code before calling `sims_analyse_bayesian()`.
+following code before calling `sims_analyse_bayesian()`,
+`sims_analyse_derive()` and/or `sims_analyse_evaluate()`.
 
     library(future)
     plan(multisession)
