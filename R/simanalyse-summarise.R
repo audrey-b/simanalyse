@@ -36,10 +36,11 @@ sma_summarise <- function(object,
   
   chk_is(object, class=c("mcmcr", "mcmcrs"))
   chk_is(measures, class="character")
-  chk_string(monitor)
-  chk_proportion(alpha)
-  chk_list(custom_funs)
-  lapply(custom_funs, chk_function)
+  chk_is(monitor, class="character")
+  chk_is(alpha, "numeric")
+  chk_range(alpha)
+  chk_is(custom_funs, class="list")
+  lapply(custom_funs, chk_is, class="function")
   
   aggregate.FUNS = list()
     

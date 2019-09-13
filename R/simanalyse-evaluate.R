@@ -61,20 +61,20 @@ sma_evaluate <- function(object,
         
         object %<>% lapply(function(x) as.nlists(mcmcr::collapse_chains(x)))
         
-        chk_list(object)
+        chk_is(object, "list")
         lapply(object, chk_is, class="nlists")
-        check_character(measures)
-        check_function(estimator)
+        chk_vector(measures); chk_all(measures, "chk_string")
+        chk_function(estimator)
         chk_is(parameters, "nlist")
-        check_chr(monitor)
-        check_scalar(alpha) #how can I print error is not between zero and 1?
+        chk_vector(monitor); chk_all(monitor, chk_string)
+        chk_number(alpha); chk_range(alpha, c(0,1))
         
-        check_string(custom_expr_before)
-        check_string(custom_expr_after)
+        chk_string(custom_expr_before)
+        chk_string(custom_expr_after)
         
         if(!missing(custom_funs)){
-                check_list(custom_funs)
-                lapply(custom_funs, check_function)
+                chk_list(custom_funs)
+                lapply(custom_funs, chk_function)
         }else custom_funs=NULL
         
         if(monitor != ".*"){object %<>% lapply(subset, select=monitor)

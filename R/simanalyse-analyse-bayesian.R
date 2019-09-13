@@ -62,30 +62,30 @@ sma_analyse_bayesian <- function(sims = NULL,
   }
   
   
-  check_string(code)
-  check_string(code.add)
-  check_string(code.values)
-  check_string(package)
+  chk_string(code)
+  chk_string(code.add)
+  chk_string(code.values)
+  chk_string(package)
   if(!is.null(path.read)){
-    check_string(path.read)
+    chk_string(path.read)
     n.sims <- length(sims_data_files(path.read))
   }
-  if(!is.null(path.save)) check_string(path.save)
+  if(!is.null(path.save)) chk_string(path.save)
   
   
-  check_character(monitor)
+  chk_is(monitor, "character")
   
   chk_is(inits, class=c("list", "function"))
-  #lapply(check_) need to figure out
+  #lapply(chk_) need to figure out
   
-  check_pos_int(n.chains, coerce=TRUE)
-  check_pos_int(n.adapt, coerce=TRUE)
-  check_noneg_int(n.burnin, coerce=TRUE)
-  check_pos_int(n.iter, coerce=TRUE)
+  chk_whole_number(n.chains); chk_range(n.chains, c(1, .max_integer))
+  chk_whole_number(n.adapt); chk_range(n.adapt, c(0, .max_integer))
+  chk_whole_number(n.burnin); chk_range(n.burnin, c(0, .max_integer))
+  chk_whole_number(n.iter); chk_range(n.iter, c(1, .max_integer))
   
-  check_dbl(thin) #1 to max iter?
+  chk_number(thin); chk_range(thin, c(1, n.iter))
   
-  check_scalar(seed, c(-.max_integer, .max_integer))
+  chk_whole_number(seed); chk_range(seed, c(-.max_integer, .max_integer))
   
   seeds <- rinteger(n.sims)
   
