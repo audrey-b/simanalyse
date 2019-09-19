@@ -246,7 +246,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-13 22:27:26] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-19 19:17:39] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -257,7 +257,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-13 22:27:26] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-19 19:17:39] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -268,7 +268,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-13 22:27:26] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-19 19:17:39] 'data0000003.rds'
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2")

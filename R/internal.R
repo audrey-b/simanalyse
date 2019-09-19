@@ -76,6 +76,13 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   
 }
 
+derive_expr <- function(names, add_expr, measures, expr, all="all"){
+  if(sum(c(names, "all") %in% measures) > 0){
+    expr = paste(c(expr, add_expr), collapse=" \n ", sep="")
+  }
+  return(expr)
+}
+
 make_expr_and_FUNS <- function(measures, 
                                parameters, 
                                estimator, 
@@ -100,48 +107,22 @@ make_expr_and_FUNS <- function(measures,
   if(sum(c("cp.quantile", "cp.length", "all") %in% measures) > 0){
     cp.lower.with.alpha = function(x) do.call("cp.lower",list(x,"alpha"=alpha))
     cp.upper.with.alpha = function(x) do.call("cp.upper",list(x,"alpha"=alpha))
-    aggregate.FUNS %<>% append(list(cp.lower = cp.lower.with.alpha, cp.upper = cp.upper.with.alpha))
+    aggregate.FUNS %<>% append(list(cp.lower = cp.lower.with.alpha, 
+                                    cp.upper = cp.upper.with.alpha))
   }
   
-  #expr
-  if(sum(c("bias", "rb", "br", "var", "se", "all") %in% measures) > 0){
-    expr=paste(c(expr, "bias = estimator - parameters"), collapse=" \n ", sep="")
-  }
-  if(sum(c("mse", "br", "var", "se", "rmse", "rrmse", "all") %in% measures) > 0){
-    expr=paste(c(expr, "mse = (estimator - parameters)^2"), collapse=" \n ", sep="")
-  }
-  if(sum(c("cp.quantile", "all") %in% measures) > 0){
-    expr=paste(c(expr, "cp.quantile = ifelse((parameters >= cp.lower) & (parameters <= cp.upper), 1, 0)"), collapse=" \n ", sep="")
-  }
-  if(sum(c("E", "cv", "all") %in% measures) > 0){
-    expr=paste(c(expr, "E = estimator"), collapse=" \n ", sep="")
-  }
-  if(sum(c("cp.length", "all") %in% measures) > 0){
-    expr=paste(c(expr, "cp.length = cp.upper - cp.lower"), collapse=" \n ", sep="")
-  }
-  
-  #derive
-  if(sum(c("rb", "all") %in% measures) > 0){
-    derive_expr = paste(c(derive_expr, "rb = bias/parameters"), collapse=" \n ", sep="")
-  }
-  if(sum(c("var", "br", "se", "cv", "all") %in% measures) > 0){
-    derive_expr = paste(c(derive_expr, "var = mse - bias^2"), collapse=" \n ", sep="")
-  }
-  if(sum(c("br", "all") %in% measures) > 0){
-    derive_expr = paste(c(derive_expr, "br = bias/sqrt(var)"), collapse=" \n ", sep="")
-  }
-  if(sum(c("se", "all") %in% measures) > 0){
-    derive_expr = paste(c(derive_expr, "se = sqrt(var)"), collapse=" \n ", sep="")
-  }
-  if(sum(c("cv", "all") %in% measures) > 0){
-    derive_expr = paste(c(derive_expr, "cv = sqrt(var)/E"), collapse=" \n ", sep="")
-  }
-  if(sum(c("rmse", "all") %in% measures) > 0){
-    derive_expr = paste(c(derive_expr, "rmse = sqrt(mse)"), collapse=" \n ", sep="")
-  }
-  if(sum(c("rrmse", "all") %in% measures) > 0){
-    derive_expr = paste(c(derive_expr, "rrmse = sqrt(mse)/parameters"), collapse=" \n ", sep="")
-  }
+  expr <- derive_expr(c("bias", "rb", "br", "var", "se"), "bias = estimator - parameters", measures, expr)
+  expr <- derive_expr(c("mse", "br", "var", "se", "rmse", "rrmse"), "mse = (estimator - parameters)^2", measures, expr)
+  expr <- derive_expr(c("cp.quantile"), "cp.quantile = ifelse((parameters >= cp.lower) & (parameters <= cp.upper), 1, 0)", measures, expr)
+  expr <- derive_expr(c("E", "cv"), "E = estimator", measures, expr)
+  expr <- derive_expr(c("cp.length"), "cp.length = cp.upper - cp.lower", measures, expr)
+  derive_expr <- derive_expr(c("rb"), "rb = bias/parameters", measures, derive_expr)
+  derive_expr <- derive_expr(c("var", "br", "se", "cv"), "var = mse - bias^2", measures, derive_expr)
+  derive_expr <- derive_expr(c("br"), "br = bias/sqrt(var)", measures, derive_expr)
+  derive_expr <- derive_expr(c("se"), "se = sqrt(var)", measures, derive_expr)
+  derive_expr <- derive_expr(c("cv"), "cv = sqrt(var)/E", measures, derive_expr)
+  derive_expr <- derive_expr(c("rmse"), "rmse = sqrt(mse)", measures, derive_expr)
+  derive_expr <- derive_expr(c("rrmse"), "rrmse = sqrt(mse)/parameters", measures, derive_expr)
   
   if(custom_expr_before!="") expr=paste(c(expr, custom_expr_before), collapse=" \n ", sep="")
   if(custom_expr_after!="") derive_expr=paste(c(derive_expr, custom_expr_after), collapse=" \n ", sep="")
