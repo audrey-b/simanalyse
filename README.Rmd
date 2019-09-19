@@ -107,7 +107,7 @@ When running simulation studies, it is often preferable to save results to file 
 
 ```{r}
 set.seed(10L)
-options(sims.path = tempdir())
+options(sims.path = file.path(tempdir(), "sims"))
 
 sims::sims_simulate(code, 
                     parameters = params, 
@@ -123,6 +123,11 @@ sma_analyse_bayesian(code = code,
                      monitor = names(params))
 
 sma_derive(code="var=sigma^2")
+```
+
+You may list the files created with
+```{r}
+list.files(getOption("sims.path"), recursive=TRUE)
 ```
 
 ## Parallelization

@@ -247,7 +247,7 @@ fun.batchr <- function(file, path.save, seeds, sma.fun, suffix, ...){#, code, n.
 
 sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, seeds, ...){
   
-  if(!dir.exists(path.save)) dir.create(path.save)
+  if(!dir.exists(path.save)) dir.create(path.save, recursive=TRUE)
   batch_process(fun = fun.batchr, 
                 path=path.read,
                 regexp=p0("^", prefix, "\\d{7,7}.rds$"), 

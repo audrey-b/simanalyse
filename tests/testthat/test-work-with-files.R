@@ -16,11 +16,10 @@ test_that("work with files",{
                        n.burnin = 0,
                        n.iter = 101,
                        monitor = "mu",
-                       path.read = tempdir,
-                       path.save = tempdir,
+                       path = tempdir,
                        seed=56L,
                        deviance=FALSE)
   
-  sma_derive(code="mu2=mu^2", path.read=tempdir, path.save = tempdir)
+  sma_derive(code="mu2=mu^2", path=tempdir)
   
 })

@@ -5,9 +5,8 @@
 \title{Apply R code to derive new variables.}
 \usage{
 sma_derive(object = NULL, code, monitor = ".*",
-  path.read = getOption("sims.path"),
-  path.save = getOption("sims.path"), progress = FALSE,
-  options = furrr::future_options())
+  path = getOption("sims.path"), analysis = "analysis0000001",
+  progress = FALSE, options = furrr::future_options())
 }
 \arguments{
 \item{object}{One of either nlists, mcmc or mcmc.list or a list of those. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.}
@@ -16,9 +15,9 @@ sma_derive(object = NULL, code, monitor = ".*",
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}
 
-\item{path.read}{A string. If object is NULL, analyses results are read from that path on disk.}
+\item{path}{A string. If object is NULL, analyses results are read from that path on disk.}
 
-\item{path.save}{A string specifying the path to the directory to save the derived results. By default path = NULL and the results are not saved but returned as a list of nlists objects.}
+\item{analysis}{If \code{path} is used, a string for the name of the folder that contains the analysis.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

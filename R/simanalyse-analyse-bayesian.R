@@ -2,7 +2,7 @@
 #'
 #' Analyse data for a simulation study. Allows data to be read from files and results to be written to files.
 #' 
-#' @param sims An nlists or nlist object of the data. If NULL, data files are read from \code{path.read}.
+#' @param sims An nlists or nlist object of the data. If NULL, data files are read from \code{path}.
 #' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
 #' @param code.add A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.
 #' @param code.values A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
@@ -17,8 +17,9 @@
 #' @param deviance A flag. Indicates whether to monitor deviance for future DIC calculation.
 # @param pD A flag. Indicates whether to monitor pD for future DIC calculation.
 #' @param seed An integer. The random seed to use for analysing the data.
-#' @param path.read A string. If data is NULL, data is read from that path on disk.
-#' @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
+#' @param path A string. If \code{sims} is NULL, sims are read from that path on disk and results are written to disk.
+# @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
+#' @param analysis If \code{path} is specified, a string for the name of the folder that contains the results.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 #' 
@@ -53,8 +54,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  deviance = TRUE,
                                  #pD = FALSE,
                                  seed=rinteger(),
-                                 path.read = getOption("sims.path"),
-                                 path.save = getOption("sims.path"),
+                                 path = getOption("sims.path"),
+                                 analysis = "analysis0000001",
                                  progress = FALSE,
                                  options = furrr::future_options()){
   
@@ -63,20 +64,18 @@ sma_analyse_bayesian <- function(sims = NULL,
     chk_is(sims, class="nlists")
     lapply(sims, chk_is, class="nlist")
     n.sims <- length(sims)
-  }
+  }else{
+      chk_string(path)
+      n.sims <- length(sims_data_files(path))
+    }
   
   
   chk_string(code)
   chk_string(code.add)
   chk_string(code.values)
   chk_string(package)
-  if(!is.null(path.read)){
-    chk_string(path.read)
-    n.sims <- length(sims_data_files(path.read))
-  }
-  if(!is.null(path.save)) chk_string(path.save)
-  
-  
+
+
   chk_is(monitor, "character")
   
   chk_is(inits, class=c("list", "function"))
@@ -107,8 +106,8 @@ sma_analyse_bayesian <- function(sims = NULL,
   #if(pD == TRUE) monitor <- unique(c(monitor, "pD"))
   
   #jags
-  if(is.null(path.save)){
-    if(!is.null(path.read) & is.null(sims)) sims <- sims_data(path.read)
+  if(is.null(path)){
+    #if(!is.null(path) & is.null(sims)) sims <- sims_data(path)
     
     res.list <- future_pmap(list(nlistdata=sims, seed=seeds), analyse_dataset_bayesian, 
                            code=code, monitor=monitor,
@@ -121,8 +120,9 @@ sma_analyse_bayesian <- function(sims = NULL,
     return((mcmcr::as.mcmcrs(res.list)))
     
   }else{sma_batchr(sma.fun=analyse_dataset_bayesian, seeds=seeds, 
-                   path.read=path.read, path.save=path.save,
-                   prefix="data", suffix="analys",
+                   path.read=path,
+                   path.save=file.path(path, analysis, "results"),
+                   prefix="data", suffix="results",
                    code=code, monitor=monitor,
                    inits=inits, n.chains=n.chains,
                    n.adapt=n.adapt, n.burnin=n.burnin, 

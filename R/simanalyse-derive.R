@@ -5,8 +5,8 @@
 #' @param object One of either nlists, mcmc or mcmc.list or a list of those. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
-#' @param path.read A string. If object is NULL, analyses results are read from that path on disk.
-#' @param path.save A string specifying the path to the directory to save the derived results. By default path = NULL and the results are not saved but returned as a list of nlists objects.
+#' @param path A string. If object is NULL, analyses results are read from that path on disk.
+#' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 
@@ -14,6 +14,7 @@
 # @param parallel An integer specifying the number of CPU cores to use for generating the datasets in parallel. Defaul is 1 (not parallel).
 # @param path A string specifying the path to the directory to save the data sets in. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
 # @param silent A flag specifying whether to suppress warnings.
+# @param path.save A string specifying the path to the directory to save the derived results. By default path = NULL and the results are not saved but returned as a list of nlists objects.
 
 #' @return An object of the same class as \code{object}
 #' @export
@@ -29,8 +30,8 @@
 #' sma_derive(parameters, "sd=sqrt(variance)")
 
 sma_derive <- function(object=NULL, code, monitor=".*", 
-                       path.read = getOption("sims.path"),
-                       path.save = getOption("sims.path"),
+                       path = getOption("sims.path"),
+                       analysis = "analysis0000001",
                        progress = FALSE,
                        options = furrr::future_options()) {
   
@@ -48,16 +49,15 @@ sma_derive <- function(object=NULL, code, monitor=".*",
   
   #if(length(monitor.non.primary) > 1) monitor <- paste(monitor.non.primary, collapse=" | ") #make regular expression
 
-  if(is.null(path.save)){
-    if(!is.null(path.read) & is.null(object)){
-      files <- list.files(path.read, pattern = "^analys\\d{7,7}[.]rds$")
-      object <- lapply(file.path(path.read, files), readRDS)
-      }
+  if(is.null(path)){
+      #files <- list.files(path, pattern = "^results\\d{7,7}[.]rds$")
+      #object <- lapply(file.path(path, files), readRDS)
     sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options, seed = NULL)
     
   }else{sma_batchr(sma.fun=sma_derive_internal, 
-                   path.read=path.read, path.save=path.save,
-                   prefix="analys", suffix="deriv",
+                   path.read = file.path(path, analysis, "results"),
+                   path.save = file.path(path, analysis, "derived"),
+                   prefix="results", suffix="deriv",
                    code=code, monitor=monitor,
                    monitor.non.primary=monitor.non.primary,
                    progress=progress, options=options, seeds=NULL)  }

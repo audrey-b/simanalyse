@@ -220,7 +220,7 @@ function, or more simply by specifying the path using options(sims.path
 
 ``` r
 set.seed(10L)
-options(sims.path = tempdir())
+options(sims.path = file.path(tempdir(), "sims"))
 
 sims::sims_simulate(code, 
                     parameters = params, 
@@ -246,7 +246,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-19 19:17:39] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-19 21:02:38] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -257,7 +257,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-19 19:17:39] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-19 21:02:38] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -268,7 +268,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-19 19:17:39] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-19 21:02:38] 'data0000003.rds'
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2")
@@ -281,6 +281,21 @@ sma_derive(code="var=sigma^2")
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
 #> [1] TRUE
+```
+
+You may list the files created with
+
+``` r
+list.files(getOption("sims.path"), recursive=TRUE)
+#> [1] "analysis0000001/derived/deriv0000001.rds"  
+#> [2] "analysis0000001/derived/deriv0000002.rds"  
+#> [3] "analysis0000001/derived/deriv0000003.rds"  
+#> [4] "analysis0000001/results/results0000001.rds"
+#> [5] "analysis0000001/results/results0000002.rds"
+#> [6] "analysis0000001/results/results0000003.rds"
+#> [7] "data0000001.rds"                           
+#> [8] "data0000002.rds"                           
+#> [9] "data0000003.rds"
 ```
 
 ## Parallelization
