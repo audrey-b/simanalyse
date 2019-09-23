@@ -9,7 +9,7 @@ sma_derive(object = NULL, code, monitor = ".*",
   progress = FALSE, options = furrr::future_options())
 }
 \arguments{
-\item{object}{One of either nlists, mcmc or mcmc.list or a list of those. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.}
+\item{object}{One of either nlists, mcmc or mcmc.list or a list of those. If set to NULL, the object is read from \code{path} instead.}
 
 \item{code}{A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".}
 

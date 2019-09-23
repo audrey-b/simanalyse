@@ -2,7 +2,7 @@
 #' 
 #' Apply R code to derive new variables.
 #' 
-#' @param object One of either nlists, mcmc or mcmc.list or a list of those. If \code{parameters} is specified, this code must only transform variables present in \code{parameters}.
+#' @param object One of either nlists, mcmc or mcmc.list or a list of those. If set to NULL, the object is read from \code{path} instead.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param path A string. If object is NULL, analyses results are read from that path on disk.
@@ -47,6 +47,8 @@ sma_derive <- function(object=NULL, code, monitor=".*",
     monitor.non.primary <- monitor[!(monitor %in% primary.params)]
   }
   
+  
+  
   #if(length(monitor.non.primary) > 1) monitor <- paste(monitor.non.primary, collapse=" | ") #make regular expression
   
   if(is.null(path)){
@@ -54,7 +56,10 @@ sma_derive <- function(object=NULL, code, monitor=".*",
     #object <- lapply(file.path(path, files), readRDS)
     sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options, seed = NULL)
     
-  }else{sma_batchr(sma.fun=sma_derive_internal, 
+  }else{
+    chk_dir(path)
+    
+    sma_batchr(sma.fun=sma_derive_internal, 
                    path.read = file.path(path, analysis, "results"),
                    path.save = file.path(path, analysis, "derived"),
                    prefix="results", suffix="deriv",

@@ -103,7 +103,7 @@ sma_evaluate(results.derived,
 
 ## Saving to file
 
-When running simulation studies, it is often preferable to save results to file so they can be loaded and modified at a later time. You may save results to file by specifying arguments for the paths to use in each function, or more simply by specifying the path using options(sims.path =), as follows:
+When running simulation studies, it is often preferable to work from disk to keep a copy of all the results. You may save results to file by specifying a path argument in functions, or more simply by specifying the path using options(sims.path =), as follows:
 
 ```{r}
 set.seed(10L)
@@ -122,13 +122,23 @@ sma_analyse_bayesian(code = code,
                      n.iter = 3,
                      monitor = names(params))
 
-sma_derive(code="var=sigma^2")
+sma_derive(code="var=sigma^2", monitor="var")
+
+sma_evaluate()
 ```
 
-You may list the files created with
+You may show the files created with
 ```{r}
-list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
+files <- list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
+print(files)
 ```
+
+or read a particular file, e.g.
+```{r}
+readRDS(file.path(getOption("sims.path"), files[12]))
+```
+
+Here there is a discrepency with before because the seed argument as not been incorporated properly yet.
 
 ## Parallelization
 

@@ -22,4 +22,7 @@ test_that("work with files",{
   
   sma_derive(code="mu2=mu^2", path=tempdir)
   
+  sma_evaluate(path=tempdir)
+  
+  
 })

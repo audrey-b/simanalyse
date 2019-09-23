@@ -212,11 +212,10 @@ sma_evaluate(results.derived,
 
 ## Saving to file
 
-When running simulation studies, it is often preferable to save results
-to file so they can be loaded and modified at a later time. You may save
-results to file by specifying arguments for the paths to use in each
-function, or more simply by specifying the path using options(sims.path
-=), as follows:
+When running simulation studies, it is often preferable to work from
+disk to keep a copy of all the results. You may save results to file by
+specifying a path argument in functions, or more simply by specifying
+the path using options(sims.path =), as follows:
 
 ``` r
 set.seed(10L)
@@ -246,7 +245,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-23 15:25:41] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-23 17:33:31] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -257,7 +256,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-23 15:25:41] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-23 17:33:31] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -268,10 +267,10 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-23 15:25:41] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-23 17:33:31] 'data0000003.rds'
 #> Module dic unloaded
 
-sma_derive(code="var=sigma^2")
+sma_derive(code="var=sigma^2", monitor="var")
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
 
@@ -280,12 +279,15 @@ sma_derive(code="var=sigma^2")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
+
+sma_evaluate()
 ```
 
-You may list the files created with
+You may show the files created with
 
 ``` r
-list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
+files <- list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
+print(files)
 #>  [1] ".sims.rds"                                 
 #>  [2] "analysis0000001/derived/.parameters.rds"   
 #>  [3] "analysis0000001/derived/deriv0000001.rds"  
@@ -296,8 +298,28 @@ list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
 #>  [8] "analysis0000001/results/results0000003.rds"
 #>  [9] "data0000001.rds"                           
 #> [10] "data0000002.rds"                           
-#> [11] "data0000003.rds"
+#> [11] "data0000003.rds"                           
+#> [12] "performance/performance.rds"
 ```
+
+or read a particular file, e.g.
+
+``` r
+readRDS(file.path(getOption("sims.path"), files[12]))
+#> $bias.var
+#> [1] 5.042968
+#> 
+#> $cp.quantile.var
+#> [1] 0.3333333
+#> 
+#> $mse.var
+#> [1] 55.17638
+#> 
+#> an nlist object with 3 natomic elements
+```
+
+Here there is a discrepency with before because the seed argument as not
+been incorporated properly yet.
 
 ## Parallelization
 

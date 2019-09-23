@@ -4,13 +4,15 @@
 \alias{sma_evaluate}
 \title{Calculates measures to evaluate the performance of the model}
 \usage{
-sma_evaluate(object, measures = c("bias", "mse", "cp.quantile"),
-  estimator = mean, alpha = 0.05, parameters, monitor = ".*",
-  custom_funs, custom_expr_before = "", custom_expr_after = "",
-  progress = FALSE, options = furrr::future_options())
+sma_evaluate(object = NULL, measures = c("bias", "mse", "cp.quantile"),
+  estimator = mean, alpha = 0.05, parameters = NULL,
+  monitor = ".*", path = getOption("sims.path"),
+  analysis = "analysis0000001", custom_funs, custom_expr_before = "",
+  custom_expr_after = "", progress = FALSE,
+  options = furrr::future_options())
 }
 \arguments{
-\item{object}{A list of nlists object of results or a single nlists of results.}
+\item{object}{A list of nlists object of results or a single nlists of results. If set to NULL, the object is read from \code{path} instead.}
 
 \item{measures}{A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation), 
 "cp.quantile" (coverage probability of quantile-based CrIs), "cp.length" (coverage probability of quantile-based CrIs),
@@ -20,11 +22,15 @@ sma_evaluate(object, measures = c("bias", "mse", "cp.quantile"),
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.}
 
-\item{alpha}{scalar representing the alpha level used to construct credible intervals. Default is 0.05.}
+\item{alpha}{Scalar representing the alpha level used to construct credible intervals. Default is 0.05.}
 
 \item{parameters}{An nlist. True values of parameters to be used to calculate the performance measures.}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.}
+
+\item{path}{A string. If \code{object} is NULL, the object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.}
+
+\item{analysis}{If \code{path} is used, a string for the name of the folder that contains the analysis.}
 
 \item{custom_funs}{A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).}
 
