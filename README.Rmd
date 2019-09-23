@@ -127,7 +127,7 @@ sma_derive(code="var=sigma^2")
 
 You may list the files created with
 ```{r}
-list.files(getOption("sims.path"), recursive=TRUE)
+list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
 ```
 
 ## Parallelization

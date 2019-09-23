@@ -38,20 +38,20 @@ sma_derive <- function(object=NULL, code, monitor=".*",
   #do not monitor non-primary variables that are not in monitor
   monitor.non.primary <- ".*" 
   if(!(".*" %in% monitor)){
-  if(class(object) %in% c("nlist", "mcmcr")){
-    primary.params <- names(object)
+    if(class(object) %in% c("nlist", "mcmcr")){
+      primary.params <- names(object)
     }else{
       primary.params <- names(object[[1]])
     }
     
-  monitor.non.primary <- monitor[!(monitor %in% primary.params)]
+    monitor.non.primary <- monitor[!(monitor %in% primary.params)]
   }
   
   #if(length(monitor.non.primary) > 1) monitor <- paste(monitor.non.primary, collapse=" | ") #make regular expression
-
+  
   if(is.null(path)){
-      #files <- list.files(path, pattern = "^results\\d{7,7}[.]rds$")
-      #object <- lapply(file.path(path, files), readRDS)
+    #files <- list.files(path, pattern = "^results\\d{7,7}[.]rds$")
+    #object <- lapply(file.path(path, files), readRDS)
     sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options, seed = NULL)
     
   }else{sma_batchr(sma.fun=sma_derive_internal, 
@@ -60,7 +60,10 @@ sma_derive <- function(object=NULL, code, monitor=".*",
                    prefix="results", suffix="deriv",
                    code=code, monitor=monitor,
                    monitor.non.primary=monitor.non.primary,
-                   progress=progress, options=options, seeds=NULL)  }
-         
+                   progress=progress, options=options, seeds=NULL)
+    
+    parameters <- sims_info(path)$parameters
+    derived.params <- sma_derive_internal(parameters, code, monitor, monitor.non.primary, progress, options, seed = NULL)
+    saveRDS(derived.params, file.path(path, analysis, "derived", ".parameters.rds"))
+  }
 }
-

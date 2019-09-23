@@ -94,6 +94,8 @@ sma_evaluate <- function(object,
                               parameters,
                               progress=progress,
                               options=options) %>% return
+        
+        #sims_info(getOption("sims.path"))
 }
 
 
