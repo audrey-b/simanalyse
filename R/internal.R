@@ -51,7 +51,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
                                      n.chains=3, inits=list(), n.adapt, n.burnin, 
                                      n.iter, thin=1,
                                      quiet = FALSE) {
-  
+
   code %<>% add_model_block() %>% textConnection
   
   inits <- set_seed_inits(inits, n.chains)
@@ -232,23 +232,19 @@ prepare_code <- function(code, code.add, code.values){
     return
 }
 
-fun.batchr <- function(file, path.save, sma.fun, suffix, seeds, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
+fun.batchr <- function(file, path.save, sma.fun, suffix, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
   base.name <- basename(file)
   id <- str_extract(base.name, "[[:digit:]]+") %>% as.integer()
   prefix <- str_split(base.name, "[[:digit:]]+")[[1]][1] #kinda hacky, could have only one line of code for id and prefix
-  if(!is.null(seeds)) .Random.seed <- seeds[[id]]
   readRDS(file) %>%
     sma.fun(...) %>%
     saveRDS(file.path(path.save, sub(prefix, suffix, base.name)))
 }
 
 sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, analysis,
-                       parallel=ifelse(class(future::plan())[2]=="sequential", FALSE, TRUE),
+                       parallel=TRUE,
                        options,
                        ...){
-  if(name_of_function(sma.fun)=="analyse_dataset_bayesian"){
-    seeds=readRDS(file.path(path.read, analysis, ".seeds.rds"))
-  }else seeds=NULL
   if(!dir.exists(path.save)) dir.create(path.save, recursive=TRUE)
   batch_process(fun = fun.batchr, 
                 path=path.read,
@@ -259,7 +255,6 @@ sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, analysis,
                 suffix = suffix,
                 parallel=parallel,
                 options=options,
-                seeds = seeds,
                 ...)
 }
 
@@ -274,7 +269,6 @@ derive_one <- function(object.nlists, code){
 }
 
 sma_derive_internal <- function(object, code, monitor, monitor.non.primary, progress, options){
-  #seed ?? do something with it?
   if(class(object)=="mcmcrs"){
     new_obj <- future_map(object, mcmc_derive, expr=code, monitor=monitor.non.primary, primary=TRUE, .progress=progress, .options=options)
     if(monitor!=".*") new_obj <- future_map(new_obj, subset, pars=monitor, .progress=progress, .options=options) #remove primary that are not in monitor

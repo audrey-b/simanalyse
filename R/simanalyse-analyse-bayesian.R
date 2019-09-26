@@ -83,7 +83,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   chk_s3_class(options, "future_options")
   
   seeds <- furrr::future_map(1:n.sims, 
-                             function(x) print(.Random.seed), 
+                             function(x) return(.Random.seed), 
                              .options = options)
   options$seed = seeds
   names(seeds) = chk::p0("sims", 1:n.sims)

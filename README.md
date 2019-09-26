@@ -41,7 +41,6 @@ Simulate 3 datasets using the sims package (we use only 3 datasets for
 demonstration purposes)
 
 ``` r
-future::plan("sequential")
 library(simanalyse)
 #> Loading required package: nlist
 #> Registered S3 method overwritten by 'rjags':
@@ -82,12 +81,6 @@ results <- sma_analyse_bayesian(sims = sims,
                                 n.burnin = 0,
                                 n.iter = 1000,
                                 monitor = names(params))
-#> [1]       10407   249543193 -1846608115  -653391516 -1016886752  1589704354
-#> [7] -1988417974
-#> [1]      10407 -913168384 -958024221 1693713214  749156488  806152542
-#> [7] 1192879475
-#> [1]       10407   658349059 -1373900042 -1774143323   464140302  1101290495
-#> [7]   447048566
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -241,12 +234,6 @@ sma_analyse_bayesian(code = code,
                      n.burnin = 0,
                      n.iter = 3,
                      monitor = names(params))
-#> [1]       10407   249543193 -1846608115  -653391516 -1016886752  1589704354
-#> [7] -1988417974
-#> [1]      10407 -913168384 -958024221 1693713214  749156488  806152542
-#> [7] 1192879475
-#> [1]       10407   658349059 -1373900042 -1774143323   464140302  1101290495
-#> [7]   447048566
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -258,7 +245,6 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-26 20:31:05] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -269,7 +255,6 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-26 20:31:05] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -280,7 +265,6 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-26 20:31:05] 'data0000003.rds'
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
