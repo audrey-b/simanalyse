@@ -135,7 +135,7 @@ print(files)
 
 or read a particular file, e.g.
 ```{r}
-readRDS(file.path(getOption("sims.path"), files[12]))
+readRDS(file.path(getOption("sims.path"), files[13]))
 ```
 
 Here there is a discrepency with before because the seed argument as not been incorporated properly yet.

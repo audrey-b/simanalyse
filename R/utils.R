@@ -38,3 +38,5 @@ str_extract <- function(x, y) regmatches(x, regexpr(y, x))
 cp.lower = function(x, alpha) quantile(x, alpha/2)
 
 cp.upper = function(x, alpha) quantile(x, 1-alpha/2)
+
+name_of_function = function(fun) deparse(substitute(fun))

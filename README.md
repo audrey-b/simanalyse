@@ -41,6 +41,7 @@ Simulate 3 datasets using the sims package (we use only 3 datasets for
 demonstration purposes)
 
 ``` r
+future::plan("sequential")
 library(simanalyse)
 #> Loading required package: nlist
 #> Registered S3 method overwritten by 'rjags':
@@ -81,6 +82,12 @@ results <- sma_analyse_bayesian(sims = sims,
                                 n.burnin = 0,
                                 n.iter = 1000,
                                 monitor = names(params))
+#> [1]       10407   249543193 -1846608115  -653391516 -1016886752  1589704354
+#> [7] -1988417974
+#> [1]      10407 -913168384 -958024221 1693713214  749156488  806152542
+#> [7] 1192879475
+#> [1]       10407   658349059 -1373900042 -1774143323   464140302  1101290495
+#> [7]   447048566
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -132,7 +139,7 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 6.524674
+#> [1] 6.214758
 #> 
 #> nchains:  3 
 #> niters:  1000 
@@ -140,7 +147,7 @@ print(results.derived)
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 4.893562
+#> [1] 4.837388
 #> 
 #> nchains:  3 
 #> niters:  1000 
@@ -148,7 +155,7 @@ print(results.derived)
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 3.968765
+#> [1] 3.92309
 #> 
 #> nchains:  3 
 #> niters:  1000
@@ -174,13 +181,13 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 1.99933
+#> [1] 1.826858
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 5.150694
+#> [1] 4.443817
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -199,13 +206,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 1.99933
+#> [1] 1.826858
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 5.150694
+#> [1] 4.443817
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -234,6 +241,12 @@ sma_analyse_bayesian(code = code,
                      n.burnin = 0,
                      n.iter = 3,
                      monitor = names(params))
+#> [1]       10407   249543193 -1846608115  -653391516 -1016886752  1589704354
+#> [7] -1988417974
+#> [1]      10407 -913168384 -958024221 1693713214  749156488  806152542
+#> [7] 1192879475
+#> [1]       10407   658349059 -1373900042 -1774143323   464140302  1101290495
+#> [7]   447048566
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -245,7 +258,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-26 16:35:38] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-26 20:31:05] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -256,7 +269,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-26 16:35:38] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-26 20:31:05] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -267,7 +280,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-26 16:35:38] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-26 20:31:05] 'data0000003.rds'
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
@@ -289,31 +302,32 @@ You may show the files created with
 files <- list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
 print(files)
 #>  [1] ".sims.rds"                                 
-#>  [2] "analysis0000001/derived/.parameters.rds"   
-#>  [3] "analysis0000001/derived/deriv0000001.rds"  
-#>  [4] "analysis0000001/derived/deriv0000002.rds"  
-#>  [5] "analysis0000001/derived/deriv0000003.rds"  
-#>  [6] "analysis0000001/results/results0000001.rds"
-#>  [7] "analysis0000001/results/results0000002.rds"
-#>  [8] "analysis0000001/results/results0000003.rds"
-#>  [9] "data0000001.rds"                           
-#> [10] "data0000002.rds"                           
-#> [11] "data0000003.rds"                           
-#> [12] "performance/performance.rds"
+#>  [2] "analysis0000001/.seeds.rds"                
+#>  [3] "analysis0000001/derived/.parameters.rds"   
+#>  [4] "analysis0000001/derived/deriv0000001.rds"  
+#>  [5] "analysis0000001/derived/deriv0000002.rds"  
+#>  [6] "analysis0000001/derived/deriv0000003.rds"  
+#>  [7] "analysis0000001/results/results0000001.rds"
+#>  [8] "analysis0000001/results/results0000002.rds"
+#>  [9] "analysis0000001/results/results0000003.rds"
+#> [10] "data0000001.rds"                           
+#> [11] "data0000002.rds"                           
+#> [12] "data0000003.rds"                           
+#> [13] "performance/performance.rds"
 ```
 
 or read a particular file, e.g.
 
 ``` r
-readRDS(file.path(getOption("sims.path"), files[12]))
+readRDS(file.path(getOption("sims.path"), files[13]))
 #> $bias.var
-#> [1] 6.088213
+#> [1] 4.782415
 #> 
 #> $cp.quantile.var
-#> [1] 0.3333333
+#> [1] 1
 #> 
 #> $mse.var
-#> [1] 41.47784
+#> [1] 69.04043
 #> 
 #> an nlist object with 3 natomic elements
 ```

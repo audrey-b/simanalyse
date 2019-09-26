@@ -54,21 +54,22 @@ sma_derive <- function(object=NULL, code, monitor=".*",
   if(is.null(path)){
     #files <- list.files(path, pattern = "^results\\d{7,7}[.]rds$")
     #object <- lapply(file.path(path, files), readRDS)
-    sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options, seed = NULL)
+    sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options)
     
   }else{
     chk_dir(path)
     
     sma_batchr(sma.fun=sma_derive_internal, 
+               analysis=analysis,
                    path.read = file.path(path, analysis, "results"),
                    path.save = file.path(path, analysis, "derived"),
                    prefix="results", suffix="deriv",
                    code=code, monitor=monitor,
                    monitor.non.primary=monitor.non.primary,
-                   progress=progress, options=options, seeds=NULL)
+                   progress=progress, options=options)
     
     parameters <- sims_info(path)$parameters
-    derived.params <- sma_derive_internal(parameters, code, monitor, monitor.non.primary, progress, options, seed = NULL)
+    derived.params <- sma_derive_internal(parameters, code, monitor, monitor.non.primary, progress, options)
     saveRDS(derived.params, file.path(path, analysis, "derived", ".parameters.rds"))
   }
 }

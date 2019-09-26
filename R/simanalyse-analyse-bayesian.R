@@ -63,43 +63,34 @@ sma_analyse_bayesian <- function(sims = NULL,
     lapply(sims, chk_is, class="nlist")
     n.sims <- length(sims)
   }else{
-      chk_string(path)
-      n.sims <- length(sims_data_files(path))
-    }
-  
+    chk_string(path)
+    n.sims <- length(sims_data_files(path))
+  }
   
   chk_string(code)
   chk_string(code.add)
   chk_string(code.values)
   chk_string(package)
-
-
   chk_is(monitor, "character")
-  
   chk_is(inits, class=c("list", "function"))
   #lapply(chk_) need to figure out
-  
   chk_whole_number(n.chains); chk_range(n.chains, c(1, .max_integer))
   chk_whole_number(n.adapt); chk_range(n.adapt, c(0, .max_integer))
   chk_whole_number(n.burnin); chk_range(n.burnin, c(0, .max_integer))
   chk_whole_number(n.iter); chk_range(n.iter, c(1, .max_integer))
-  
   chk_number(thin); chk_range(thin, c(1, n.iter))
-  
   chk_flag(progress)
   chk_s3_class(options, "future_options")
   
-  # n.seeds = n.chains*n.sims
-  # seeds.unlist <- furrr::future_map(1:n.seeds, function(x) print(.Random.seed), .options = options)
-  # seeds = rep(list(list()), n.sims) 
-  # for(i in 1:n.sims){
-  #     seeds[[i]] = seeds.unlist[[(i-1)*3 + 1]]
-  # }
-  # options$seed = seeds
-  # names(seeds) = chk::p0("sims", 1:5)
-  # if(!is.null(path)) saveRDS(seeds, file.path(path, analysis, ".seeds.rds"))
-  
-  seeds = rinteger(n.sims)
+  seeds <- furrr::future_map(1:n.sims, 
+                             function(x) print(.Random.seed), 
+                             .options = options)
+  options$seed = seeds
+  names(seeds) = chk::p0("sims", 1:n.sims)
+  if(!is.null(path)){
+    if(!dir.exists(file.path(path, analysis))) dir.create(file.path(path, analysis))
+    saveRDS(seeds, file.path(path, analysis, ".seeds.rds"))
+  }
   
   res.list <- list(nlists(nlist()))
   
@@ -115,18 +106,19 @@ sma_analyse_bayesian <- function(sims = NULL,
   if(is.null(path)){
     #if(!is.null(path) & is.null(sims)) sims <- sims_data(path)
     
-    res.list <- future_pmap(list(nlistdata=sims, seed=seeds), analyse_dataset_bayesian, 
-                           code=code, monitor=monitor,
-                           inits=inits, n.chains=n.chains,
-                           n.adapt=n.adapt, n.burnin=n.burnin, 
-                           n.iter=n.iter, thin=thin, .progress = progress, .options=options)
+    res.list <- future_pmap(list(nlistdata=sims), analyse_dataset_bayesian, 
+                            code=code, monitor=monitor,
+                            inits=inits, n.chains=n.chains,
+                            n.adapt=n.adapt, n.burnin=n.burnin, 
+                            n.iter=n.iter, thin=thin, .progress = progress, .options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")
     return((mcmcr::as.mcmcrs(res.list)))
     
-  }else{sma_batchr(sma.fun=analyse_dataset_bayesian, seeds=seeds, 
+  }else{sma_batchr(sma.fun=analyse_dataset_bayesian,
                    path.read=path,
+                   analysis=analysis,
                    path.save=file.path(path, analysis, "results"),
                    prefix="data", suffix="results",
                    code=code, monitor=monitor,

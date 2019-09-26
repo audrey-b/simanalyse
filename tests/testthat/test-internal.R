@@ -67,8 +67,7 @@ test_that("analyse_dataset_bayesian works",{
                                      n.adapt = 101,
                                      n.burnin = 0,
                                      n.iter = 101,
-                                     monitor = "a",
-                                     seed = 10)
+                                     monitor = "a")
   expect_true(class(result)=="mcmcr")
   #expect_equal(result$a[1] %>% as.numeric, -1.636731, tolerance = 0.000001)
 })

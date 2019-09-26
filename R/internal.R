@@ -5,9 +5,7 @@ add_model_block <- function(code){
 }
 
 
-set_seed_inits <- function(seed, inits, n.chains) {
-  
-  set.seed(seed)
+set_seed_inits <- function(inits, n.chains) {
   
   if(class(inits)=="function"){
     if(!is.null(names(as.list(args(inits)))[1])){
@@ -23,13 +21,11 @@ set_seed_inits <- function(seed, inits, n.chains) {
     inits$.RNG.seed <- abs(as.integer(rinteger()))
     
   }else if(!vld_list(inits[[1]])){ #1 set of inits, same for each chain
-
+    
     inits$.RNG.name <- "base::Wichmann-Hill"
     inits$.RNG.seed <- abs(as.integer(rinteger()))
     
   }else{ #more than 1 set of inits
-    
-    set.seed(seed, "L'Ecuyer-CMRG")
     
     n.lists <- length(inits)
     stream <- .Random.seed
@@ -43,8 +39,8 @@ set_seed_inits <- function(seed, inits, n.chains) {
     }  
     
     
-    RNGversion(getRversion())
-
+    #RNGversion(getRversion())
+    
   }
   
   inits
@@ -53,12 +49,12 @@ set_seed_inits <- function(seed, inits, n.chains) {
 
 analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
                                      n.chains=3, inits=list(), n.adapt, n.burnin, 
-                                     n.iter, thin=1, seed = rinteger(), 
+                                     n.iter, thin=1,
                                      quiet = FALSE) {
   
   code %<>% add_model_block() %>% textConnection
   
-  inits <- set_seed_inits(seed, inits, n.chains)
+  inits <- set_seed_inits(inits, n.chains)
   
   model <- rjags::jags.model(code, data = nlistdata, inits = inits,
                              
@@ -132,10 +128,10 @@ make_expr_and_FUNS <- function(measures,
 }
 
 evaluate_all_measures <- function(listnlists, 
-                                expr_FUNS, 
-                                parameters,
-                                progress = FALSE,
-                                options = furrr::future_options()){
+                                  expr_FUNS, 
+                                  parameters,
+                                  progress = FALSE,
+                                  options = furrr::future_options()){
   
   future_map(listnlists, evaluate_within, 
              expr = expr_FUNS[["expr"]], 
@@ -236,31 +232,34 @@ prepare_code <- function(code, code.add, code.values){
     return
 }
 
-fun.batchr <- function(file, path.save, seeds, sma.fun, suffix, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
+fun.batchr <- function(file, path.save, sma.fun, suffix, seeds, ...){#, code, n.adapt, n.burnin, n.iter, monitor){
   base.name <- basename(file)
   id <- str_extract(base.name, "[[:digit:]]+") %>% as.integer()
   prefix <- str_split(base.name, "[[:digit:]]+")[[1]][1] #kinda hacky, could have only one line of code for id and prefix
+  if(!is.null(seeds)) .Random.seed <- seeds[[id]]
   readRDS(file) %>%
-    sma.fun(seed=seeds[id], ...) %>%
+    sma.fun(...) %>%
     saveRDS(file.path(path.save, sub(prefix, suffix, base.name)))
 }
 
-sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, seeds, 
+sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, analysis,
                        parallel=ifelse(class(future::plan())[2]=="sequential", FALSE, TRUE),
                        options,
                        ...){
-  
+  if(name_of_function(sma.fun)=="analyse_dataset_bayesian"){
+    seeds=readRDS(file.path(path.read, analysis, ".seeds.rds"))
+  }else seeds=NULL
   if(!dir.exists(path.save)) dir.create(path.save, recursive=TRUE)
   batch_process(fun = fun.batchr, 
                 path=path.read,
                 regexp=p0("^", prefix, "\\d{7,7}.rds$"), 
                 ask=FALSE,
                 path.save = path.save,
-                seeds = seeds,
                 sma.fun = sma.fun,
                 suffix = suffix,
                 parallel=parallel,
                 options=options,
+                seeds = seeds,
                 ...)
 }
 
@@ -274,15 +273,14 @@ derive_one <- function(object.nlists, code){
   #return(derived_obj)
 }
 
-sma_derive_internal <- function(object, code, monitor, monitor.non.primary, progress, options, seed){
+sma_derive_internal <- function(object, code, monitor, monitor.non.primary, progress, options){
   #seed ?? do something with it?
-  seed <- seed
-if(class(object)=="mcmcrs"){
-  new_obj <- future_map(object, mcmc_derive, expr=code, monitor=monitor.non.primary, primary=TRUE, .progress=progress, .options=options)
-  if(monitor!=".*") new_obj <- future_map(new_obj, subset, pars=monitor, .progress=progress, .options=options) #remove primary that are not in monitor
-}else if(class(object)=="mcmcr" | class(object)=="nlist"){
-  new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, primary=TRUE)    
-  if(monitor!=".*") new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
-}
-return(new_obj)
+  if(class(object)=="mcmcrs"){
+    new_obj <- future_map(object, mcmc_derive, expr=code, monitor=monitor.non.primary, primary=TRUE, .progress=progress, .options=options)
+    if(monitor!=".*") new_obj <- future_map(new_obj, subset, pars=monitor, .progress=progress, .options=options) #remove primary that are not in monitor
+  }else if(class(object)=="mcmcr" | class(object)=="nlist"){
+    new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, primary=TRUE)    
+    if(monitor!=".*") new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
+  }
+  return(new_obj)
 }
