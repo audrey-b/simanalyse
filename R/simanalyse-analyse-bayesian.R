@@ -132,7 +132,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                    code=code, monitor=monitor,
                    inits=inits, n.chains=n.chains,
                    n.adapt=n.adapt, n.burnin=n.burnin, 
-                   n.iter=n.iter, thin=thin)  
+                   n.iter=n.iter, thin=thin, options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")

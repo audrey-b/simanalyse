@@ -245,7 +245,10 @@ fun.batchr <- function(file, path.save, seeds, sma.fun, suffix, ...){#, code, n.
     saveRDS(file.path(path.save, sub(prefix, suffix, base.name)))
 }
 
-sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, seeds, ...){
+sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, seeds, 
+                       parallel=ifelse(class(future::plan())[2]=="sequential", FALSE, TRUE),
+                       options,
+                       ...){
   
   if(!dir.exists(path.save)) dir.create(path.save, recursive=TRUE)
   batch_process(fun = fun.batchr, 
@@ -256,6 +259,8 @@ sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, seeds, ...
                 seeds = seeds,
                 sma.fun = sma.fun,
                 suffix = suffix,
+                parallel=parallel,
+                options=options,
                 ...)
 }
 

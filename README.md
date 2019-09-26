@@ -132,7 +132,7 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 6.155803
+#> [1] 6.524674
 #> 
 #> nchains:  3 
 #> niters:  1000 
@@ -140,7 +140,7 @@ print(results.derived)
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 4.905793
+#> [1] 4.893562
 #> 
 #> nchains:  3 
 #> niters:  1000 
@@ -148,7 +148,7 @@ print(results.derived)
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 4.000659
+#> [1] 3.968765
 #> 
 #> nchains:  3 
 #> niters:  1000
@@ -174,13 +174,13 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 1.887762
+#> [1] 1.99933
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 4.737858
+#> [1] 5.150694
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -199,13 +199,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 1.887762
+#> [1] 1.99933
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 4.737858
+#> [1] 5.150694
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -245,7 +245,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 1/3/0 [2019-09-23 17:33:31] 'data0000001.rds'
+#> SUCCESS 1/3/0 [2019-09-26 16:35:38] 'data0000001.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -256,7 +256,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 2/3/0 [2019-09-23 17:33:31] 'data0000002.rds'
+#> SUCCESS 2/3/0 [2019-09-26 16:35:38] 'data0000002.rds'
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -267,7 +267,7 @@ sma_analyse_bayesian(code = code,
 #> 
 #> Initializing model
 #> 
-#> SUCCESS 3/3/0 [2019-09-23 17:33:31] 'data0000003.rds'
+#> SUCCESS 3/3/0 [2019-09-26 16:35:38] 'data0000003.rds'
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
@@ -307,13 +307,13 @@ or read a particular file, e.g.
 ``` r
 readRDS(file.path(getOption("sims.path"), files[12]))
 #> $bias.var
-#> [1] 5.042968
+#> [1] 6.088213
 #> 
 #> $cp.quantile.var
 #> [1] 0.3333333
 #> 
 #> $mse.var
-#> [1] 55.17638
+#> [1] 41.47784
 #> 
 #> an nlist object with 3 natomic elements
 ```
