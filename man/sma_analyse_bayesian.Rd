@@ -7,9 +7,8 @@
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
   n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3, deviance = TRUE,
-  seed = rinteger(), path = getOption("sims.path"),
-  analysis = "analysis0000001", progress = FALSE,
-  options = furrr::future_options())
+  path = getOption("sims.path"), analysis = "analysis0000001",
+  progress = FALSE, options = furrr::future_options(seed = TRUE))
 }
 \arguments{
 \item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path}.}
@@ -37,8 +36,6 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 \item{n.chains}{An integer greater than zero specifying the number of MCMC chains to run}
 
 \item{deviance}{A flag. Indicates whether to monitor deviance for future DIC calculation.}
-
-\item{seed}{An integer. The random seed to use for analysing the data.}
 
 \item{path}{A string. If \code{sims} is NULL, sims are read from that path on disk and results are written to disk.}
 

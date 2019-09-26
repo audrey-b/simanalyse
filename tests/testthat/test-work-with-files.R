@@ -17,7 +17,6 @@ test_that("work with files",{
                        n.iter = 101,
                        monitor = "mu",
                        path = tempdir,
-                       seed=56L,
                        deviance=FALSE)
   
   sma_derive(code="mu2=mu^2", path=tempdir)

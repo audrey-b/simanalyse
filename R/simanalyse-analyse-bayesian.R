@@ -16,7 +16,6 @@
 #' @param thin A numeric scalar of at least 1 specifying the thinning factor. Default is 1.
 #' @param deviance A flag. Indicates whether to monitor deviance for future DIC calculation.
 # @param pD A flag. Indicates whether to monitor pD for future DIC calculation.
-#' @param seed An integer. The random seed to use for analysing the data.
 #' @param path A string. If \code{sims} is NULL, sims are read from that path on disk and results are written to disk.
 # @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
 #' @param analysis If \code{path} is specified, a string for the name of the folder that contains the results.
@@ -53,11 +52,10 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  n.chains=3,
                                  deviance = TRUE,
                                  #pD = FALSE,
-                                 seed=rinteger(),
                                  path = getOption("sims.path"),
                                  analysis = "analysis0000001",
                                  progress = FALSE,
-                                 options = furrr::future_options()){
+                                 options = furrr::future_options(seed = TRUE)){
   
   if(!is.null(sims)){
     if(is.nlist(sims)) sims <- nlists(sims)
@@ -88,12 +86,20 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   chk_number(thin); chk_range(thin, c(1, n.iter))
   
-  chk_whole_number(seed); chk_range(seed, c(-.max_integer, .max_integer))
-  
   chk_flag(progress)
   chk_s3_class(options, "future_options")
   
-  seeds <- rinteger(n.sims)
+  # n.seeds = n.chains*n.sims
+  # seeds.unlist <- furrr::future_map(1:n.seeds, function(x) print(.Random.seed), .options = options)
+  # seeds = rep(list(list()), n.sims) 
+  # for(i in 1:n.sims){
+  #     seeds[[i]] = seeds.unlist[[(i-1)*3 + 1]]
+  # }
+  # options$seed = seeds
+  # names(seeds) = chk::p0("sims", 1:5)
+  # if(!is.null(path)) saveRDS(seeds, file.path(path, analysis, ".seeds.rds"))
+  
+  seeds = rinteger(n.sims)
   
   res.list <- list(nlists(nlist()))
   
