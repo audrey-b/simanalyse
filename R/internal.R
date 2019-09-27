@@ -278,3 +278,34 @@ sma_derive_internal <- function(object, code, monitor, monitor.non.primary, prog
   }
   return(new_obj)
 }
+
+# sma_autojags <- function(nlistdata, code, monitor, n.chains=3, inits, n.adapt=1000, max.iter=200, max.time=0.1, max.save=500, n.burnin=0, n.batch=200){
+#   
+#   cum.iter=0
+#   cum.time=0
+#   cum.saved=0
+#   thin=ifelse(n.batch>max.save, n.batch/max.save, 1) #need to round?
+# 
+#   res <- analyse_dataset_bayesian(nlistdata, 
+#                            code, 
+#                            monitor,
+#                            n.chains=3, 
+#                            inits, 
+#                            n.adapt=n.adapt, 
+#                            n.burnin=n.burnin,
+#                            n.iter=n.batch, 
+#                            thin=thin,
+#                            quiet = FALSE)
+#   cum.iter=cum.iter+batch
+#   thin.to.save = (max.save-cum.saved/2)
+#   if(thin.to.save > 1) res <- thin_to_max.iter(res, thin.to.save)
+#   
+#   #stopif cum.iter>=max.iter | cum.time>=max.time | converged
+# 
+# }
+#   
+#   
+#   
+#   
+#   
+#   

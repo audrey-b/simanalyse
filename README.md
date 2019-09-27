@@ -47,6 +47,7 @@ library(simanalyse)
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
 set.seed(10L)
+future::plan("sequential")
 params <- nlist(sigma = 2)
 constants <- nlist(mu = 0)
 code <- "for(i in 1:10){
@@ -219,6 +220,7 @@ the path using options(sims.path =), as follows:
 
 ``` r
 set.seed(10L)
+future::plan("sequential")
 options(sims.path = file.path(tempdir(), "sims"))
 
 sims::sims_simulate(code, 
