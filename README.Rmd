@@ -41,7 +41,6 @@ Simulate 3 datasets using the sims package (we use only 3 datasets for demonstra
 ```{r}
 library(simanalyse)
 set.seed(10L)
-future::plan("sequential")
 params <- nlist(sigma = 2)
 constants <- nlist(mu = 0)
 code <- "for(i in 1:10){
@@ -56,14 +55,14 @@ print(sims)
 
 ### Analyse Data
 
-Analyse all 3 datasets (here we use only a few iterations for demonstration purposes)
+Analyse all 3 datasets (here we use only a few iterations in debug mode for demonstration purposes)
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
+sma_set_mode("debug")
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 n.adapt = 100,
-                                max.iter=1000,
                                 monitor = names(params))
 ```
 
@@ -103,11 +102,10 @@ sma_evaluate(results.derived,
 
 ## Saving to file
 
-When running simulation studies, it is often preferable to work from disk to keep a copy of all the results. You may save results to file by specifying a path argument in functions, or more simply by specifying the path using options(sims.path =), as follows:
+When running simulation studies, it is often preferable to work from disk to keep a copy of all the results. You may save results to file by specifying the path using options(sims.path =), as follows:
 
 ```{r}
 set.seed(10L)
-future::plan("sequential")
 options(sims.path = file.path(tempdir(), "sims"))
 
 sims::sims_simulate(code, 
@@ -119,7 +117,6 @@ sims::sims_simulate(code,
 sma_analyse_bayesian(code = code,
                      code.add = prior,
                      n.adapt = 101,
-                     max.iter=1000,
                      monitor = names(params))
 
 sma_derive(code="var=sigma^2", monitor="var")

@@ -47,7 +47,6 @@ library(simanalyse)
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
 set.seed(10L)
-future::plan("sequential")
 params <- nlist(sigma = 2)
 constants <- nlist(mu = 0)
 code <- "for(i in 1:10){
@@ -70,16 +69,16 @@ print(sims)
 
 ### Analyse Data
 
-Analyse all 3 datasets (here we use only a few iterations for
-demonstration purposes)
+Analyse all 3 datasets (here we use only a few iterations in debug mode
+for demonstration purposes)
 
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
+sma_set_mode("debug")
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 n.adapt = 100,
-                                max.iter=1000,
                                 monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
@@ -132,26 +131,26 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 6.171608
+#> [1] 7.635903
 #> 
-#> nchains:  3 
-#> niters:  320 
+#> nchains:  2 
+#> niters:  10 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 4.690717
+#> [1] 4.054824
 #> 
-#> nchains:  3 
-#> niters:  320 
+#> nchains:  2 
+#> niters:  10 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 3.858361
+#> [1] 3.693591
 #> 
-#> nchains:  3 
-#> niters:  320
+#> nchains:  2 
+#> niters:  10
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -174,13 +173,13 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 1.810848
+#> [1] 3.108378
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 4.340286
+#> [1] 15.82771
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -199,13 +198,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 1.810848
+#> [1] 3.108378
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 4.340286
+#> [1] 15.82771
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -214,12 +213,10 @@ sma_evaluate(results.derived,
 
 When running simulation studies, it is often preferable to work from
 disk to keep a copy of all the results. You may save results to file by
-specifying a path argument in functions, or more simply by specifying
-the path using options(sims.path =), as follows:
+specifying the path using options(sims.path =), as follows:
 
 ``` r
 set.seed(10L)
-future::plan("sequential")
 options(sims.path = file.path(tempdir(), "sims"))
 
 sims::sims_simulate(code, 
@@ -232,7 +229,6 @@ sims::sims_simulate(code,
 sma_analyse_bayesian(code = code,
                      code.add = prior,
                      n.adapt = 101,
-                     max.iter=1000,
                      monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
@@ -305,13 +301,13 @@ or read a particular file, e.g.
 ``` r
 readRDS(file.path(getOption("sims.path"), files[13]))
 #> $bias.var
-#> [1] 1.955568
+#> [1] 2.016398
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 5.074702
+#> [1] 5.445006
 #> 
 #> an nlist object with 3 natomic elements
 ```

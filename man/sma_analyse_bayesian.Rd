@@ -6,11 +6,14 @@
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
-  n.adapt, batch = 5, max.save = 50000, max.time = 0.2,
-  units = "mins", max.iter = .max_integer, n.chains = 3,
-  deviance = TRUE, path = getOption("sims.path"),
-  analysis = "analysis0000001", progress = FALSE,
-  options = furrr::future_options(seed = TRUE))
+  n.adapt, batch = getOption("sma.batch", 5),
+  max.save = getOption("sma.max.save", 50000),
+  max.time = getOption("sma.max.time", 0.2),
+  units = getOption("sma.units", "mins"),
+  max.iter = getOption("sma.units", .max_integer),
+  n.chains = getOption("sma.n.chains", 3), deviance = TRUE,
+  path = getOption("sims.path"), analysis = "analysis0000001",
+  progress = FALSE, options = furrr::future_options(seed = TRUE))
 }
 \arguments{
 \item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path}.}
