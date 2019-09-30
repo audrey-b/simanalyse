@@ -25,6 +25,8 @@
 
 #'   \item{sma.n.chains}{A count of the number of chains.}
 
+#'   \item{sma.n.adapt}{A count of the number of adaptations}
+
 #'   \item{sma.max.save}{A count of the number of simulations to save per chain.}
 
 #'   \item{sma.max.iter}{A count specifying the maximum number of iterations.}
@@ -59,6 +61,8 @@ sma_set_mode <- function(mode = "reset"){
     
     options(sma.n.chains = NULL,
             
+            sma.n.adapt = NULL,
+            
             sma.max.save = NULL,
             
             sma.batch = NULL,
@@ -69,55 +73,69 @@ sma_set_mode <- function(mode = "reset"){
             
             sma.esr = NULL,
             
-            sma.max.time = NULL)
+            sma.max.time = NULL,
+            
+            sma.units = NULL)
     
   } else if (mode == "debug") {
     
     options(sma.n.chains = 2L,
             
-            sma.max.save = 10L,
+            sma.n.adapt = 200L,
             
-            sma.batch = 10L,
+            sma.max.save = 5L,
             
-            sma.max.iter = 10L,
+            sma.batch = 5L,
+            
+            sma.max.iter = 5L,
             
             sma.rhat = 1.05,
             
             sma.esr = 0.1,
             
-            sma.max.time = NULL)
+            sma.max.time = .Machine$double.xmax,
+            
+            sma.units = NULL)
     
   } else if (mode == "report") {
     
     options(sma.n.chains = 3L,
             
+            sma.n.adapt = 3000,
+            
             sma.max.save = 50000,
             
             sma.batch = 100,
             
-            sma.max.iter = NULL,
+            sma.max.iter = .Machine$integer.max,
             
             sma.rhat = 1.05,
             
             sma.esr = 0.1,
             
-            sma.max.time = NULL)
+            sma.max.time = .Machine$double.xmax,
+            
+            sma.units = NULL)
     
   } else if (mode == "paper") {
     
     options(sma.n.chains = 3L,
             
-            sma.max.save = NULL,
+            sma.n.adapt = 10000,
             
-            sma.batch = NULL,
+            sma.max.save = 50000,
             
-            sma.max.iter = NULL,
+            sma.batch = 4000,
+            
+            sma.max.iter = .Machine$integer.max,
             
             sma.rhat = 1.01,
             
             sma.esr = 0.25,
             
-            sma.max.time = NULL)
+            sma.max.time = .Machine$double.xmax,
+            
+            sma.units = NULL)
     
   } else err("mode '", mode,"' unrecognised (possible values are 'debug', 'reset', 'report' or 'paper')")
   

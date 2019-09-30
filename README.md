@@ -78,7 +78,6 @@ sma_set_mode("debug")
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                n.adapt = 100,
                                 monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
@@ -131,26 +130,26 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 7.635903
+#> [1] 6.515103
 #> 
 #> nchains:  2 
-#> niters:  10 
+#> niters:  5 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 4.054824
+#> [1] 4.101377
 #> 
 #> nchains:  2 
-#> niters:  10 
+#> niters:  5 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 3.693591
+#> [1] 3.788406
 #> 
 #> nchains:  2 
-#> niters:  10
+#> niters:  5
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -173,13 +172,13 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 3.108378
+#> [1] 1.179013
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 15.82771
+#> [1] 2.06728
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -198,13 +197,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 3.108378
+#> [1] 1.179013
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 15.82771
+#> [1] 2.06728
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -228,7 +227,6 @@ sims::sims_simulate(code,
 
 sma_analyse_bayesian(code = code,
                      code.add = prior,
-                     n.adapt = 101,
                      monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
@@ -301,13 +299,13 @@ or read a particular file, e.g.
 ``` r
 readRDS(file.path(getOption("sims.path"), files[13]))
 #> $bias.var
-#> [1] 2.016398
+#> [1] 1.863169
 #> 
 #> $cp.quantile.var
-#> [1] 1
+#> [1] 0.6666667
 #> 
 #> $mse.var
-#> [1] 5.445006
+#> [1] 10.25531
 #> 
 #> an nlist object with 3 natomic elements
 ```

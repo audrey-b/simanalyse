@@ -24,6 +24,7 @@ The possible modes are as follows:
 In each case the mode is a unique combination of the following package options
 \describe{
   \item{sma.n.chains}{A count of the number of chains.}
+  \item{sma.n.adapt}{A count of the number of adaptations}
   \item{sma.max.save}{A count of the number of simulations to save per chain.}
   \item{sma.max.iter}{A count specifying the maximum number of iterations.}
   \item{sma.rhat}{A number specifying the rhat threshold.}

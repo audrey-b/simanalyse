@@ -8,11 +8,12 @@ test_that("sma_analyse_bayesian",{
                                  code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
                                  n.adapt = 100,
+                                 batch=100,
                                  max.iter=100,
                                  max.time=1,
                                  monitor = "mu")
   expect_true(class(result)=="mcmcrs")
-  expect_true(niters(result)==40)
+  expect_true(niters(result)==100)
   #expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
   
   #evaluate_within(result, aggregate_FUN=var)

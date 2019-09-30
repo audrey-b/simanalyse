@@ -6,11 +6,12 @@
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
-  n.adapt, batch = getOption("sma.batch", 5),
+  n.adapt = getOption("sma.adapt", 3000),
+  batch = getOption("sma.batch", 1000),
   max.save = getOption("sma.max.save", 50000),
-  max.time = getOption("sma.max.time", 0.2),
+  max.time = getOption("sma.max.time", 0.5),
   units = getOption("sma.units", "mins"),
-  max.iter = getOption("sma.units", .max_integer),
+  max.iter = getOption("sma.max.iter", .max_integer),
   n.chains = getOption("sma.n.chains", 3), deviance = TRUE,
   path = getOption("sims.path"), analysis = "analysis0000001",
   progress = FALSE, options = furrr::future_options(seed = TRUE))
