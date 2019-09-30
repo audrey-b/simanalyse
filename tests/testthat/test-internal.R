@@ -55,8 +55,10 @@ test_that("analyse_dataset_bayesian with data works",{
                                      code = "a ~ dnorm(0,1)
                                              mu ~ dnorm(-3, 3)",
                                      n.adapt = 101,
-                                     n.burnin = 0,
-                                     n.iter = 101,
+                                     batch=5,
+                                     max.iter=5,
+                                     max.save=5,
+                                     max.time=0.1,
                                      monitor = "mu")
   expect_true(class(result)=="mcmcr")
   #expect_equal(result$mu[1] %>% as.numeric, -3.944967, tolerance = 0.000001)
@@ -65,8 +67,10 @@ test_that("analyse_dataset_bayesian with data works",{
 test_that("analyse_dataset_bayesian works",{
   result <- analyse_dataset_bayesian(code = "a ~ dnorm(0,1)",
                                      n.adapt = 101,
-                                     n.burnin = 0,
-                                     n.iter = 101,
+                                     batch=5,
+                                     max.iter=5,
+                                     max.save=5,
+                                     max.time=0.1,
                                      monitor = "a")
   expect_true(class(result)=="mcmcr")
   #expect_equal(result$a[1] %>% as.numeric, -1.636731, tolerance = 0.000001)

@@ -6,9 +6,11 @@
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
-  n.adapt, n.burnin, n.iter, thin = 1, n.chains = 3, deviance = TRUE,
-  path = getOption("sims.path"), analysis = "analysis0000001",
-  progress = FALSE, options = furrr::future_options(seed = TRUE))
+  n.adapt, batch = 5, max.save = 50000, max.time = 0.2,
+  units = "mins", max.iter = .max_integer, n.chains = 3,
+  deviance = TRUE, path = getOption("sims.path"),
+  analysis = "analysis0000001", progress = FALSE,
+  options = furrr::future_options(seed = TRUE))
 }
 \arguments{
 \item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path}.}
@@ -27,11 +29,15 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 
 \item{n.adapt}{An integer specifying the number of adaptations for each analysis}
 
-\item{n.burnin}{An integer specifying the number of burn-in iterations for each analysis (following the adaptation phase)}
+\item{batch}{An integer specifying the number of iterations in a batch. New batches are ran until at least one of convergence, max.time or max.iter is reached.}
 
-\item{n.iter}{An integer specifying the number of iterations for each analysis (following the burn-in phase)}
+\item{max.save}{An integer specifying the maximum number of samples to save. Whenever the saved object is to become larger than max.save, the first iterations are dropped so that the number of saved iterations does not exceed \code{max.save}. After each full cycle of max.save iterations dropped, the number of iterations in new batches is doubled while thinning is increased by a factor of 2 to keep the same effective number of iterations per batch.}
 
-\item{thin}{A numeric scalar of at least 1 specifying the thinning factor. Default is 1.}
+\item{max.time}{An integer specifying the maximum time in \code{units}. When that time is reached no further batches are ran.}
+
+\item{units}{Character string specifying the units of time for \code{max.time}. See \code{difftime}.}
+
+\item{max.iter}{An integer specifying the maximum number of iterations to run. Iterations that were dropped or thinned out count as iterations in this definition. When that number of iterations is reached no further batches are ran.}
 
 \item{n.chains}{An integer greater than zero specifying the number of MCMC chains to run}
 
@@ -60,7 +66,7 @@ Analyse data for a simulation study. Allows data to be read from files and resul
                                        code = code,
                                        code.add = prior,
                                        n.adapt = 101,
-                                       n.burnin = 0,
-                                       n.iter = 101,
+                                       batch = 101,
+                                       max.iter=101,
                                        monitor = "mu")
 }

@@ -37,7 +37,7 @@ res <- sma_analyse_bayesian(sims,
                            "mu ~ dunif(0,10)", 
                            monitor = "mu",
                            n.adapt=100,
-                           n.burnin=1000,
-                           n.iter=5000)
+                           batch=5000,
+                           max.iter=5000)
 sma_assess(res, "a = mu", sims, code)
 }

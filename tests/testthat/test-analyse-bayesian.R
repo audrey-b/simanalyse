@@ -7,11 +7,12 @@ test_that("sma_analyse_bayesian",{
   result <- sma_analyse_bayesian(sims=dat,
                                  code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
-                                 n.adapt = 101,
-                                 n.burnin = 0,
-                                 n.iter = 101,
+                                 n.adapt = 100,
+                                 max.iter=100,
+                                 max.time=1,
                                  monitor = "mu")
   expect_true(class(result)=="mcmcrs")
+  expect_true(niters(result)==40)
   #expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
   
   #evaluate_within(result, aggregate_FUN=var)
@@ -35,8 +36,8 @@ test_that("sma_analyse_bayesian",{
                                   code = code,
                                   code.add = prior,
                                   n.adapt = 101,
-                                  n.burnin = 0,
-                                  n.iter = 1,
+                                  batch = 1,
+                                  max.iter = 1,
                                   n.chains=3,
                                   monitor = c("mu", "tt"),
                                   inits=list(inits1, inits2, inits3),
@@ -60,8 +61,8 @@ test_that("sma_analyse_bayesian",{
                                   code = code,
                                   code.add = prior,
                                   n.adapt = 101,
-                                  n.burnin = 0,
-                                  n.iter = 1,
+                                  batch = 1,
+                                  max.iter = 1,
                                   n.chains=3,
                                   monitor = c("mu", "tt"),
                                   inits=inits.fun,
@@ -71,8 +72,8 @@ test_that("sma_analyse_bayesian",{
                                    code = code,
                                    code.add = prior,
                                    n.adapt = 101,
-                                   n.burnin = 0,
-                                   n.iter = 1,
+                                   batch = 1,
+                                   max.iter = 1,
                                    n.chains=3,
                                    monitor = c("mu", "tt"),
                                    inits=inits.fun,

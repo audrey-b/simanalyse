@@ -79,8 +79,7 @@ results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 n.adapt = 100,
-                                n.burnin = 0,
-                                n.iter = 1000,
+                                max.iter=1000,
                                 monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
@@ -133,26 +132,26 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 6.214758
+#> [1] 6.171608
 #> 
 #> nchains:  3 
-#> niters:  1000 
+#> niters:  320 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 4.837388
+#> [1] 4.690717
 #> 
 #> nchains:  3 
-#> niters:  1000 
+#> niters:  320 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 3.92309
+#> [1] 3.858361
 #> 
 #> nchains:  3 
-#> niters:  1000
+#> niters:  320
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -175,13 +174,13 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 1.826858
+#> [1] 1.810848
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 4.443817
+#> [1] 4.340286
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -200,13 +199,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 1.826858
+#> [1] 1.810848
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 4.443817
+#> [1] 4.340286
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -233,8 +232,7 @@ sims::sims_simulate(code,
 sma_analyse_bayesian(code = code,
                      code.add = prior,
                      n.adapt = 101,
-                     n.burnin = 0,
-                     n.iter = 3,
+                     max.iter=1000,
                      monitor = names(params))
 #> module dic loaded
 #> Compiling model graph
@@ -307,13 +305,13 @@ or read a particular file, e.g.
 ``` r
 readRDS(file.path(getOption("sims.path"), files[13]))
 #> $bias.var
-#> [1] 4.782415
+#> [1] 1.955568
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 69.04043
+#> [1] 5.074702
 #> 
 #> an nlist object with 3 natomic elements
 ```

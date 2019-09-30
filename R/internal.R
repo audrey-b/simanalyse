@@ -48,10 +48,10 @@ set_seed_inits <- function(inits, n.chains) {
 }
 
 analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
-                                     n.chains=3, inits=list(), n.adapt, n.burnin, 
-                                     n.iter, thin=1,
-                                     quiet = FALSE) {
-
+                                     n.chains=3, inits=list(), n.adapt, 
+                                     batch, max.save, max.time, max.iter,
+                                     quiet = FALSE, units="mins") {
+  
   code %<>% add_model_block() %>% textConnection
   
   inits <- set_seed_inits(inits, n.chains)
@@ -60,16 +60,33 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
                              
                              n.adapt = n.adapt, n.chains = n.chains, quiet = quiet)
   
-  if(n.burnin >= 1) update(model, n.iter = n.burnin)
+  #if(n.burnin >= 1) update(model, n.iter = n.burnin)
+  time0 <- Sys.time()
+  sample <- rjags::jags.samples(model, 
+                                variable.names = monitor, 
+                                n.iter = batch, thin=((batch-1) %/% max.save)+1) %>%
+    mcmcr::as.mcmcr()
   
-  sample <- rjags::jags.samples(model, variable.names = monitor, n.iter = n.iter, thin=thin)
+  cum.iter=batch; cum.saved=niters(sample)
+  batch.time = as.double(difftime(Sys.time(), time0, units=units))
+  cum.time = batch.time
   
-  #nlists <-  sample %>% as.mcmcr() %>% collapse_chains() %>% as.nlists
-  
-  return((mcmcr::as.mcmcr(sample)))
-  #saveRDS(nlist, file.path(path, data_file_name(sim)))
-  #data_file_name <- function(sim) p0("data", sprintf("%07d", sim), ".rds")
-  
+  round=2
+  new.batch = batch*2^(round-2)
+  while(cum.time+batch.time*2 <= max.time & cum.iter+new.batch <= max.iter){
+    sample <- rjags::jags.samples(model, 
+                               variable.names = monitor, 
+                               n.iter = new.batch, thin=((new.batch-1) %/% max.save)+1 ) %>%
+      mcmcr::as.mcmcr()
+
+    cum.saved = niters(sample)
+    cum.iter = cum.iter+batch*2^(round-2)
+    batch.time = as.double(difftime(Sys.time(), time0, units=units))-cum.time
+    cum.time = cum.time + batch.time
+    round=round+1
+    new.batch = batch*2^(round-2)
+  }
+  return(mcmcr::as.mcmcr(sample))
 }
 
 derive_expr <- function(names, add_expr, measures, expr, all="all"){
@@ -279,33 +296,40 @@ sma_derive_internal <- function(object, code, monitor, monitor.non.primary, prog
   return(new_obj)
 }
 
-# sma_autojags <- function(nlistdata, code, monitor, n.chains=3, inits, n.adapt=1000, max.iter=200, max.time=0.1, max.save=500, n.burnin=0, n.batch=200){
+# sma_autojags <- function(nlistdata, code, monitor, n.chains=3, 
+#                          inits, n.adapt=1000, 
+#                          max.iter=200, max.time=0.1, max.save=500,
+#                          batch=200,  n.burnin=0){
 #   
-#   cum.iter=0
-#   cum.time=0
-#   cum.saved=0
-#   thin=ifelse(n.batch>max.save, n.batch/max.save, 1) #need to round?
-# 
-#   res <- analyse_dataset_bayesian(nlistdata, 
-#                            code, 
-#                            monitor,
-#                            n.chains=3, 
-#                            inits, 
-#                            n.adapt=n.adapt, 
-#                            n.burnin=n.burnin,
-#                            n.iter=n.batch, 
-#                            thin=thin,
-#                            quiet = FALSE)
-#   cum.iter=cum.iter+batch
-#   thin.to.save = (max.save-cum.saved/2)
-#   if(thin.to.save > 1) res <- thin_to_max.iter(res, thin.to.save)
-#   
-#   #stopif cum.iter>=max.iter | cum.time>=max.time | converged
-# 
+#   #thin=ifelse(n.batch>max.save, n.batch/max.save, 1) #need to round?yes!
+#   chains=NULL
+#   cum.iter=0; cum.time=0; cum.saved=0
+#   thin.new=1
+#   time0 <- Sys.time()
+#   #while(not_converged(old) & cum.time < max.time & cum.iter < max.iter){
+#   while(cum.time < max.time & cum.iter < max.iter){
+#     if(cum.saved + ceiling(n.batch/thin.new) > max.save){
+#       if(!is.null(old)) old <- thin(old, 2)
+#       thin.new=thin.new*2}
+#     new <- analyse_dataset_bayesian(nlistdata,
+#                                     code,
+#                                     monitor,
+#                                     n.chains=3,
+#                                     inits,
+#                                     n.adapt=n.adapt,
+#                                     n.burnin=n.burnin,
+#                                     n.iter=batch,
+#                                     thin=thin.new,
+#                                     quiet = FALSE)
+#     chains <- put_together(chains, new)
+#     cum.saved=niters(chains)
+#     cum.iter=cum.saved*thin.new
+#     cum.time=as.double(difftime(Sys.time(),time0, units="mins"))
+#   }
 # }
-#   
-#   
-#   
-#   
-#   
-#   
+
+
+
+
+
+
