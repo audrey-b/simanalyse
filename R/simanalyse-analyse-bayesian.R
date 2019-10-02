@@ -8,14 +8,8 @@
 #' @param code.values A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
 #' @param package A string with the name of the R package to analyse the data. Currently, only "rjags" is implemented.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.
-#' @param n.chains An integer greater than zero specifying the number of MCMC chains to run
 #' @param inits A list or a function. Initial values for the MCMC chains. If specifying a function, it should either have no arguments, or have a single argument named chain. In the latter case, the supplied function is called with the chain number as argument. In this way, initial values may be generated that depend systematically on the chain number.
-#' @param n.adapt An integer specifying the number of adaptations for each analysis
-#' @param batch An integer specifying the number of iterations in a batch. New batches are ran until at least one of convergence, max.time or max.iter is reached.
-#' @param max.save An integer specifying the maximum number of samples to save. Whenever the saved object is to become larger than max.save, the first iterations are dropped so that the number of saved iterations does not exceed \code{max.save}. After each full cycle of max.save iterations dropped, the number of iterations in new batches is doubled while thinning is increased by a factor of 2 to keep the same effective number of iterations per batch.
-#' @param max.iter An integer specifying the maximum number of iterations to run. Iterations that were dropped or thinned out count as iterations in this definition. When that number of iterations is reached no further batches are ran.
-#' @param max.time An integer specifying the maximum time in \code{units}. When that time is reached no further batches are ran.
-#' @param units Character string specifying the units of time for \code{max.time}. See \code{difftime}.
+#' @param mode A list obtained from sma_set_mode which sets the parameters of the mcmc sampling.
 # @param n.burnin An integer specifying the number of burn-in iterations for each analysis (following the adaptation phase)
 # @param n.iter An integer specifying the number of iterations for each analysis (following the burn-in phase)
 # @param thin A numeric scalar of at least 1 specifying the thinning factor. Default is 1.
@@ -38,9 +32,7 @@
 #'  result <- sma_analyse_bayesian(sims=sims,
 #'                                        code = code,
 #'                                        code.add = prior,
-#'                                        n.adapt = 101,
-#'                                        batch = 101,
-#'                                        max.iter=101,
+#'                                        mode=sma_set_mode("debug"),
 #'                                        monitor = "mu")
 
 sma_analyse_bayesian <- function(sims = NULL,
@@ -50,16 +42,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  package="rjags",
                                  monitor, #need to configure so .* by default
                                  inits=list(),
-                                 n.adapt=getOption("sma.adapt", 3000),
-                                 #n.burnin,
-                                 #n.iter,
-                                 #thin=1,
-                                 batch=getOption("sma.batch", 1000),
-                                 max.save=getOption("sma.max.save", 50000),
-                                 max.time=getOption("sma.max.time", 0.5),
-                                 units=getOption("sma.units", "mins"),
-                                 max.iter=getOption("sma.max.iter", .max_integer),
-                                 n.chains=getOption("sma.n.chains", 3),
+                                 mode=sma_set_mode("report"),
                                  deviance = TRUE,
                                  #pD = FALSE,
                                  path = getOption("sims.path"),
@@ -84,16 +67,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   chk_is(monitor, "character")
   chk_is(inits, class=c("list", "function"))
   #lapply(chk_) need to figure out
-  chk_whole_number(n.chains); chk_range(n.chains, c(1, .max_integer))
-  chk_whole_number(n.adapt); chk_range(n.adapt, c(0, .max_integer))
-  #chk_whole_number(n.burnin); chk_range(n.burnin, c(0, .max_integer))
-  #chk_whole_number(n.iter); chk_range(n.iter, c(1, .max_integer))
-  #chk_number(thin); chk_range(thin, c(1, n.iter))
-  chk_whole_number(batch)
-  chk_whole_number(max.save)
-  chk_whole_number(max.iter); chk_gt(batch, 0)
-  chk_number(max.time); chk_gt(max.time, 0)
-  #units?
+  chk_list(mode)
   
   chk_flag(progress)
   chk_s3_class(options, "future_options")
@@ -124,10 +98,10 @@ sma_analyse_bayesian <- function(sims = NULL,
     
     res.list <- future_pmap(list(nlistdata=sims), analyse_dataset_bayesian, 
                             code=code, monitor=monitor,
-                            inits=inits, n.chains=n.chains,
-                            n.adapt=n.adapt, max.time=max.time,
-                            max.iter=max.iter, batch=batch, max.save=max.save,
-                            units=units, .progress = progress, .options=options)
+                            inits=inits, n.chains=mode$n.chains,
+                            n.adapt=mode$n.adapt, max.time=mode$max.time,
+                            max.iter=mode$max.iter, batch=mode$batch, max.save=mode$max.save,
+                            units=mode$units, .progress = progress, .options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")
@@ -139,10 +113,10 @@ sma_analyse_bayesian <- function(sims = NULL,
                    path.save=file.path(path, analysis, "results"),
                    prefix="data", suffix="results",
                    code=code, monitor=monitor,
-                   inits=inits, n.chains=n.chains,
-                   n.adapt=n.adapt, max.time=max.time,
-                   max.iter=max.iter, batch=batch, max.save=max.save,
-                   units=units, options=options)
+                   inits=inits, n.chains=mode$n.chains,
+                   n.adapt=mode$n.adapt, max.time=mode$max.time,
+                   max.iter=mode$max.iter, batch=mode$batch, max.save=mode$max.save,
+                   units=mode$units, options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")

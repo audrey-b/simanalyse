@@ -19,9 +19,7 @@
 #'                            code, 
 #'                            "mu ~ dunif(0,10)", 
 #'                            monitor = "mu",
-#'                            n.adapt=100,
-#'                            batch=5000,
-#'                            max.iter=5000)
+#'                            mode=sma_set_mode("debug", batch=300, max.iter=300))
 #' sma_assess(res, "a = mu", sims, code)
 
 #parallel option
@@ -47,7 +45,7 @@ sma_assess <- function(object,
     mcmcr::collapse_chains()
   
   #choose iters to sample
-  sampleids <- sample(1:(mcmcr::niters(object)), nsamples)
+  sampleids <- sample(1:(mcmcr::niters(object)), nsamples, replace=TRUE)
   
   #sample
   sample <- subset(object, iters=sampleids)

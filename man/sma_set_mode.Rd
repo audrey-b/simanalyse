@@ -4,33 +4,38 @@
 \alias{sma_set_mode}
 \title{Set mode for data analysis}
 \usage{
-sma_set_mode(mode = "reset")
+sma_set_mode(mode = "report", n.chains, n.adapt, max.save, max.iter,
+  r.hat, esr, max.time, units, batch)
 }
 \arguments{
-\item{mode}{A string of the analysis mode.}
-}
-\description{
-Set mode for data analysis
-}
-\details{
+\item{mode}{A string of the analysis mode. One of "debug", "report" or "paper". The mode determines the values of the parameters below unless they are specified.}
+
+\item{n.chains}{A count for number of chains.}
+
+\item{n.adapt}{A count for the number of adaptations.}
+
+\item{max.save}{A count for the number of maximum samples to save.}
+
+\item{max.iter}{A count for the maximum number of iterations in total per chain.}
+
+\item{r.hat}{A number specifying the rhat threshold.}
+
+\item{esr}{A number specifying the minimum effective sampling rate.}
+
+\item{max.time}{A number specifying the maximum time to spend on analysis.}
+
+\item{units}{A character string specifying the units of time for \code{max.time}. See \code{difftime}.}
+
+\item{batch}{A count specifying the number of iterations per batch.
 The possible modes are as follows:
 \describe{
   \item{'debug'}{To rapidly identify problems with a model definition.}
   \item{'report'}{To produce results for a report.}
   \item{'paper'}{To produce results for a peer-reviewed paper.}
-  \item{'reset'}{To reset all the options to NULL so that they are the default values for each function call.}
+}}
 }
-
-In each case the mode is a unique combination of the following package options
-\describe{
-  \item{sma.n.chains}{A count of the number of chains.}
-  \item{sma.n.adapt}{A count of the number of adaptations}
-  \item{sma.max.save}{A count of the number of simulations to save per chain.}
-  \item{sma.max.iter}{A count specifying the maximum number of iterations.}
-  \item{sma.rhat}{A number specifying the rhat threshold.}
-  \item{sma.esr}{A number specifying the minimum effective sampling rate.}
-  \item{sma.max.time}{The maximum total time to spend on analysis and reanalysis.}
-}
+\description{
+Set mode for data analysis
 }
 \examples{
 \dontrun{

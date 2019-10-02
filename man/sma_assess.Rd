@@ -36,8 +36,6 @@ res <- sma_analyse_bayesian(sims,
                            code, 
                            "mu ~ dunif(0,10)", 
                            monitor = "mu",
-                           n.adapt=100,
-                           batch=5000,
-                           max.iter=5000)
+                           mode=sma_set_mode("debug", batch=300, max.iter=300))
 sma_assess(res, "a = mu", sims, code)
 }

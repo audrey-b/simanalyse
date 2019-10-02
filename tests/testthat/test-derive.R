@@ -6,7 +6,7 @@ test_that("sma_derive works", {
   parameters = nlist(variance=4)
   dat <- sims::sims_simulate(code, parameters = parameters, nsims=2)
   res <- sma_analyse_bayesian(dat, code, code.add = "variance ~ dunif(0,10)", 
-                              n.adapt=100, batch=3, max.iter=3, monitor="variance",
+                              mode=sma_set_mode("debug"), monitor="variance",
                               deviance="FALSE")
   sma_derive(res, "sd=sqrt(variance)")
   sma_derive(parameters, "sd=sqrt(variance)")

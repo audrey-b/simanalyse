@@ -70,15 +70,16 @@ print(sims)
 ### Analyse Data
 
 Analyse all 3 datasets (here we use only a few iterations in debug mode
-for demonstration purposes)
+for demonstration purposes; see ?sma\_set\_mode for details about
+analysis modes)
 
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
-sma_set_mode("debug")
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                monitor = names(params))
+                                monitor = names(params),
+                                mode = sma_set_mode("debug"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -130,26 +131,26 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 6.515103
+#> [1] 7.282963
 #> 
 #> nchains:  2 
-#> niters:  5 
+#> niters:  10 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 4.101377
+#> [1] 4.598379
 #> 
 #> nchains:  2 
-#> niters:  5 
+#> niters:  10 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 3.788406
+#> [1] 3.20916
 #> 
 #> nchains:  2 
-#> niters:  5
+#> niters:  10
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -172,13 +173,13 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 1.179013
+#> [1] 1.831068
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 2.06728
+#> [1] 5.827238
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -197,13 +198,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 1.179013
+#> [1] 1.831068
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 2.06728
+#> [1] 5.827238
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -227,7 +228,8 @@ sims::sims_simulate(code,
 
 sma_analyse_bayesian(code = code,
                      code.add = prior,
-                     monitor = names(params))
+                     monitor = names(params),
+                     mode = sma_set_mode("debug"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -299,13 +301,13 @@ or read a particular file, e.g.
 ``` r
 readRDS(file.path(getOption("sims.path"), files[13]))
 #> $bias.var
-#> [1] 1.863169
+#> [1] 1.301912
 #> 
 #> $cp.quantile.var
-#> [1] 0.6666667
+#> [1] 1
 #> 
 #> $mse.var
-#> [1] 10.25531
+#> [1] 2.673231
 #> 
 #> an nlist object with 3 natomic elements
 ```

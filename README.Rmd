@@ -55,14 +55,14 @@ print(sims)
 
 ### Analyse Data
 
-Analyse all 3 datasets (here we use only a few iterations in debug mode for demonstration purposes)
+Analyse all 3 datasets (here we use only a few iterations in debug mode for demonstration purposes; see ?sma_set_mode for details about analysis modes)
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
-sma_set_mode("debug")
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                monitor = names(params))
+                                monitor = names(params),
+                                mode = sma_set_mode("debug"))
 ```
 
 ### Derive new parameters (if required)
@@ -115,7 +115,8 @@ sims::sims_simulate(code,
 
 sma_analyse_bayesian(code = code,
                      code.add = prior,
-                     monitor = names(params))
+                     monitor = names(params),
+                     mode = sma_set_mode("debug"))
 
 sma_derive(code="var=sigma^2", monitor="var")
 

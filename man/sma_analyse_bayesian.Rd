@@ -6,13 +6,7 @@
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
-  n.adapt = getOption("sma.adapt", 3000),
-  batch = getOption("sma.batch", 1000),
-  max.save = getOption("sma.max.save", 50000),
-  max.time = getOption("sma.max.time", 0.5),
-  units = getOption("sma.units", "mins"),
-  max.iter = getOption("sma.max.iter", .max_integer),
-  n.chains = getOption("sma.n.chains", 3), deviance = TRUE,
+  mode = sma_set_mode("report"), deviance = TRUE,
   path = getOption("sims.path"), analysis = "analysis0000001",
   progress = FALSE, options = furrr::future_options(seed = TRUE))
 }
@@ -31,19 +25,7 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 
 \item{inits}{A list or a function. Initial values for the MCMC chains. If specifying a function, it should either have no arguments, or have a single argument named chain. In the latter case, the supplied function is called with the chain number as argument. In this way, initial values may be generated that depend systematically on the chain number.}
 
-\item{n.adapt}{An integer specifying the number of adaptations for each analysis}
-
-\item{batch}{An integer specifying the number of iterations in a batch. New batches are ran until at least one of convergence, max.time or max.iter is reached.}
-
-\item{max.save}{An integer specifying the maximum number of samples to save. Whenever the saved object is to become larger than max.save, the first iterations are dropped so that the number of saved iterations does not exceed \code{max.save}. After each full cycle of max.save iterations dropped, the number of iterations in new batches is doubled while thinning is increased by a factor of 2 to keep the same effective number of iterations per batch.}
-
-\item{max.time}{An integer specifying the maximum time in \code{units}. When that time is reached no further batches are ran.}
-
-\item{units}{Character string specifying the units of time for \code{max.time}. See \code{difftime}.}
-
-\item{max.iter}{An integer specifying the maximum number of iterations to run. Iterations that were dropped or thinned out count as iterations in this definition. When that number of iterations is reached no further batches are ran.}
-
-\item{n.chains}{An integer greater than zero specifying the number of MCMC chains to run}
+\item{mode}{A list obtained from sma_set_mode which sets the parameters of the mcmc sampling.}
 
 \item{deviance}{A flag. Indicates whether to monitor deviance for future DIC calculation.}
 
@@ -69,8 +51,6 @@ Analyse data for a simulation study. Allows data to be read from files and resul
  result <- sma_analyse_bayesian(sims=sims,
                                        code = code,
                                        code.add = prior,
-                                       n.adapt = 101,
-                                       batch = 101,
-                                       max.iter=101,
+                                       mode=sma_set_mode("debug"),
                                        monitor = "mu")
 }

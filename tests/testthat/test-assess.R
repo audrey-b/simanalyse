@@ -8,9 +8,7 @@ test_that("sma_assess",{
                               code, 
                               "mu ~ dunif(0,10)", 
                               monitor = "mu",
-                              n.adapt=100,
-                              batch=50,
-                              max.iter=50,
+                              mode=sma_set_mode("debug"),
                               deviance=FALSE)
   sma_assess(res, "a = mu", sims, code, nsamples=5L)
 })

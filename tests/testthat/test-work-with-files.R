@@ -12,9 +12,7 @@ test_that("work with files",{
   
   sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
-                       n.adapt = 101,
-                       batch = 101,
-                       max.iter=101,
+                       mode=sma_set_mode("debug"),
                        monitor = "mu",
                        path = tempdir,
                        deviance=FALSE)

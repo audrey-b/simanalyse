@@ -11,9 +11,7 @@ test_that("sma_evaluate",{
                                           theta[2] ~ dunif(0,3)
                                           dfnotrnd ~ dnorm(0,20)I(1,)
                                           df <- round(dfnotrnd)",
-                                 n.adapt = 100,
-                                 batch = 2,
-                                 max.iter =2,
+                                 mode=sma_set_mode("debug"),
                                  monitor = c("theta", "df"),
                                  deviance=FALSE)
   sma_evaluate(result, measures="bias", parameters=parameters, monitor=".*")
@@ -33,9 +31,7 @@ test_that("custom expr and FUNS",{
   result <- sma_analyse_bayesian(sims=dat,
                                  code = "a ~ dnorm(mu, 1)
                                          mu ~ dunif(-3,3)",
-                                 n.adapt = 101,
-                                 batch = 101,
-                                 max.iter=101,
+                                 mode=sma_set_mode("debug"),
                                  monitor="mu",
                                  deviance=FALSE)
   result_method1 <- sma_evaluate(result, measures="",
