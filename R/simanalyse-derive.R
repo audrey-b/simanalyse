@@ -30,7 +30,7 @@
 #' sma_derive(parameters, "sd=sqrt(variance)")
 
 sma_derive <- function(object=NULL, code, monitor=".*", 
-                       path = getOption("sims.path"),
+                       path = ".",
                        analysis = "analysis0000001",
                        progress = FALSE,
                        options = furrr::future_options()) {
@@ -51,7 +51,7 @@ sma_derive <- function(object=NULL, code, monitor=".*",
   
   #if(length(monitor.non.primary) > 1) monitor <- paste(monitor.non.primary, collapse=" | ") #make regular expression
   
-  if(is.null(path)){
+  if(!is.null(object)){
     #files <- list.files(path, pattern = "^results\\d{7,7}[.]rds$")
     #object <- lapply(file.path(path, files), readRDS)
     sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options)

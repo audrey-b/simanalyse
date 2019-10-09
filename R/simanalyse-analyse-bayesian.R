@@ -45,7 +45,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  mode=sma_set_mode("report"),
                                  deviance = TRUE,
                                  #pD = FALSE,
-                                 path = getOption("sims.path"),
+                                 path = ".",
                                  analysis = "analysis0000001",
                                  progress = FALSE,
                                  options = furrr::future_options(seed = TRUE)){
@@ -77,7 +77,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                              .options = options)
   options$seed = seeds
   names(seeds) = chk::p0("sims", 1:n.sims)
-  if(!is.null(path)){
+  if(is.null(sims)){
     if(!dir.exists(file.path(path, analysis))) dir.create(file.path(path, analysis))
     saveRDS(seeds, file.path(path, analysis, ".seeds.rds"))
   }
@@ -93,7 +93,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   #if(pD == TRUE) monitor <- unique(c(monitor, "pD"))
   
   #jags
-  if(is.null(path)){
+  if(!is.null(sims)){
     #if(!is.null(path) & is.null(sims)) sims <- sims_data(path)
     
     res.list <- future_pmap(list(nlistdata=sims), analyse_dataset_bayesian, 

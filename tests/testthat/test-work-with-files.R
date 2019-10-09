@@ -1,12 +1,14 @@
 test_that("work with files",{
   tempdir <- file.path(tempdir(), "sims")
   unlink(tempdir, recursive = TRUE)
+  dir.create(tempdir)
   set.seed(10L)
   params <- nlist(mu=0)
   sims_simulate("a ~ dnorm(mu,1)", 
                 parameters = params, 
                 nsims=2,
                 path=tempdir,
+                save=TRUE,
                 exists=NA)
   sims_data_files(tempdir)
   

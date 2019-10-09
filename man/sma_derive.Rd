@@ -4,9 +4,9 @@
 \alias{sma_derive}
 \title{Apply R code to derive new variables.}
 \usage{
-sma_derive(object = NULL, code, monitor = ".*",
-  path = getOption("sims.path"), analysis = "analysis0000001",
-  progress = FALSE, options = furrr::future_options())
+sma_derive(object = NULL, code, monitor = ".*", path = ".",
+  analysis = "analysis0000001", progress = FALSE,
+  options = furrr::future_options())
 }
 \arguments{
 \item{object}{One of either nlists, mcmc or mcmc.list or a list of those. If set to NULL, the object is read from \code{path} instead.}

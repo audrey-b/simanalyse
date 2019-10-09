@@ -6,9 +6,9 @@
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
   code.values = "", package = "rjags", monitor, inits = list(),
-  mode = sma_set_mode("report"), deviance = TRUE,
-  path = getOption("sims.path"), analysis = "analysis0000001",
-  progress = FALSE, options = furrr::future_options(seed = TRUE))
+  mode = sma_set_mode("report"), deviance = TRUE, path = ".",
+  analysis = "analysis0000001", progress = FALSE,
+  options = furrr::future_options(seed = TRUE))
 }
 \arguments{
 \item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path}.}

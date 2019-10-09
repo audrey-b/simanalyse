@@ -212,17 +212,16 @@ sma_evaluate(results.derived,
 ## Saving to file
 
 When running simulation studies, it is often preferable to work from
-disk to keep a copy of all the results. You may save results to file by
-specifying the path using options(sims.path =), as follows:
+disk to keep a copy of all the results. By default, if the  argument is
+not specified, results are saved in your working directory.
 
 ``` r
 set.seed(10L)
-options(sims.path = file.path(tempdir(), "sims"))
-
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
                     nsims = 3,
+                    save=TRUE,
                     exists = NA)
 #> [1] TRUE
 
@@ -279,7 +278,7 @@ sma_evaluate()
 You may show the files created with
 
 ``` r
-files <- list.files(getOption("sims.path"), recursive=TRUE, all.files=TRUE)
+files <- list.files(getwd(), recursive=TRUE, all.files=TRUE)
 print(files)
 #>  [1] ".sims.rds"                                 
 #>  [2] "analysis0000001/.seeds.rds"                
@@ -299,7 +298,7 @@ print(files)
 or read a particular file, e.g.
 
 ``` r
-readRDS(file.path(getOption("sims.path"), files[13]))
+readRDS(file.path(getwd(), files[13]))
 #> $bias.var
 #> [1] 1.301912
 #> 

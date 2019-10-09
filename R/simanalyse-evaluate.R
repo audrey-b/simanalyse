@@ -58,7 +58,7 @@ sma_evaluate <- function(object = NULL,
                          alpha=0.05,
                          parameters = NULL,
                          monitor=".*",
-                         path = getOption("sims.path"),
+                         path = ".",
                          analysis = "analysis0000001",
                          custom_funs,
                          custom_expr_before="",
@@ -80,7 +80,9 @@ sma_evaluate <- function(object = NULL,
                 lapply(custom_funs, chk_function)
         }else custom_funs=NULL
         
-        if(!is.null(path)){
+        read.file=is.null(object)
+        
+        if(read.file){
                 chk_dir(path)
                 derive.path <- file.path(path, analysis, "derived")
                 if(dir.exists(derive.path)){
@@ -108,7 +110,7 @@ sma_evaluate <- function(object = NULL,
                                              parameters,
                                              progress=progress,
                                              options=options)
-        if(is.null(path)){
+        if(!read.file){
                 return(performance)
         }else{
                 dir <- file.path(path, "performance"); dir.create(dir)
