@@ -1,11 +1,11 @@
 Package: simanalyse
-Title: A Package to Analyse Simulation Study Data and Summarise the Results 
+Title: A Package to Facilitate Model Comparisons and Simulation Studies
 Version: 0.0.0.9001
 Authors@R: c(
     person("Audrey", "Beliveau", , "audrey.beliveau@uwaterloo.ca", c("aut", "cre")),
     person("Joe", "Thorley", , "joe@poissonconsulting.ca", c("aut"), comment = c(ORCID = "0000-0002-7683-4592"))
     )
-Description: A Package to Analyse Simulation Study Data and Summarise Results.
+Description: A Package to Facilitate Model Comparisons and Simulation Studies.
 License: GPL-3
 Depends: nlist
 Imports: 

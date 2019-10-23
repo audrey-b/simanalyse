@@ -49,42 +49,45 @@ set_seed_inits <- function(inits, n.chains) {
 
 analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
                                      n.chains=3, inits=list(), n.adapt, 
-                                     batch, max.save, max.time, max.iter,
-                                     quiet = FALSE, units="mins") {
+                                     n.save, max.time, max.iter,
+                                     quiet = FALSE, units="mins", 
+                                     esr, r.hat) {
   
   code %<>% add_model_block() %>% textConnection
   
   inits <- set_seed_inits(inits, n.chains)
   
+  #adaptation
   model <- rjags::jags.model(code, data = nlistdata, inits = inits,
                              
                              n.adapt = n.adapt, n.chains = n.chains, quiet = quiet)
   
   #if(n.burnin >= 1) update(model, n.iter = n.burnin)
   time0 <- Sys.time()
+  thin=1
   sample <- rjags::jags.samples(model, 
                                 variable.names = monitor, 
-                                n.iter = batch, thin=((batch-1) %/% max.save)+1) %>%
+                                n.iter = n.save) %>%
     mcmcr::as.mcmcr()
   
-  cum.iter=batch; cum.saved=niters(sample)
+  cum.iter=n.save
   batch.time = as.double(difftime(Sys.time(), time0, units=units))
   cum.time = batch.time
   
-  round=2
-  new.batch = batch*2^(round-2)
-  while(cum.time+batch.time*2 <= max.time & cum.iter+new.batch <= max.iter){
+  convergence <- (mcmcr::esr(sample)>=esr & mcmcr::rhat(sample)<=r.hat)
+  
+  while(cum.time+batch.time*2 <= max.time & cum.iter+n.save*(thin+1) <= max.iter & !convergence){
+    thin=thin+1
     sample <- rjags::jags.samples(model, 
                                variable.names = monitor, 
-                               n.iter = new.batch, thin=((new.batch-1) %/% max.save)+1 ) %>%
+                               n.iter = n.save*thin, thin=thin) %>%
       mcmcr::as.mcmcr()
 
-    cum.saved = niters(sample)
-    cum.iter = cum.iter+batch*2^(round-2)
+    cum.iter = cum.iter+n.save*thin
     batch.time = as.double(difftime(Sys.time(), time0, units=units))-cum.time
     cum.time = cum.time + batch.time
-    round=round+1
-    new.batch = batch*2^(round-2)
+    convergence <- (mcmcr::esr(sample)>=esr & mcmcr::rhat(sample)<=r.hat)
+
   }
   return(mcmcr::as.mcmcr(sample))
 }

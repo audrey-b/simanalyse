@@ -100,7 +100,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                             code=code, monitor=monitor,
                             inits=inits, n.chains=mode$n.chains,
                             n.adapt=mode$n.adapt, max.time=mode$max.time,
-                            max.iter=mode$max.iter, batch=mode$batch, max.save=mode$max.save,
+                            max.iter=mode$max.iter, n.save=mode$n.save, 
+                            esr=mode$esr, r.hat=mode$r.hat,
                             units=mode$units, .progress = progress, .options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
@@ -115,7 +116,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                    code=code, monitor=monitor,
                    inits=inits, n.chains=mode$n.chains,
                    n.adapt=mode$n.adapt, max.time=mode$max.time,
-                   max.iter=mode$max.iter, batch=mode$batch, max.save=mode$max.save,
+                   max.iter=mode$max.iter, n.save=mode$n.save, 
+                   esr=mode$esr, r.hat=mode$r.hat,
                    units=mode$units, options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")

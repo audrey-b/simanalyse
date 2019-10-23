@@ -22,8 +22,8 @@ status](https://www.r-pkg.org/badges/version/simanalyse)](https://cran.r-project
 ![CRAN downloads](http://cranlogs.r-pkg.org/badges/simanalyse)
 <!-- badges: end -->
 
-simanalyse is an R package to analyse simulation study data and
-summarise results.
+simanalyse is an R package to facilitate model comparisons and
+simulation studies.
 
 To install the latest development version from
 [GitHub](https://github.com/audrey-b/simanalyse)
@@ -58,8 +58,8 @@ sims <- sims::sims_simulate(code,
                            silent = TRUE)
 print(sims)
 #> $a
-#>  [1] -2.54871809 -0.82385556 -0.41040854  0.07698506  2.14864217
-#>  [6] -0.29359147 -1.24805791  0.07712952 -1.09009556 -0.41968340
+#>  [1]  1.84531303 -0.37135465 -0.23899843  0.09628412 -0.07658222
+#>  [6]  0.37493748  1.34521644 -0.03269300 -1.35199082  0.55921495
 #> 
 #> $mu
 #> [1] 0
@@ -131,7 +131,7 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 7.282963
+#> [1] 2.305731
 #> 
 #> nchains:  2 
 #> niters:  10 
@@ -139,7 +139,7 @@ print(results.derived)
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 4.598379
+#> [1] 5.087776
 #> 
 #> nchains:  2 
 #> niters:  10 
@@ -147,7 +147,7 @@ print(results.derived)
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 3.20916
+#> [1] 5.714618
 #> 
 #> nchains:  2 
 #> niters:  10
@@ -173,13 +173,13 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 1.831068
+#> [1] 0.8519969
 #> 
 #> $cp.quantile.var
-#> [1] 1
+#> [1] 0.6666667
 #> 
 #> $mse.var
-#> [1] 5.827238
+#> [1] 4.384704
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -198,13 +198,13 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 1.831068
+#> [1] 0.8519969
 #> 
 #> $cp.quantile.var
-#> [1] 1
+#> [1] 0.6666667
 #> 
 #> $mse.var
-#> [1] 5.827238
+#> [1] 4.384704
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -300,13 +300,13 @@ or read a particular file, e.g.
 ``` r
 readRDS(file.path(getwd(), files[13]))
 #> $bias.var
-#> [1] 1.301912
+#> [1] 0.1966268
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 2.673231
+#> [1] 0.3914333
 #> 
 #> an nlist object with 3 natomic elements
 ```

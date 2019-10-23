@@ -30,7 +30,7 @@ knitr::opts_knit$set(root.dir = file.path(tempdir(), "sims"))
 ![CRAN downloads](http://cranlogs.r-pkg.org/badges/simanalyse)
 <!-- badges: end -->
 
-simanalyse is an R package to analyse simulation study data and summarise results.
+simanalyse is an R package to facilitate model comparisons and simulation studies.
 
 To install the latest development version from [GitHub](https://github.com/audrey-b/simanalyse)
 ```r

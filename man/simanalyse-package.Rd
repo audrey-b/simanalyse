@@ -4,9 +4,9 @@
 \name{simanalyse-package}
 \alias{simanalyse}
 \alias{simanalyse-package}
-\title{simanalyse: A Package to Analyse Simulation Study Data and Summarise the Results}
+\title{simanalyse: A Package to Facilitate Model Comparisons and Simulation Studies}
 \description{
-A Package to Analyse Simulation Study Data and Summarise Results.
+A Package to Facilitate Model Comparisons and Simulation Studies.
 }
 \seealso{
 Useful links:

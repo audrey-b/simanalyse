@@ -4,8 +4,8 @@
 \alias{sma_set_mode}
 \title{Set mode for data analysis}
 \usage{
-sma_set_mode(mode = "report", n.chains, n.adapt, max.save, max.iter,
-  r.hat, esr, max.time, units, batch)
+sma_set_mode(mode = "report", n.chains, n.adapt, n.save, max.iter, r.hat,
+  esr, max.time, units)
 }
 \arguments{
 \item{mode}{A string of the analysis mode. One of "debug", "report" or "paper". The mode determines the values of the parameters below unless they are specified.}
@@ -14,7 +14,7 @@ sma_set_mode(mode = "report", n.chains, n.adapt, max.save, max.iter,
 
 \item{n.adapt}{A count for the number of adaptations.}
 
-\item{max.save}{A count for the number of maximum samples to save.}
+\item{n.save}{A count for the number of (potentially thinned) samples to save.}
 
 \item{max.iter}{A count for the maximum number of iterations in total per chain.}
 
@@ -24,9 +24,7 @@ sma_set_mode(mode = "report", n.chains, n.adapt, max.save, max.iter,
 
 \item{max.time}{A number specifying the maximum time to spend on analysis.}
 
-\item{units}{A character string specifying the units of time for \code{max.time}. See \code{difftime}.}
-
-\item{batch}{A count specifying the number of iterations per batch.
+\item{units}{A character string specifying the units of time for \code{max.time}. See \code{difftime}.
 The possible modes are as follows:
 \describe{
   \item{'debug'}{To rapidly identify problems with a model definition.}
@@ -35,7 +33,12 @@ The possible modes are as follows:
 }}
 }
 \description{
-Set mode for data analysis
+Set mode for data analysis. The algorithm starts with an adaptation phase of \code{n.adapt} iterations.
+Then \code{n.chains} are ran for \code{n.save} iterations without thinning. The algorithm stops if convergence
+was achieved according to \code{r.hat} and the minimum effective sampling rate was achieved or \code{max.time}
+was reached or is projected to be reached in the next round of iterations. If the algorithm is not stopped,
+the iterations so far are discarded as burnin. The number of iterations is doubled from the previous round
+and thinning is multiplied by 2. The stop criteria is applied again and so on.
 }
 \examples{
 \dontrun{
