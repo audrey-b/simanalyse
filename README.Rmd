@@ -138,7 +138,6 @@ or read a particular file, e.g.
 readRDS(file.path(getwd(), files[13]))
 ```
 
-Here there is a discrepency with before because the seed argument as not been incorporated properly yet.
 
 ## Parallelization
 

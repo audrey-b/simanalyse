@@ -66,7 +66,7 @@ sma_derive <- function(object=NULL, code, monitor=".*",
                    prefix="results", suffix="deriv",
                    code=code, monitor=monitor,
                    monitor.non.primary=monitor.non.primary,
-                   progress=progress, options=options)
+                   progress=progress, options=options) #need to change
     
     parameters <- sims_info(path)$parameters
     derived.params <- sma_derive_internal(parameters, code, monitor, monitor.non.primary, progress, options)

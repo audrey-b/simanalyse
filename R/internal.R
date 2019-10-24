@@ -35,7 +35,7 @@ set_seed_inits <- function(inits, n.chains) {
     for(i in 1:n.lists){
       inits[[i]]$.RNG.name <- "lecuyer::RngStream"
       inits[[i]]$.RNG.state <- stream[-1]
-      stream <- parallel::nextRNGStream(stream)
+      stream <- parallel::nextRNGSubStream(stream)
     }  
     
     
@@ -261,21 +261,29 @@ fun.batchr <- function(file, path.save, sma.fun, suffix, ...){#, code, n.adapt, 
     saveRDS(file.path(path.save, sub(prefix, suffix, base.name)))
 }
 
-sma_batchr <- function(sma.fun, prefix, suffix, path.read, path.save, analysis,
-                       parallel=TRUE,
+sma_batchr <- function(sma.fun, prefix, suffix, path.read, 
+                       path.save, analysis,
                        options,
+                       seeds=NULL,
                        ...){
   if(!dir.exists(path.save)) dir.create(path.save, recursive=TRUE)
   batch_process(fun = fun.batchr, 
-                path=path.read,
-                regexp=p0("^", prefix, "\\d{7,7}.rds$"), 
-                ask=FALSE,
+                path = path.read,
+                regexp = p0("^", prefix, "\\d{7,7}.rds$"), 
+                ask = FALSE,
                 path.save = path.save,
                 sma.fun = sma.fun,
                 suffix = suffix,
-                parallel=parallel,
-                options=options,
+                options = options,
+                seeds = seeds,
                 ...)
+  #...
+  # code=code, monitor=monitor,
+  # inits=inits, n.chains=mode$n.chains,
+  # n.adapt=mode$n.adapt, max.time=mode$max.time,
+  # max.iter=mode$max.iter, n.save=mode$n.save, 
+  # esr=mode$esr, r.hat=mode$r.hat,
+  # units=mode$units
 }
 
 derive_one <- function(object.nlists, code){

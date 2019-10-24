@@ -259,6 +259,13 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
+#> v data0000001.rds [00:00:00.043]
+#> v data0000002.rds [00:00:00.044]
+#> v data0000003.rds [00:00:00.079]
+#> 
+#> Success: 3
+#> Failure: 0
+#> Remaining: 0
 #> 
 #> Module dic unloaded
 
@@ -271,6 +278,14 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
+#> v results0000001.rds [00:00:00.032]
+#> v results0000002.rds [00:00:00.031]
+#> v results0000003.rds [00:00:00.044]
+#> 
+#> Success: 3
+#> Failure: 0
+#> Remaining: 0
+#> 
 
 sma_evaluate()
 ```
@@ -300,19 +315,16 @@ or read a particular file, e.g.
 ``` r
 readRDS(file.path(getwd(), files[13]))
 #> $bias.var
-#> [1] 0.1966268
+#> [1] 0.8519969
 #> 
 #> $cp.quantile.var
-#> [1] 1
+#> [1] 0.6666667
 #> 
 #> $mse.var
-#> [1] 0.3914333
+#> [1] 4.384704
 #> 
 #> an nlist object with 3 natomic elements
 ```
-
-Here there is a discrepency with before because the seed argument as not
-been incorporated properly yet.
 
 ## Parallelization
 

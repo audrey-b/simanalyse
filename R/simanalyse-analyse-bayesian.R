@@ -72,11 +72,14 @@ sma_analyse_bayesian <- function(sims = NULL,
   chk_flag(progress)
   chk_s3_class(options, "future_options")
   
+  if(!is.list(options$seed)){ #error if list not the right length
   seeds <- furrr::future_map(1:n.sims, 
                              function(x) return(.Random.seed), 
                              .options = options)
+  names(seeds) = chk::p0("data", sprintf("%07d", 1:n.sims), ".rds")
   options$seed = seeds
-  names(seeds) = chk::p0("sims", 1:n.sims)
+  }
+  
   if(is.null(sims)){
     if(!dir.exists(file.path(path, analysis))) dir.create(file.path(path, analysis))
     saveRDS(seeds, file.path(path, analysis, ".seeds.rds"))
@@ -108,7 +111,9 @@ sma_analyse_bayesian <- function(sims = NULL,
     if(deviance == TRUE) unload.module("dic")
     return((mcmcr::as.mcmcrs(res.list)))
     
-  }else{sma_batchr(sma.fun=analyse_dataset_bayesian,
+  }else{
+    options$seed = FALSE
+    sma_batchr(sma.fun=analyse_dataset_bayesian,
                    path.read=path,
                    analysis=analysis,
                    path.save=file.path(path, analysis, "results"),
@@ -118,7 +123,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                    n.adapt=mode$n.adapt, max.time=mode$max.time,
                    max.iter=mode$max.iter, n.save=mode$n.save, 
                    esr=mode$esr, r.hat=mode$r.hat,
-                   units=mode$units, options=options)
+                   units=mode$units, options=options, seeds=seeds)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")
