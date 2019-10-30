@@ -259,9 +259,9 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.043]
-#> v data0000002.rds [00:00:00.044]
-#> v data0000003.rds [00:00:00.079]
+#> v data0000001.rds [00:00:00.037]
+#> v data0000002.rds [00:00:00.020]
+#> v data0000003.rds [00:00:00.023]
 #> 
 #> Success: 3
 #> Failure: 0
@@ -278,9 +278,9 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.032]
-#> v results0000002.rds [00:00:00.031]
-#> v results0000003.rds [00:00:00.044]
+#> v results0000001.rds [00:00:00.021]
+#> v results0000002.rds [00:00:00.019]
+#> v results0000003.rds [00:00:00.017]
 #> 
 #> Success: 3
 #> Failure: 0
@@ -332,8 +332,7 @@ Parallelization is achieved using the
 [future](https://github.com/HenrikBengtsson/future) package.
 
 To use all available cores on the local machine simply execute the
-following code before calling `sims_analyse_bayesian()`,
-`sims_analyse_derive()` and/or `sims_analyse_evaluate()`.
+following code before calling any of the package’s functions.
 
     library(future)
     plan(multisession)

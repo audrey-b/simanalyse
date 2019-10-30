@@ -133,7 +133,7 @@ files <- list.files(getwd(), recursive=TRUE, all.files=TRUE)
 print(files)
 ```
 
-or read a particular file, e.g.
+and read a particular file, e.g.
 ```{r}
 readRDS(file.path(getwd(), files[13]))
 ```
@@ -144,8 +144,7 @@ readRDS(file.path(getwd(), files[13]))
 Parallelization is achieved using the
 [future](https://github.com/HenrikBengtsson/future) package.
 
-To use all available cores on the local machine simply execute the
-following code before calling `sims_analyse_bayesian()`, `sims_analyse_derive()` and/or `sims_analyse_evaluate()`.
+To use all available cores on the local machine simply execute the following code before calling any of the package's functions.
 
     library(future)
     plan(multisession)

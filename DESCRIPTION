@@ -7,7 +7,8 @@ Authors@R: c(
     )
 Description: A Package to Facilitate Model Comparisons and Simulation Studies.
 License: GPL-3
-Depends: nlist
+Depends: R (>= 3.5.0),
+  nlist
 Imports: 
   chk (>= 0.0.1.9019),
   sims (>= 0.0.0.9013),
