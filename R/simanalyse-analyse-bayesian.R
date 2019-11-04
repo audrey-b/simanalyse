@@ -15,6 +15,7 @@
 # @param thin A numeric scalar of at least 1 specifying the thinning factor. Default is 1.
 #' @param deviance A flag. Indicates whether to monitor deviance for future DIC calculation.
 # @param pD A flag. Indicates whether to monitor pD for future DIC calculation.
+# @param save A flag specifying whether to save the results in \code{path}. If save = NA the results are saved in \code{path} only if \code{sims} is NULL.
 #' @param path A string. If \code{sims} is NULL, sims are read from that path on disk and results are written to disk.
 # @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
 #' @param analysis If \code{path} is specified, a string for the name of the folder that contains the results.
@@ -45,6 +46,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  mode=sma_set_mode("report"),
                                  deviance = TRUE,
                                  #pD = FALSE,
+                                 #save= NA,
                                  path = ".",
                                  analysis = "analysis0000001",
                                  progress = FALSE,
@@ -68,6 +70,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   chk_is(inits, class=c("list", "function"))
   #lapply(chk_) need to figure out
   chk_list(mode)
+  #chk_lgl(save)
   
   chk_flag(progress)
   chk_s3_class(options, "future_options")

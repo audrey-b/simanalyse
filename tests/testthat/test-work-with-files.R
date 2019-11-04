@@ -39,7 +39,7 @@ test_that("work with files",{
   deriv.params <- sma_derive(params, code="mu2=mu^2")
   res2 <- sma_evaluate(deriv, parameters = deriv.params)
   
-  identical(res1, res2)
+  #identical(res1, res2)
   
   #compare to parallel with files
   library(future)
@@ -65,7 +65,7 @@ test_that("work with files",{
   sma_derive(code="mu2=mu^2", path=tempdir2)
   sma_evaluate(path=tempdir2)
   res3 <- readRDS(file.path(tempdir2, "performance", "performance.rds"))
-  identical(res1, res3)
+  #identical(res1, res3)
   
   #compare to parallel without files
   set.seed(10L)
@@ -85,5 +85,5 @@ test_that("work with files",{
   deriv.params <- sma_derive(params, code="mu2=mu^2")
   res4 <- sma_evaluate(deriv, parameters = deriv.params)
   
-  identical(res1, res4)
+  #identical(res1, res4)
 })
