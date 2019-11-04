@@ -10,15 +10,16 @@ License: GPL-3
 Depends: R (>= 3.5.0),
   nlist
 Imports: 
-  chk (>= 0.0.1.9019),
-  sims (>= 0.0.0.9013),
-  mcmcr,
-  mcmcderive,
+  chk (>= 0.2.0),
+  sims (>= 0.0.0.9021),
+  mcmcr (>= 0.2.0.9015),
+  mcmcderive (>= 0.0.1.9006),
   magrittr,
   stringr,
   rjags,
-  batchr (>= 0.0.0.9013),
-  furrr
+  batchr (>= 0.0.0.9040),
+  furrr,
+  cli
 Suggests: 
     covr,
     testthat,
