@@ -1,5 +1,5 @@
 test_that("work with files",{
-  tempdir <- file.path(tempdir(), "sims1")
+  tempdir <- file.path(tempdir(), "sims12")
   unlink(tempdir, recursive = TRUE)
   dir.create(tempdir)
   set.seed(10L)

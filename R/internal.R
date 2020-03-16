@@ -217,7 +217,7 @@ make_one_expr <- function(param, expr, keywords){
   patterns <- str_c("\\b", keywords, "\\b", collapse="|")
   str_replace_all(expr, 
                   patterns, 
-                  function(x) if(x %in% keywords) return(p0(x,".",param)))
+                  function(x) if(x %in% keywords) return(chk::p0(x,".",param)))
 }
 
 strip_comments <- function(x) {
@@ -231,7 +231,7 @@ measure_names <- function (x) {
   
   index <- "\\[[^\\]]*\\]"
   
-  pattern <- p0("\\w+(", index, "){0,1}\\s*[)]{0,1}", pattern, collapse = "")
+  pattern <- chk::p0("\\w+(", index, "){0,1}\\s*[)]{0,1}", pattern, collapse = "")
   nodes <- str_extract_all(x, pattern)
   nodes <- unlist(nodes)
   nodes <- str_replace(nodes, pattern = "[)]$", "")
@@ -269,13 +269,13 @@ sma_batchr <- function(sma.fun, prefix, suffix, path.read,
   if(!dir.exists(path.save)) dir.create(path.save, recursive=TRUE)
   batch_process(fun = fun.batchr, 
                 path = path.read,
-                regexp = p0("^", prefix, "\\d{7,7}.rds$"), 
+                regexp = chk::p0("^", prefix, "\\d{7,7}.rds$"), 
                 ask = FALSE,
+                options = options,
+                seeds = seeds,
                 path.save = path.save,
                 sma.fun = sma.fun,
                 suffix = suffix,
-                options = options,
-                seeds = seeds,
                 ...)
   #...
   # code=code, monitor=monitor,

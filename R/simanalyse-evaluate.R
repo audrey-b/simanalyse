@@ -92,14 +92,14 @@ sma_evaluate <- function(object = NULL,
                         prefix="results"
                         parameters = sims_info(path)$parameters
                 }
-                files <- list.files(path=file.path(path, analysis), pattern=p0("^", prefix, "\\d{7,7}.rds$"), recursive=TRUE, full.names=TRUE)
+                files <- list.files(path=file.path(path, analysis), pattern=chk::p0("^", prefix, "\\d{7,7}.rds$"), recursive=TRUE, full.names=TRUE)
                 object <- mcmcr::as.mcmcrs(lapply(files, readRDS))
         }
         
         chk_nlist(parameters)
         
         object %<>% lapply(function(x) as.nlists(mcmcr::collapse_chains(x)))
-        chk_is(object, "list"); lapply(object, chk_is, class="nlists")
+        chk_list(object); lapply(object, chk_nlists)
         
         if(monitor != ".*"){object %<>% lapply(subset, select=monitor)
                 #parameters %<>% parameters[monitor]

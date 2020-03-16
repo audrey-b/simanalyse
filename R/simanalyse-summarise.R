@@ -34,7 +34,7 @@ sma_summarise <- function(object,
                           alpha=0.05,
                           custom_funs = list()) {
   
-  chk_is(object, class=c("mcmcr", "mcmcrs"))
+  chkor(chk_s3_class(object, "mcmcr"), chk_s3_class(object, "mcmcrs"))
   chk_vector(measures); chk_all(measures, chk_string)
   chk_string(monitor)
   chk_number(alpha); chk_range(alpha)

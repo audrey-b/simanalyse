@@ -54,8 +54,8 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   if(!is.null(sims)){
     if(is.nlist(sims)) sims <- nlists(sims)
-    chk_is(sims, class="nlists")
-    lapply(sims, chk_is, class="nlist")
+    chk_nlists(sims)
+    lapply(sims, chk_nlist)
     n.sims <- length(sims)
   }else{
     chk_string(path)
@@ -66,8 +66,8 @@ sma_analyse_bayesian <- function(sims = NULL,
   chk_string(code.add)
   chk_string(code.values)
   chk_string(package)
-  chk_is(monitor, "character")
-  chk_is(inits, class=c("list", "function"))
+  chk_character(monitor)
+  chkor(chk_list(inits), chk_function(inits))
   #lapply(chk_) need to figure out
   chk_list(mode)
   #chk_lgl(save)

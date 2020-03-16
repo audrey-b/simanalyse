@@ -53,7 +53,7 @@ sma_assess <- function(object,
   #calculate expectations
   expectations <- mcmc_derive(sample, expr=expr)
   monitor <- names(expectations)
-  names(expectations) <- p0("expectation.", names(expectations))
+  names(expectations) <- chk::p0("expectation.", names(expectations))
   
   #statistic
   if(statistic == "FT"){expr.stat <- "(sqrt(data) - sqrt(expectation))^2"
@@ -62,7 +62,7 @@ sma_assess <- function(object,
   }
   
   #calculate Freeman-Tukey statistic with data
-  expr.FT.1 <- p0("D1 =", expr.stat)
+  expr.FT.1 <- chk::p0("D1 =", expr.stat)
   all.expr.FT.1 <- expand_expr(expr.FT.1, c("data", "expectation"), monitor, monitor)
   names(data) <- paste0("data.",names(data))
   D1 <- mcmc_derive(expectations, all.expr.FT.1, values = data)

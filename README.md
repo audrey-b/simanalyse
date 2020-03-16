@@ -58,8 +58,8 @@ sims <- sims::sims_simulate(code,
                            silent = TRUE)
 print(sims)
 #> $a
-#>  [1]  1.84531303 -0.37135465 -0.23899843  0.09628412 -0.07658222
-#>  [6]  0.37493748  1.34521644 -0.03269300 -1.35199082  0.55921495
+#>  [1]  1.50009615 -0.63919833 -0.09224249 -1.55116546  0.14274593
+#>  [6] -0.53769314  1.03237779 -1.07075667 -1.33777215 -0.78109651
 #> 
 #> $mu
 #> [1] 0
@@ -259,10 +259,9 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.037]
-#> v data0000002.rds [00:00:00.020]
-#> v data0000003.rds [00:00:00.023]
-#> 
+#> v data0000001.rds [00:00:00.015]
+#> v data0000002.rds [00:00:00.018]
+#> v data0000003.rds [00:00:00.018]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
@@ -278,10 +277,9 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.021]
-#> v results0000002.rds [00:00:00.019]
-#> v results0000003.rds [00:00:00.017]
-#> 
+#> v results0000001.rds [00:00:00.013]
+#> v results0000002.rds [00:00:00.011]
+#> v results0000003.rds [00:00:00.014]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
@@ -310,7 +308,7 @@ print(files)
 #> [13] "performance/performance.rds"
 ```
 
-or read a particular file, e.g.
+and read a particular file, e.g.
 
 ``` r
 readRDS(file.path(getwd(), files[13]))

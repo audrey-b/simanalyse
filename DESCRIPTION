@@ -26,7 +26,9 @@ Suggests:
     future
 Remotes:
   poissonconsulting/sims,
-  poissonconsulting/batchr
+  poissonconsulting/batchr,
+  poissonconsulting/mcmcr,
+  poissonconsulting/mcmcderive
 URL: https://github.com/audrey-b/simanalyse
 BugReports: https://github.com/audrey-b/simanalyse/issues
 Encoding: UTF-8
