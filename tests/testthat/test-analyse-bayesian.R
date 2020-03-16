@@ -7,7 +7,7 @@ test_that("sma_analyse_bayesian",{
    result <- sma_analyse_bayesian(sims=dat,
                                   code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
-                                  mode=sma_set_mode("debug"),
+                                  mode=sma_set_mode("quick"),
                                   monitor = "mu")
    expect_true(class(result)=="mcmcrs")
    #expect_true(niters(result)==100)
@@ -33,7 +33,7 @@ test_that("inits is a list of inits for multiple chains",{
    result <- sma_analyse_bayesian(sims=sims,
                                   code = code,
                                   code.add = prior,
-                                  mode=sma_set_mode("debug", n.chains=3),
+                                  mode=sma_set_mode("quick", n.chains=3),
                                   monitor = c("mu", "tt"),
                                   inits=list(inits1, inits2, inits3),
                                   deviance=FALSE)
@@ -55,7 +55,7 @@ test_that("inits is a function and reproducible",{
    result1 <- sma_analyse_bayesian(sims=sims,
                                    code = code,
                                    code.add = prior,
-                                   mode=sma_set_mode("debug"),
+                                   mode=sma_set_mode("quick"),
                                    monitor = c("mu", "tt"),
                                    inits=inits.fun,
                                    deviance=FALSE)
@@ -63,7 +63,7 @@ test_that("inits is a function and reproducible",{
    result2 <- sma_analyse_bayesian(sims=sims,
                                    code = code,
                                    code.add = prior,
-                                   mode=sma_set_mode("debug"),
+                                   mode=sma_set_mode("quick"),
                                    monitor = c("mu", "tt"),
                                    inits=inits.fun,
                                    deviance=FALSE)

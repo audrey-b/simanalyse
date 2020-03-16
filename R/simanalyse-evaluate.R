@@ -35,7 +35,7 @@
 # result <- sma_analyse_bayesian(sims=dat,
 #                                       code = "a ~ dnorm(mu, 1)
 #                                               mu ~ dunif(-3,3)",
-#                                       mode=sma_set_mode("debug"),
+#                                       mode=sma_set_mode("quick"),
 #                                       monitor="mu")
 # sma_evaluate(result, parameters=params)
 # sma_evaluate(result, 

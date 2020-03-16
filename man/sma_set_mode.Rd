@@ -8,7 +8,7 @@ sma_set_mode(mode = "report", n.chains, n.adapt, n.save, max.iter, r.hat,
   esr, max.time, units)
 }
 \arguments{
-\item{mode}{A string of the analysis mode. One of "debug", "report" or "paper". The mode determines the values of the parameters below unless they are specified.}
+\item{mode}{A string of the analysis mode. One of "quick", "report" or "paper". The mode determines the values of the parameters below unless they are specified.}
 
 \item{n.chains}{A count for number of chains.}
 
@@ -27,7 +27,7 @@ sma_set_mode(mode = "report", n.chains, n.adapt, n.save, max.iter, r.hat,
 \item{units}{A character string specifying the units of time for \code{max.time}. See \code{difftime}.
 The possible modes are as follows:
 \describe{
-  \item{'debug'}{To rapidly identify problems with a model definition.}
+  \item{'quick'}{To rapidly identify problems with a model definition.}
   \item{'report'}{To produce results for a report.}
   \item{'paper'}{To produce results for a peer-reviewed paper.}
 }}
@@ -42,6 +42,6 @@ and thinning is multiplied by 2. The stop criteria is applied again and so on.
 }
 \examples{
 \dontrun{
-sma_set_mode("debug")
+sma_set_mode("quick")
 }
 }

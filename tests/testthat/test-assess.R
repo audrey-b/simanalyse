@@ -8,7 +8,7 @@ test_that("sma_assess",{
                               code, 
                               "mu ~ dunif(0,10)", 
                               monitor = "mu",
-                              mode=sma_set_mode("debug"),
+                              mode=sma_set_mode("quick"),
                               deviance=FALSE)
   sma_assess(res, "a = mu", sims, code, nsamples=5L)
 })

@@ -69,7 +69,7 @@ print(sims)
 
 ### Analyse Data
 
-Analyse all 3 datasets (here we use only a few iterations in debug mode
+Analyse all 3 datasets (here we use only a few iterations in quick mode
 for demonstration purposes; see ?sma\_set\_mode for details about
 analysis modes)
 
@@ -79,7 +79,7 @@ results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 monitor = names(params),
-                                mode = sma_set_mode("debug"))
+                                mode = sma_set_mode("quick"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -228,7 +228,7 @@ sims::sims_simulate(code,
 sma_analyse_bayesian(code = code,
                      code.add = prior,
                      monitor = names(params),
-                     mode = sma_set_mode("debug"))
+                     mode = sma_set_mode("quick"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -259,9 +259,9 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.015]
-#> v data0000002.rds [00:00:00.018]
-#> v data0000003.rds [00:00:00.018]
+#> v data0000001.rds [00:00:00.019]
+#> v data0000002.rds [00:00:00.014]
+#> v data0000003.rds [00:00:00.015]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
@@ -277,9 +277,9 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.013]
-#> v results0000002.rds [00:00:00.011]
-#> v results0000003.rds [00:00:00.014]
+#> v results0000001.rds [00:00:00.008]
+#> v results0000002.rds [00:00:00.000]
+#> v results0000003.rds [00:00:00.013]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0

@@ -7,7 +7,7 @@
 #' the iterations so far are discarded as burnin. The number of iterations is doubled from the previous round
 #' and thinning is multiplied by 2. The stop criteria is applied again and so on.
 #' 
-#' @param mode A string of the analysis mode. One of "debug", "report" or "paper". The mode determines the values of the parameters below unless they are specified.
+#' @param mode A string of the analysis mode. One of "quick", "report" or "paper". The mode determines the values of the parameters below unless they are specified.
 #' @param n.chains A count for number of chains.
 #' @param n.adapt A count for the number of adaptations.
 #' @param n.save A count for the number of (potentially thinned) samples to save.
@@ -21,7 +21,7 @@
 
 #' \describe{
 
-#'   \item{'debug'}{To rapidly identify problems with a model definition.}
+#'   \item{'quick'}{To rapidly identify problems with a model definition.}
 
 #'   \item{'report'}{To produce results for a report.}
 
@@ -35,7 +35,7 @@
 
 #' \dontrun{
 
-#' sma_set_mode("debug")
+#' sma_set_mode("quick")
 
 #' }
 
@@ -67,7 +67,7 @@ sma_set_mode <- function(mode = "report",
   #units?
   #other checks
   
-  if (mode == "debug") {
+  if (mode == "quick") {
     
     list(n.chains = ifelse(missing(n.chains), 2L, n.chains),
          
@@ -122,6 +122,6 @@ sma_set_mode <- function(mode = "report",
          
          units = ifelse(missing(units), "mins", units))
     
-  } else err("mode '", mode,"' unrecognised (possible values are 'debug', 'report' or 'paper')")
+  } else err("mode '", mode,"' unrecognised (possible values are 'quick', 'report' or 'paper')")
   
 }

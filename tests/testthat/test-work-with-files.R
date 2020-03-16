@@ -13,7 +13,7 @@ test_that("work with files",{
   sims_data_files(tempdir)
   sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
-                       mode=sma_set_mode("debug"),
+                       mode=sma_set_mode("quick"),
                        monitor = "mu",
                        path = tempdir,
                        deviance=FALSE)
@@ -32,7 +32,7 @@ test_that("work with files",{
   res <- sma_analyse_bayesian(sims=sims,
                        code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
-                       mode=sma_set_mode("debug"),
+                       mode=sma_set_mode("quick"),
                        monitor = "mu",
                        deviance=FALSE)
   deriv <- sma_derive(res, code="mu2=mu^2")
@@ -58,7 +58,7 @@ test_that("work with files",{
   sims_data_files(tempdir2)
   sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
-                       mode=sma_set_mode("debug"),
+                       mode=sma_set_mode("quick"),
                        monitor = "mu",
                        path = tempdir2,
                        deviance=FALSE)
@@ -78,7 +78,7 @@ test_that("work with files",{
   res <- sma_analyse_bayesian(sims=sims,
                               code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
-                              mode=sma_set_mode("debug"),
+                              mode=sma_set_mode("quick"),
                               monitor = "mu",
                               deviance=FALSE)
   deriv <- sma_derive(res, code="mu2=mu^2")

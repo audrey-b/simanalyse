@@ -33,7 +33,7 @@
 #'  result <- sma_analyse_bayesian(sims=sims,
 #'                                        code = code,
 #'                                        code.add = prior,
-#'                                        mode=sma_set_mode("debug"),
+#'                                        mode=sma_set_mode("quick"),
 #'                                        monitor = "mu")
 
 sma_analyse_bayesian <- function(sims = NULL,
