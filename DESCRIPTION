@@ -7,17 +7,17 @@ Authors@R: c(
     )
 Description: A Package to Facilitate Model Comparisons and Simulation Studies.
 License: GPL-3
-Depends: R (>= 3.5.0),
+Depends: R (>= 3.6.0),
   nlist
 Imports: 
-  chk (>= 0.2.0),
-  sims (>= 0.0.0.9021),
-  mcmcr (>= 0.2.0.9015),
-  mcmcderive (>= 0.0.1.9006),
+  chk,
+  sims,
+  mcmcr,
+  mcmcderive,
   magrittr,
   stringr,
   rjags,
-  batchr (>= 0.0.0.9040),
+  batchr,
   furrr,
   cli
 Suggests: 
@@ -25,10 +25,6 @@ Suggests:
     testthat,
     future
 Remotes:
-  poissonconsulting/chk,
-  poissonconsulting/mcmcr,
-  poissonconsulting/mcmcderive,
-  poissonconsulting/nlist,
   poissonconsulting/sims,
   poissonconsulting/batchr
 URL: https://github.com/audrey-b/simanalyse
