@@ -78,7 +78,6 @@ prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                monitor = names(params),
                                 mode = sma_set_mode("quick"))
 #> module dic loaded
 #> Compiling model graph
@@ -184,8 +183,10 @@ sma_evaluate(results.derived, parameters=params.derived)
 #> an nlist object with 3 natomic elements
 ```
 
-You may also create custom performance measures. The example below shows
-how to reproduce the results above with custom code.
+Several more performance measures are available and can be specified
+using the *measures* argument (see ?sma\_evaluate for details). You may
+also create custom performance measures. The example below shows how to
+reproduce the results above with custom code.
 
 ``` r
 sma_evaluate(results.derived,
@@ -211,9 +212,9 @@ sma_evaluate(results.derived,
 
 ## Saving to file
 
-When running simulation studies, it is often preferable to work from
-disk to keep a copy of all the results. By default, if the  argument is
-not specified, results are saved in your working directory.
+When running simulation studies, it is often preferable to save all the
+results to disk. By default, when the *path* argument is not specified,
+results are saved in your working directory.
 
 ``` r
 set.seed(10L)
@@ -227,7 +228,6 @@ sims::sims_simulate(code,
 
 sma_analyse_bayesian(code = code,
                      code.add = prior,
-                     monitor = names(params),
                      mode = sma_set_mode("quick"))
 #> module dic loaded
 #> Compiling model graph
@@ -259,9 +259,9 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.021]
-#> v data0000002.rds [00:00:00.014]
-#> v data0000003.rds [00:00:00.015]
+#> v data0000001.rds [00:00:00.024]
+#> v data0000002.rds [00:00:00.031]
+#> v data0000003.rds [00:00:00.032]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
@@ -277,9 +277,9 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.009]
-#> v results0000002.rds [00:00:00.008]
-#> v results0000003.rds [00:00:00.014]
+#> v results0000001.rds [00:00:00.012]
+#> v results0000002.rds [00:00:00.014]
+#> v results0000003.rds [00:00:00.030]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
