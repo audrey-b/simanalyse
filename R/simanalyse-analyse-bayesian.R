@@ -72,6 +72,8 @@ sma_analyse_bayesian <- function(sims = NULL,
   chk_list(mode)
   #chk_lgl(save)
   
+  #need to check that r.hat.node and esr.nodes are contained within monitor
+  
   chk_flag(progress)
   chk_s3_class(options, "future_options")
   
@@ -109,6 +111,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                             n.adapt=mode$n.adapt, max.time=mode$max.time,
                             max.iter=mode$max.iter, n.save=mode$n.save, 
                             esr=mode$esr, r.hat=mode$r.hat,
+                            esr.nodes=mode$esr.nodes, 
+                            r.hat.nodes=mode$r.hat.nodes,
                             units=mode$units, .progress = progress, .options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
@@ -127,6 +131,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                    n.adapt=mode$n.adapt, max.time=mode$max.time,
                    max.iter=mode$max.iter, n.save=mode$n.save, 
                    esr=mode$esr, r.hat=mode$r.hat,
+                   esr.nodes=mode$esr.nodes, 
+                   r.hat.nodes=mode$r.hat.nodes,
                    units=mode$units, options=options, seeds=seeds)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")

@@ -5,7 +5,7 @@
 \title{Set mode for data analysis}
 \usage{
 sma_set_mode(mode = "report", n.chains, n.adapt, n.save, max.iter, r.hat,
-  esr, max.time, units)
+  r.hat.nodes, esr, esr.nodes, max.time, units)
 }
 \arguments{
 \item{mode}{A string of the analysis mode. One of "quick", "report" or "paper". The mode determines the values of the parameters below unless they are specified.}
@@ -20,7 +20,11 @@ sma_set_mode(mode = "report", n.chains, n.adapt, n.save, max.iter, r.hat,
 
 \item{r.hat}{A number specifying the rhat threshold.}
 
+\item{r.hat.nodes}{A character vector of nodes to be used to assess r.hat}
+
 \item{esr}{A number specifying the minimum effective sampling rate.}
+
+\item{esr.nodes}{A character vector of nodes to be used to assess esr}
 
 \item{max.time}{A number specifying the maximum time to spend on analysis.}
 

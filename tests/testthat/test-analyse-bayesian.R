@@ -79,11 +79,29 @@ test_that("modulo_in_code and default monitor",{
                                          mu ~ dunif(-3,3)",
                                   mode=sma_set_mode("quick"))
    expect_true(class(result)=="mcmcrs")
-   #expect_true(niters(result)==100)
-   #expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
-   
-   #evaluate_within(result, aggregate_FUN=var)
-   
-   #sma_evaluate(result, "Epsd", parameters=params, monitor="mu")
 })
 
+
+test_that("use r.hat.nodes and esr.nodes",{
+   set.seed(100L)
+   code = "N[2] ~ dbin(1-phi, N.1)
+      for(t in 3:K){
+         N[t] ~ dbin(1-phi, N[t-1])
+      }
+      Y[1] ~ dnorm(N.1, 1/sigma^2)
+      for(t in 2:K){
+         Y[t] ~ dnorm(N[t], 1/sigma^2)
+      }
+      sigma2 <- sigma^2"
+   sims <- sims::sims_simulate(code=code,
+                               constants=nlist(K=4),
+                               parameters=nlist(phi=0.95, 
+                                                N.1=100,
+                                                sigma=5),
+                               latent=NA, stochastic = NA, monitor=c("Y"))
+   result <- sma_analyse_bayesian(sims=sims,
+                                  code = code,
+                                  code.add = "phi ~ dunif(0,1) \n sigma ~ dunif(0,20) \n N.1 ~ dpois(100)",
+                                  mode=sma_set_mode("quick", r.hat.nodes="phi", esr.nodes = "phi"))
+   expect_true(class(result)=="mcmcrs")
+})

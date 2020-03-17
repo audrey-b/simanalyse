@@ -51,7 +51,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
                                      n.chains=3, inits=list(), n.adapt, 
                                      n.save, max.time, max.iter,
                                      quiet = FALSE, units="mins", 
-                                     esr, r.hat) {
+                                     esr, r.hat, esr.nodes, r.hat.nodes) {
   
   code %<>% add_model_block() %>% textConnection
   
@@ -73,7 +73,6 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
     }
   }else{variable.names=monitor}
   
-  
   sample <- rjags::jags.samples(model, 
                                 variable.names = variable.names, 
                                 n.iter = n.save) %>%
@@ -83,7 +82,15 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   batch.time = as.double(difftime(Sys.time(), time0, units=units))
   cum.time = batch.time
   
-  convergence <- (mcmcr::esr(sample)>=esr & mcmcr::rhat(sample)<=r.hat)
+  if(".*" %in% r.hat.nodes){
+  r.hat.convergence <- mcmcr::rhat(sample)<=r.hat
+  }else{ r.hat.convergence <- mcmcr::rhat(subset(sample, pars=r.hat.nodes))<=r.hat}
+  
+  if(".*" %in% esr.nodes){
+    esr.convergence <- mcmcr::esr(sample)>=esr
+  }else{ esr.convergence <- mcmcr::esr(subset(sample, pars=esr.nodes))>=esr}
+  
+  convergence <- (r.hat.convergence & esr.convergence)
   
   while(cum.time+batch.time*2 <= max.time & cum.iter+n.save*(thin+1) <= max.iter & !convergence){
     thin=thin+1
