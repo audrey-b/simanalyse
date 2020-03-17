@@ -72,7 +72,7 @@ sma_summarise <- function(object,
   if(length(custom_funs)>0) aggregate.FUNS %<>% append(custom_funs)
   
   
-  if(monitor != ".*") object <- subset(object, pars=monitor)
+  if(!(".*" %in% monitor)) object <- subset(object, pars=monitor)
   if(class(object) == "mcmcr") object <- as.nlists(mcmcr::collapse_chains(object))
   if(class(object) == "mcmcrs") object <- lapply(object, function(x) as.nlists(mcmcr::collapse_chains(x)))
   

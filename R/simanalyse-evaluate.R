@@ -101,7 +101,7 @@ sma_evaluate <- function(object = NULL,
         object %<>% lapply(function(x) as.nlists(mcmcr::collapse_chains(x)))
         chk_list(object); lapply(object, chk_nlists)
         
-        if(monitor != ".*"){object %<>% lapply(subset, select=monitor)
+        if(!(".*" %in% monitor)){object %<>% lapply(subset, select=monitor)
                 #parameters %<>% parameters[monitor]
         }
         
