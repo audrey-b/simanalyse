@@ -5,6 +5,7 @@
 #' @param object An mcmcrs object or an object that can be coerced to mcmcrs such as list, nlist, nlists, mcmc or mcmc.list. If set to NULL, the object is read from \code{path} instead.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
+#' @param values A named list of additional R objects to evaluate in the R expression.
 #' @param path A string. If object is NULL, analyses results are read from that path on disk.
 #' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
 #' @param progress A flag specifying whether to print a progress bar.
@@ -31,10 +32,12 @@
 
 
 sma_derive <- function(object=NULL, code, monitor=".*", 
+                       values=list(),
                        path = ".",
                        analysis = "analysis0000001",
                        progress = FALSE,
                        options = furrr::future_options()) {
+  
   
   if(!mcmcr::is.mcmcr(object) && !mcmcr::is.mcmcr(object) && length(lengths(object))==1){
     object <- mcmcr::as.mcmcr(object)
@@ -75,7 +78,7 @@ sma_derive <- function(object=NULL, code, monitor=".*",
   if(!is.null(object)){
     #files <- list.files(path, pattern = "^results\\d{7,7}[.]rds$")
     #object <- lapply(file.path(path, files), readRDS)
-    sma_derive_internal(object, code, monitor, monitor.non.primary, progress, options)
+    sma_derive_internal(object, code, monitor, values, monitor.non.primary, progress, options)
     
   }else{
     chk_dir(path)
@@ -85,12 +88,12 @@ sma_derive <- function(object=NULL, code, monitor=".*",
                    path.read = file.path(path, analysis, "results"),
                    path.save = file.path(path, analysis, "derived"),
                    prefix="results", suffix="deriv",
-                   code=code, monitor=monitor,
+                   code=code, monitor=monitor, values=values,
                    monitor.non.primary=monitor.non.primary,
                    progress=progress, options=options) #need to change
     
     parameters <- sims_info(path)$parameters
-    derived.params <- sma_derive_internal(parameters, code, monitor, monitor.non.primary, progress, options)
+    derived.params <- sma_derive_internal(parameters, code, monitor, values, monitor.non.primary, progress, options)
     saveRDS(derived.params, file.path(path, analysis, "derived", ".parameters.rds"))
   }
 }

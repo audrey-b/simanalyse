@@ -4,16 +4,18 @@
 \alias{sma_derive}
 \title{Apply R code to derive new variables.}
 \usage{
-sma_derive(object = NULL, code, monitor = ".*", path = ".",
-  analysis = "analysis0000001", progress = FALSE,
+sma_derive(object = NULL, code, monitor = ".*", values = list(),
+  path = ".", analysis = "analysis0000001", progress = FALSE,
   options = furrr::future_options())
 }
 \arguments{
-\item{object}{An nlists object or an object that can be coerced to nlists such as list, nlist, mcmc, mcmc.list, mcmcr or mcmcrs. If set to NULL, the object is read from \code{path} instead.}
+\item{object}{An mcmcrs object or an object that can be coerced to mcmcrs such as list, nlist, nlists, mcmc or mcmc.list. If set to NULL, the object is read from \code{path} instead.}
 
 \item{code}{A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}
+
+\item{values}{A named list of additional R objects to evaluate in the R expression.}
 
 \item{path}{A string. If object is NULL, analyses results are read from that path on disk.}
 

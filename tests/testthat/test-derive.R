@@ -8,7 +8,7 @@ test_that("sma_derive works", {
   res <- sma_analyse_bayesian(dat, code, code.add = "variance ~ dunif(0,10)", 
                               mode=sma_set_mode("quick"), monitor="variance",
                               deviance="FALSE")
-  sma_derive(res, "sd=sqrt(variance)")
+  sma_derive(res, "sd=sqrt(variance*c)", values=list(c=2))
   sma_derive(parameters, "sd=sqrt(variance)")
 })
 

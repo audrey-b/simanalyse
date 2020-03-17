@@ -284,9 +284,9 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.014]
-#> v data0000002.rds [00:00:00.012]
-#> v data0000003.rds [00:00:00.012]
+#> v data0000001.rds [00:00:00.016]
+#> v data0000002.rds [00:00:00.014]
+#> v data0000003.rds [00:00:00.016]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
@@ -303,8 +303,8 @@ sma_derive(code="var=sigma^2", monitor="var")
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
 #> v results0000001.rds [00:00:00.006]
-#> v results0000002.rds [00:00:00.006]
-#> v results0000003.rds [00:00:00.011]
+#> v results0000002.rds [00:00:00.009]
+#> v results0000003.rds [00:00:00.010]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
