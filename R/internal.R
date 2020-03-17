@@ -1,6 +1,6 @@
 add_model_block <- function(code){
   
-  sprintf("model{\n\n%s\n\n}", code)
+  sprintf("model{\n\n%s\n\n}", correct_modulo_sprintf(code))
   
 }
 
@@ -65,8 +65,18 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   #if(n.burnin >= 1) update(model, n.iter = n.burnin)
   time0 <- Sys.time()
   thin=1
+  
+  if(".*" %in% monitor){
+    stochastic <- stochastic_nodes(code)
+    variable.names = unique(stochastic[! stochastic %in% names(nlistdata)])
+    if("deviance" %in% monitor){
+      variable.names = c(variable.names, "deviance")
+    }
+  }else{variable.names=monitor}
+  
+  
   sample <- rjags::jags.samples(model, 
-                                variable.names = monitor, 
+                                variable.names = variable.names, 
                                 n.iter = n.save) %>%
     mcmcr::as.mcmcr()
   
@@ -79,15 +89,15 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   while(cum.time+batch.time*2 <= max.time & cum.iter+n.save*(thin+1) <= max.iter & !convergence){
     thin=thin+1
     sample <- rjags::jags.samples(model, 
-                               variable.names = monitor, 
-                               n.iter = n.save*thin, thin=thin) %>%
+                                  variable.names = variable.names, 
+                                  n.iter = n.save*thin, thin=thin) %>%
       mcmcr::as.mcmcr()
-
+    
     cum.iter = cum.iter+n.save*thin
     batch.time = as.double(difftime(Sys.time(), time0, units=units))-cum.time
     cum.time = cum.time + batch.time
     convergence <- (mcmcr::esr(sample)>=esr & mcmcr::rhat(sample)<=r.hat)
-
+    
   }
   return(mcmcr::as.mcmcr(sample))
 }
@@ -248,7 +258,7 @@ prepare_code <- function(code, code.add, code.values){
   if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
     err("jags code must not be in a data or model block")
   
-  do.call(sprintf, args = as.list(c(code, code.values))) %>% 
+  do.call(sprintf, args = as.list(c(correct_modulo_sprintf(code), code.values))) %>% 
     return
 }
 
@@ -340,7 +350,28 @@ sma_derive_internal <- function(object, code, monitor, monitor.non.primary, prog
 # }
 
 
-
-
+stochastic_nodes <- function(x, pattern="[~]") {
+  
+  pattern <- chk::p0("(?=\\s*(", pattern, "))")
+  
+  index <- "\\[[^\\]]*\\]"
+  
+  pattern <- chk::p0("[[:alnum:]_.]+(", index, "){0,1}\\s*[)]{0,1}", pattern, collapse = "")
+  
+  nodes <- str_extract_all(x, pattern)
+  
+  nodes <- unlist(nodes)
+  
+  nodes <- sub("[)]$", "", nodes)
+  
+  nodes <- sub("\\s*$", "", nodes)
+  
+  nodes <- sub(pattern = index, "", nodes, perl = TRUE)
+  
+  nodes <- unique(nodes)
+  
+  sort(nodes)
+  
+}
 
 

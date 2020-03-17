@@ -69,3 +69,8 @@ test_that("tibble",{
 ), row.names = c(NA, -1L))) 
 })
 
+test_that("correct_modulo_sprintf",{
+  code <- "z <- a %*% 2 \n v <- 5 %*% 3"
+  expect_identical(correct_modulo_sprintf(code), "z <- a %%*%% 2 \n v <- 5 %%*%% 3")
+})
+

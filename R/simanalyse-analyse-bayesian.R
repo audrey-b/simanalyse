@@ -41,7 +41,7 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  code.add="",
                                  code.values="",
                                  package="rjags",
-                                 monitor, #need to configure so .* by default
+                                 monitor = ".*",
                                  inits=list(),
                                  mode=sma_set_mode("report"),
                                  deviance = TRUE,
@@ -74,6 +74,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   chk_flag(progress)
   chk_s3_class(options, "future_options")
+  
   
   if(!is.list(options$seed)){ #error if list not the right length
   seeds <- furrr::future_map(1:n.sims, 

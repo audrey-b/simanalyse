@@ -69,3 +69,21 @@ test_that("inits is a function and reproducible",{
                                    deviance=FALSE)
    expect_identical(result1, result2)
 })
+
+test_that("modulo_in_code and default monitor",{
+   set.seed(10L)
+   params <- nlist(mu=0)
+   dat <- sims_simulate("a ~ dnorm(mu,10) \n b = 10 %*% 2", parameters = params, nsims=2)
+   result <- sma_analyse_bayesian(sims=dat,
+                                  code = "a ~ dnorm(mu,1)
+                                         mu ~ dunif(-3,3)",
+                                  mode=sma_set_mode("quick"))
+   expect_true(class(result)=="mcmcrs")
+   #expect_true(niters(result)==100)
+   #expect_equal(result[[1]]$mu[1], -1.817165, tolerance = 0.000001)
+   
+   #evaluate_within(result, aggregate_FUN=var)
+   
+   #sma_evaluate(result, "Epsd", parameters=params, monitor="mu")
+})
+

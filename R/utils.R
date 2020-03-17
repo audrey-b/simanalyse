@@ -40,3 +40,5 @@ cp.lower = function(x, alpha) quantile(x, alpha/2)
 cp.upper = function(x, alpha) quantile(x, 1-alpha/2)
 
 name_of_function = function(fun) deparse(substitute(fun))
+
+correct_modulo_sprintf = function(x) gsub(" %*% ", " %%*%% ", x, fixed=TRUE)

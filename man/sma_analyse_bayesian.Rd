@@ -5,9 +5,9 @@
 \title{Analyse data for a simulation study}
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
-  code.values = "", package = "rjags", monitor, inits = list(),
-  mode = sma_set_mode("report"), deviance = TRUE, path = ".",
-  analysis = "analysis0000001", progress = FALSE,
+  code.values = "", package = "rjags", monitor = ".*",
+  inits = list(), mode = sma_set_mode("report"), deviance = TRUE,
+  path = ".", analysis = "analysis0000001", progress = FALSE,
   options = furrr::future_options(seed = TRUE))
 }
 \arguments{
