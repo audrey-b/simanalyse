@@ -46,8 +46,8 @@ Simulate 3 datasets using the sims package (we use only 3 datasets for demonstra
 ```{r}
 library(simanalyse)
 set.seed(10L)
-params <- nlist(sigma = 2)
-constants <- nlist(mu = 0)
+params <- list(sigma = 2)
+constants <- list(mu = 0)
 code <- "for(i in 1:10){
           a[i] ~ dnorm(mu, 1/sigma^2)}"
 sims <- sims::sims_simulate(code, 

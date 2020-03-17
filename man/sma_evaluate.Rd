@@ -23,7 +23,7 @@ sma_evaluate(object = NULL, measures = c("bias", "mse", "cp.quantile"),
 
 \item{alpha}{Scalar representing the alpha level used to construct credible intervals. Default is 0.05.}
 
-\item{parameters}{An nlist. True values of parameters to be used to calculate the performance measures.}
+\item{parameters}{An nlist object (or list that can be coerced to nlist). True values of parameters to be used to calculate the performance measures.}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.}
 

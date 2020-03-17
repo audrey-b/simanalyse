@@ -11,7 +11,7 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
   options = furrr::future_options(seed = TRUE))
 }
 \arguments{
-\item{sims}{An nlists or nlist object of the data. If NULL, data files are read from \code{path}.}
+\item{sims}{An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.}
 
 \item{code}{A string of code to analyse the data. JAGS code must not be in a data or model block.}
 

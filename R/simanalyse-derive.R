@@ -2,7 +2,7 @@
 #' 
 #' Apply R code to derive new variables.
 #' 
-#' @param object One of either nlists, mcmc or mcmc.list or a list of those. If set to NULL, the object is read from \code{path} instead.
+#' @param object An mcmcrs object or an object that can be coerced to mcmcrs such as list, nlist, nlists, mcmc or mcmc.list. If set to NULL, the object is read from \code{path} instead.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param path A string. If object is NULL, analyses results are read from that path on disk.
@@ -29,16 +29,37 @@
 #' sma_derive(res, "sd=sqrt(variance)")
 #' sma_derive(parameters, "sd=sqrt(variance)")
 
+
 sma_derive <- function(object=NULL, code, monitor=".*", 
                        path = ".",
                        analysis = "analysis0000001",
                        progress = FALSE,
                        options = furrr::future_options()) {
   
+  if(!mcmcr::is.mcmcr(object) && !mcmcr::is.mcmcr(object) && length(lengths(object))==1){
+    object <- mcmcr::as.mcmcr(object)
+    mcmcr::chk_mcmcr(object)}
+  if(!is_nlist(object) && !is_nlists(object) && length(lengths(object))>1){
+    object <- mcmcr::as.mcmcrs(object)
+    mcmcr::chk_mcmcrs(object)
+  }
+  # chk_nlists(object)
+  # 
+  # if(!is_nlist(object) && !is_nlists(object) && length(lengths(object))==1){
+  #   class(object) <- "nlist"
+  #   chk_nlist(object)
+  #   object <- nlists(object)}
+  # if(!is_nlist(object) && !is_nlists(object) && length(lengths(object))>1){
+  #   class(object) <- "nlists"
+  #   for(i in 1:length(object)) class(object[[i]]) <- "nlist"
+  # }
+  # chk_nlists(object)
+  # 
+  # 
   #do not monitor non-primary variables that are not in monitor
   monitor.non.primary <- ".*" 
   if(!(".*" %in% monitor)){
-    if(class(object) %in% c("nlist", "mcmcr")){
+    if(class(object) %in% c("nlist")){
       primary.params <- names(object)
     }else{
       primary.params <- names(object[[1]])

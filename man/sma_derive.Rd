@@ -9,7 +9,7 @@ sma_derive(object = NULL, code, monitor = ".*", path = ".",
   options = furrr::future_options())
 }
 \arguments{
-\item{object}{One of either nlists, mcmc or mcmc.list or a list of those. If set to NULL, the object is read from \code{path} instead.}
+\item{object}{An nlists object or an object that can be coerced to nlists such as list, nlist, mcmc, mcmc.list, mcmcr or mcmcrs. If set to NULL, the object is read from \code{path} instead.}
 
 \item{code}{A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".}
 

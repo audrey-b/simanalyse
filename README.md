@@ -47,8 +47,8 @@ library(simanalyse)
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
 set.seed(10L)
-params <- nlist(sigma = 2)
-constants <- nlist(mu = 0)
+params <- list(sigma = 2)
+constants <- list(mu = 0)
 code <- "for(i in 1:10){
           a[i] ~ dnorm(mu, 1/sigma^2)}"
 sims <- sims::sims_simulate(code, 
@@ -162,7 +162,8 @@ print(params.derived)
 #> $var
 #> [1] 4
 #> 
-#> an nlist object with 1 natomic element
+#> nchains:  1 
+#> niters:  1
 ```
 
 ### Summarise the results of the simulation study
@@ -172,13 +173,25 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
-#> [1] 0.8519969
+#> , , 1
+#> 
+#>           [,1]
+#> [1,] 0.8519969
+#> 
 #> 
 #> $cp.quantile.var
-#> [1] 0.6666667
+#> , , 1
+#> 
+#>           [,1]
+#> [1,] 0.6666667
+#> 
 #> 
 #> $mse.var
-#> [1] 4.384704
+#> , , 1
+#> 
+#>          [,1]
+#> [1,] 4.384704
+#> 
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -199,13 +212,25 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #> $bias.var
-#> [1] 0.8519969
+#> , , 1
+#> 
+#>           [,1]
+#> [1,] 0.8519969
+#> 
 #> 
 #> $cp.quantile.var
-#> [1] 0.6666667
+#> , , 1
+#> 
+#>           [,1]
+#> [1,] 0.6666667
+#> 
 #> 
 #> $mse.var
-#> [1] 4.384704
+#> , , 1
+#> 
+#>          [,1]
+#> [1,] 4.384704
+#> 
 #> 
 #> an nlist object with 3 natomic elements
 ```
@@ -259,9 +284,9 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.024]
-#> v data0000002.rds [00:00:00.031]
-#> v data0000003.rds [00:00:00.032]
+#> v data0000001.rds [00:00:00.014]
+#> v data0000002.rds [00:00:00.012]
+#> v data0000003.rds [00:00:00.012]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0
@@ -277,9 +302,9 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.012]
-#> v results0000002.rds [00:00:00.014]
-#> v results0000003.rds [00:00:00.030]
+#> v results0000001.rds [00:00:00.006]
+#> v results0000002.rds [00:00:00.006]
+#> v results0000003.rds [00:00:00.011]
 #> Success: 3
 #> Failure: 0
 #> Remaining: 0

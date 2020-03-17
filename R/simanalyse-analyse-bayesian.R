@@ -2,7 +2,7 @@
 #'
 #' Analyse data for a simulation study. Allows data to be read from files and results to be written to files.
 #' 
-#' @param sims An nlists or nlist object of the data. If NULL, data files are read from \code{path}.
+#' @param sims An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.
 #' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
 #' @param code.add A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.
 #' @param code.values A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
@@ -53,14 +53,21 @@ sma_analyse_bayesian <- function(sims = NULL,
                                  options = furrr::future_options(seed = TRUE)){
   
   if(!is.null(sims)){
-    if(is.nlist(sims)) sims <- nlists(sims)
+    if(is.list(sims) && !is_nlist(sims) && !is_nlists(sims) && length(lengths(sims))==1){
+      class(sims) <- "nlist"
+      chk_nlist(sims)
+      sims <- nlists(sims)}
+    if(is.list(sims) && !is_nlist(sims) && !is_nlists(sims) && length(lengths(sims))>1){
+      class(sims) <- "nlists"
+      for(i in 1:length(sims)) class(sims[[i]]) <- "nlist"
+    }
     chk_nlists(sims)
-    lapply(sims, chk_nlist)
     n.sims <- length(sims)
   }else{
     chk_string(path)
     n.sims <- length(sims_data_files(path))
   }
+  
   
   chk_string(code)
   chk_string(code.add)
@@ -79,11 +86,11 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   
   if(!is.list(options$seed)){ #error if list not the right length
-  seeds <- furrr::future_map(1:n.sims, 
-                             function(x) return(.Random.seed), 
-                             .options = options)
-  names(seeds) = chk::p0("data", sprintf("%07d", 1:n.sims), ".rds")
-  options$seed = seeds
+    seeds <- furrr::future_map(1:n.sims, 
+                               function(x) return(.Random.seed), 
+                               .options = options)
+    names(seeds) = chk::p0("data", sprintf("%07d", 1:n.sims), ".rds")
+    options$seed = seeds
   }
   
   if(is.null(sims)){
@@ -122,18 +129,18 @@ sma_analyse_bayesian <- function(sims = NULL,
   }else{
     options$seed = FALSE
     sma_batchr(sma.fun=analyse_dataset_bayesian,
-                   path.read=path,
-                   analysis=analysis,
-                   path.save=file.path(path, analysis, "results"),
-                   prefix="data", suffix="results",
-                   code=code, monitor=monitor,
-                   inits=inits, n.chains=mode$n.chains,
-                   n.adapt=mode$n.adapt, max.time=mode$max.time,
-                   max.iter=mode$max.iter, n.save=mode$n.save, 
-                   esr=mode$esr, r.hat=mode$r.hat,
-                   esr.nodes=mode$esr.nodes, 
-                   r.hat.nodes=mode$r.hat.nodes,
-                   units=mode$units, options=options, seeds=seeds)
+               path.read=path,
+               analysis=analysis,
+               path.save=file.path(path, analysis, "results"),
+               prefix="data", suffix="results",
+               code=code, monitor=monitor,
+               inits=inits, n.chains=mode$n.chains,
+               n.adapt=mode$n.adapt, max.time=mode$max.time,
+               max.iter=mode$max.iter, n.save=mode$n.save, 
+               esr=mode$esr, r.hat=mode$r.hat,
+               esr.nodes=mode$esr.nodes, 
+               r.hat.nodes=mode$r.hat.nodes,
+               units=mode$units, options=options, seeds=seeds)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")
