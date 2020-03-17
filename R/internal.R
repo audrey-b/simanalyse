@@ -67,8 +67,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   thin=1
   
   if(".*" %in% monitor){
-    stochastic <- stochastic_nodes(code)
-    variable.names = unique(stochastic[! stochastic %in% names(nlistdata)])
+    variable.names = names(model$state()[[1]])
     if("deviance" %in% monitor){
       variable.names = c(variable.names, "deviance")
     }
@@ -348,30 +347,3 @@ sma_derive_internal <- function(object, code, monitor, monitor.non.primary, prog
 #     cum.time=as.double(difftime(Sys.time(),time0, units="mins"))
 #   }
 # }
-
-
-stochastic_nodes <- function(x, pattern="[~]") {
-  
-  pattern <- chk::p0("(?=\\s*(", pattern, "))")
-  
-  index <- "\\[[^\\]]*\\]"
-  
-  pattern <- chk::p0("[[:alnum:]_.]+(", index, "){0,1}\\s*[)]{0,1}", pattern, collapse = "")
-  
-  nodes <- str_extract_all(x, pattern)
-  
-  nodes <- unlist(nodes)
-  
-  nodes <- sub("[)]$", "", nodes)
-  
-  nodes <- sub("\\s*$", "", nodes)
-  
-  nodes <- sub(pattern = index, "", nodes, perl = TRUE)
-  
-  nodes <- unique(nodes)
-  
-  sort(nodes)
-  
-}
-
-
