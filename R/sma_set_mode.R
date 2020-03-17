@@ -89,9 +89,9 @@ sma_set_mode <- function(mode = "report",
     
     list(n.chains = ifelse(missing(n.chains), 3L, n.chains),
          
-         n.adapt = ifelse(missing(n.adapt), 3000L, n.adapt),
+         n.adapt = ifelse(missing(n.adapt), 5000L, n.adapt),
          
-         n.save = ifelse(missing(n.save), 5000L, n.save),
+         n.save = ifelse(missing(n.save), 20000L, n.save),
          
          max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
          
@@ -110,7 +110,7 @@ sma_set_mode <- function(mode = "report",
          
          n.adapt = ifelse(missing(n.adapt), 10000L, n.adapt),
          
-         n.save = ifelse(missing(n.save), 5000L, n.save),
+         n.save = ifelse(missing(n.save), 20000L, n.save),
          
          max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
          

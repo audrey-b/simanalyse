@@ -19,18 +19,17 @@ Imports:
   rjags,
   batchr,
   furrr,
-  cli,
-  term (>= 0.1.0.9005)
+  cli
 Suggests: 
     covr,
     testthat,
     future
 Remotes:
+  poissonconsulting/term,
   poissonconsulting/sims,
   poissonconsulting/batchr,
   poissonconsulting/mcmcr,
-  poissonconsulting/mcmcderive,
-  poissonconsulting/term
+  poissonconsulting/mcmcderive
 URL: https://github.com/audrey-b/simanalyse
 BugReports: https://github.com/audrey-b/simanalyse/issues
 Encoding: UTF-8
