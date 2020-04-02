@@ -7,7 +7,7 @@
 #' 
 #' @param object A list of nlists object of results or a single nlists of results. If set to NULL, the object is read from \code{path} instead.
 #' @param measures A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation), 
-#' "cp.quantile" (coverage probability of quantile-based CrIs), "cp.length" (coverage probability of quantile-based CrIs),
+#' "cp.quantile" (coverage probability of quantile-based CrIs), "cp.length" (length of quantile-based CrIs),
 #' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
 #'  bias), "br" (bias ratio), "var" (variance), "se" (standard error), rmse (root mean square error), "rrmse" (relative root mean square error),
 #' "cv" (coefficient of variation), "all" (all the measures)
@@ -102,7 +102,7 @@ sma_evaluate <- function(object = NULL,
         object %<>% lapply(function(x) as.nlists(mcmcr::collapse_chains(x)))
         chk_list(object); lapply(object, chk_nlists)
         
-        if(!(".*" %in% monitor)){object %<>% lapply(subset, select=monitor)
+        if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
                 #parameters %<>% parameters[monitor]
         }
         

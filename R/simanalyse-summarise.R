@@ -60,7 +60,7 @@ sma_summarise <- function(object,
   }
   if("upper.q" %in% measures){
     upper.q = function(x) do.call("cp.upper",list(x,"alpha"=alpha))
-    aggregate.FUNS %<>% append(list("upper.q"=lower.q))
+    aggregate.FUNS %<>% append(list("upper.q"=upper.q))
   }
   if("q1" %in% measures){
     aggregate.FUNS %<>% append(list("q1"= function(x) quantile(x, 0.25)))
