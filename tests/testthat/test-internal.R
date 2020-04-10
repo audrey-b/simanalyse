@@ -59,10 +59,10 @@ test_that("analyse_dataset_bayesian with data works",{
                                      n.save=5,
                                      max.time=0.1,
                                      monitor = "mu",
-                                     esr=0.1,
+                                     ess=5,
                                      r.hat=1.5,
                                      r.hat.nodes = ".*",
-                                     esr.nodes=".*")
+                                     ess.nodes=".*")
   expect_true(class(result)=="mcmcr")
   #expect_equal(result$mu[1] %>% as.numeric, -3.944967, tolerance = 0.000001)
 })
@@ -74,10 +74,10 @@ test_that("analyse_dataset_bayesian works",{
                                      n.save=5,
                                      max.time=0.1,
                                      monitor = "a",
-                                     esr=0.1,
+                                     ess=5,
                                      r.hat=1.5,
                                      r.hat.nodes = ".*",
-                                     esr.nodes=".*")
+                                     ess.nodes=".*")
   expect_true(class(result)=="mcmcr")
   #expect_equal(result$a[1] %>% as.numeric, -1.636731, tolerance = 0.000001)
 })

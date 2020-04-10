@@ -79,7 +79,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   chk_list(mode)
   #chk_lgl(save)
   
-  #need to check that r.hat.node and esr.nodes are contained within monitor
+  #need to check that r.hat.node and ess.nodes are contained within monitor
   
   chk_flag(progress)
   chk_s3_class(options, "future_options")
@@ -117,8 +117,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                             inits=inits, n.chains=mode$n.chains,
                             n.adapt=mode$n.adapt, max.time=mode$max.time,
                             max.iter=mode$max.iter, n.save=mode$n.save, 
-                            esr=mode$esr, r.hat=mode$r.hat,
-                            esr.nodes=mode$esr.nodes, 
+                            ess=mode$ess, r.hat=mode$r.hat,
+                            ess.nodes=mode$ess.nodes, 
                             r.hat.nodes=mode$r.hat.nodes,
                             units=mode$units, .progress = progress, .options=options)
     
@@ -137,8 +137,8 @@ sma_analyse_bayesian <- function(sims = NULL,
                inits=inits, n.chains=mode$n.chains,
                n.adapt=mode$n.adapt, max.time=mode$max.time,
                max.iter=mode$max.iter, n.save=mode$n.save, 
-               esr=mode$esr, r.hat=mode$r.hat,
-               esr.nodes=mode$esr.nodes, 
+               ess=mode$ess, r.hat=mode$r.hat,
+               ess.nodes=mode$ess.nodes, 
                r.hat.nodes=mode$r.hat.nodes,
                units=mode$units, options=options, seeds=seeds)
     

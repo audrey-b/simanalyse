@@ -14,8 +14,8 @@
 #' @param max.iter A count for the maximum number of iterations in total per chain.
 #' @param r.hat A number specifying the rhat threshold.
 #' @param r.hat.nodes A character vector of nodes to be used to assess r.hat
-#' @param esr A number specifying the minimum effective sampling rate.
-#' @param esr.nodes A character vector of nodes to be used to assess esr
+#' @param ess A number specifying the minimum effective sample size.
+#' @param ess.nodes A character vector of nodes to be used to assess ess.
 #' @param max.time A number specifying the maximum time to spend on analysis.
 #' @param units A character string specifying the units of time for \code{max.time}. See \code{difftime}.
 
@@ -48,8 +48,8 @@ sma_set_mode <- function(mode = "report",
                          max.iter,
                          r.hat,
                          r.hat.nodes,
-                         esr,
-                         esr.nodes,
+                         ess,
+                         ess.nodes,
                          max.time,
                          units){
   
@@ -69,7 +69,7 @@ sma_set_mode <- function(mode = "report",
     chk_number(max.time)
     chk_gt(max.time, 0)}
   if(!missing(r.hat.nodes)) chk_character(r.hat.nodes)
-  if(!missing(esr.nodes)) chk_character(esr.nodes)
+  if(!missing(ess.nodes)) chk_character(ess.nodes)
   
   #units?
   #other checks
@@ -88,9 +88,9 @@ sma_set_mode <- function(mode = "report",
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          
-         esr = ifelse(missing(esr), 0.1, esr),
+         ess = ifelse(missing(ess), 10, ess),
          
-         esr.nodes  = ifelse(missing(esr.nodes), ".*", esr.nodes),
+         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
          
          max.time = ifelse(missing(max.time), .Machine$double.xmax, max.time),
          
@@ -102,7 +102,7 @@ sma_set_mode <- function(mode = "report",
          
          n.adapt = ifelse(missing(n.adapt), 5000L, n.adapt),
          
-         n.save = ifelse(missing(n.save), 20000L, n.save),
+         n.save = ifelse(missing(n.save), 400L, n.save),
          
          max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
          
@@ -110,9 +110,9 @@ sma_set_mode <- function(mode = "report",
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          
-         esr = ifelse(missing(esr), 0.1, esr),
+         ess = ifelse(missing(ess), 400, ess),
          
-         esr.nodes  = ifelse(missing(esr.nodes), ".*", esr.nodes),
+         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
          
          max.time = ifelse(missing(max.time), .Machine$double.xmax, max.time),
          
@@ -125,7 +125,7 @@ sma_set_mode <- function(mode = "report",
          
          n.adapt = ifelse(missing(n.adapt), 10000L, n.adapt),
          
-         n.save = ifelse(missing(n.save), 20000L, n.save),
+         n.save = ifelse(missing(n.save), 4000L, n.save),
          
          max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
          
@@ -133,9 +133,9 @@ sma_set_mode <- function(mode = "report",
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          
-         esr = ifelse(missing(esr), 0.25, esr),
+         ess = ifelse(missing(ess), 4000, ess),
          
-         esr.nodes  = ifelse(missing(esr.nodes), ".*", esr.nodes),
+         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
          
          max.time = ifelse(missing(max.time), .Machine$double.xmax, max.time),
          

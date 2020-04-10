@@ -42,31 +42,31 @@ remotes::install_github("audrey-b/simanalyse")
 
 ### Simulate Data
 
-Simulate 3 datasets using the sims package (we use only 3 datasets for demonstration purposes)
+Simulate 5 datasets using the sims package (here we use only a small number of datasets for the sake of illustration).
 ```{r}
 library(simanalyse)
 set.seed(10L)
 params <- list(sigma = 2)
 constants <- list(mu = 0)
 code <- "for(i in 1:10){
-          a[i] ~ dnorm(mu, 1/sigma^2)}"
+          y[i] ~ dnorm(mu, 1/sigma^2)}"
 sims <- sims::sims_simulate(code, 
                            parameters = params, 
                            constants = constants,
-                           nsims = 3,
+                           nsims = 5,
                            silent = TRUE)
 print(sims)
 ```
 
 ### Analyse Data
 
-Analyse all 3 datasets (here we use only a few iterations in quick mode for demonstration purposes; see ?sma_set_mode for details about analysis modes)
+Analyse the 5 datasets in "report" mode. This mode runs iterations until convergence, based on r.hat >1.05 and an effective sample size >400. See ?sma_set_mode for other choices of analysis mode.
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                mode = sma_set_mode("quick"))
+                                mode = sma_set_mode("report"))
 ```
 
 ### Derive new parameters (if required)
@@ -112,13 +112,13 @@ set.seed(10L)
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
-                    nsims = 3,
+                    nsims = 5,
                     save=TRUE,
                     exists = NA)
 
 sma_analyse_bayesian(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("quick"))
+                     mode = sma_set_mode("report"))
 
 sma_derive(code="var=sigma^2", monitor="var")
 
@@ -133,7 +133,7 @@ print(files)
 
 and read a particular file, e.g.
 ```{r}
-readRDS(file.path(getwd(), files[13]))
+readRDS(file.path(getwd(), files[19]))
 ```
 
 

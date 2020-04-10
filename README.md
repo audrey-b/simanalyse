@@ -37,8 +37,8 @@ remotes::install_github("audrey-b/simanalyse")
 
 ### Simulate Data
 
-Simulate 3 datasets using the sims package (we use only 3 datasets for
-demonstration purposes)
+Simulate 5 datasets using the sims package (here we use only a small
+number of datasets for the sake of illustration).
 
 ``` r
 library(simanalyse)
@@ -50,36 +50,56 @@ set.seed(10L)
 params <- list(sigma = 2)
 constants <- list(mu = 0)
 code <- "for(i in 1:10){
-          a[i] ~ dnorm(mu, 1/sigma^2)}"
+          y[i] ~ dnorm(mu, 1/sigma^2)}"
 sims <- sims::sims_simulate(code, 
                            parameters = params, 
                            constants = constants,
-                           nsims = 3,
+                           nsims = 5,
                            silent = TRUE)
 print(sims)
-#> $a
-#>  [1]  1.50009615 -0.63919833 -0.09224249 -1.55116546  0.14274593
-#>  [6] -0.53769314  1.03237779 -1.07075667 -1.33777215 -0.78109651
+#> $y
+#>  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792
+#>  [6] -0.82298676  1.03237779  1.69966601 -1.33777215 -0.77232720
 #> 
 #> $mu
 #> [1] 0
 #> 
-#> an nlists object of 3 nlist objects each with 2 natomic elements
+#> an nlists object of 5 nlist objects each with 2 natomic elements
 ```
 
 ### Analyse Data
 
-Analyse all 3 datasets (here we use only a few iterations in quick mode
-for demonstration purposes; see ?sma\_set\_mode for details about
-analysis modes)
+Analyse the 5 datasets in “report” mode. This mode runs iterations until
+convergence, based on r.hat \>1.05 and an effective sample size \>400.
+See ?sma\_set\_mode for other choices of analysis mode.
 
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse_bayesian(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                mode = sma_set_mode("quick"))
+                                mode = sma_set_mode("report"))
 #> module dic loaded
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 10
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 18
+#> 
+#> Initializing model
+#> 
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 10
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 18
+#> 
+#> Initializing model
+#> 
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -127,29 +147,51 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
+
+#> Warning: The following parameters were not in expr and so were dropped from
+#> object: 'deviance'.
+
+#> Warning: The following parameters were not in expr and so were dropped from
+#> object: 'deviance'.
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 2.305731
+#> [1] 2.65194
 #> 
-#> nchains:  2 
-#> niters:  10 
+#> nchains:  3 
+#> niters:  400 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 5.087776
+#> [1] 3.504703
 #> 
-#> nchains:  2 
-#> niters:  10 
+#> nchains:  3 
+#> niters:  400 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 5.714618
+#> [1] 5.663514
 #> 
-#> nchains:  2 
-#> niters:  10
+#> nchains:  3 
+#> niters:  400 
+#> 
+#> 
+#> $mcmcr4
+#> $var
+#> [1] 2.616731
+#> 
+#> nchains:  3 
+#> niters:  400 
+#> 
+#> 
+#> $mcmcr5
+#> $var
+#> [1] 7.80122
+#> 
+#> nchains:  3 
+#> niters:  400
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -175,22 +217,22 @@ sma_evaluate(results.derived, parameters=params.derived)
 #> $bias.var
 #> , , 1
 #> 
-#>           [,1]
-#> [1,] 0.8519969
+#>          [,1]
+#> [1,] 1.246529
 #> 
 #> 
 #> $cp.quantile.var
 #> , , 1
 #> 
-#>           [,1]
-#> [1,] 0.6666667
+#>      [,1]
+#> [1,]    1
 #> 
 #> 
 #> $mse.var
 #> , , 1
 #> 
 #>          [,1]
-#> [1,] 4.384704
+#> [1,] 6.994789
 #> 
 #> 
 #> an nlist object with 3 natomic elements
@@ -214,22 +256,22 @@ sma_evaluate(results.derived,
 #> $bias.var
 #> , , 1
 #> 
-#>           [,1]
-#> [1,] 0.8519969
+#>          [,1]
+#> [1,] 1.246529
 #> 
 #> 
 #> $cp.quantile.var
 #> , , 1
 #> 
-#>           [,1]
-#> [1,] 0.6666667
+#>      [,1]
+#> [1,]    1
 #> 
 #> 
 #> $mse.var
 #> , , 1
 #> 
 #>          [,1]
-#> [1,] 4.384704
+#> [1,] 6.994789
 #> 
 #> 
 #> an nlist object with 3 natomic elements
@@ -246,14 +288,14 @@ set.seed(10L)
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
-                    nsims = 3,
+                    nsims = 5,
                     save=TRUE,
                     exists = NA)
 #> [1] TRUE
 
 sma_analyse_bayesian(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("quick"))
+                     mode = sma_set_mode("report"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -284,10 +326,32 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.020]
-#> v data0000002.rds [00:00:00.017]
-#> v data0000003.rds [00:00:00.018]
-#> Success: 3
+#> 
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 10
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 18
+#> 
+#> Initializing model
+#> 
+#> Compiling model graph
+#>    Resolving undeclared variables
+#>    Allocating nodes
+#> Graph information:
+#>    Observed stochastic nodes: 10
+#>    Unobserved stochastic nodes: 1
+#>    Total graph size: 18
+#> 
+#> Initializing model
+#> v data0000001.rds [00:00:00.879]
+#> v data0000002.rds [00:00:00.775]
+#> v data0000003.rds [00:00:00.873]
+#> v data0000004.rds [00:00:00.930]
+#> v data0000005.rds [00:00:00.717]
+#> Success: 5
 #> Failure: 0
 #> Remaining: 0
 #> 
@@ -302,10 +366,18 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.009]
-#> v results0000002.rds [00:00:00.014]
-#> v results0000003.rds [00:00:00.019]
-#> Success: 3
+
+#> Warning: The following parameters were not in expr and so were dropped from
+#> object: 'deviance'.
+
+#> Warning: The following parameters were not in expr and so were dropped from
+#> object: 'deviance'.
+#> v results0000001.rds [00:00:00.870]
+#> v results0000002.rds [00:00:00.818]
+#> v results0000003.rds [00:00:00.802]
+#> v results0000004.rds [00:00:00.711]
+#> v results0000005.rds [00:00:00.740]
+#> Success: 5
 #> Failure: 0
 #> Remaining: 0
 #> 
@@ -324,27 +396,33 @@ print(files)
 #>  [4] "analysis0000001/derived/deriv0000001.rds"  
 #>  [5] "analysis0000001/derived/deriv0000002.rds"  
 #>  [6] "analysis0000001/derived/deriv0000003.rds"  
-#>  [7] "analysis0000001/results/results0000001.rds"
-#>  [8] "analysis0000001/results/results0000002.rds"
-#>  [9] "analysis0000001/results/results0000003.rds"
-#> [10] "data0000001.rds"                           
-#> [11] "data0000002.rds"                           
-#> [12] "data0000003.rds"                           
-#> [13] "performance/performance.rds"
+#>  [7] "analysis0000001/derived/deriv0000004.rds"  
+#>  [8] "analysis0000001/derived/deriv0000005.rds"  
+#>  [9] "analysis0000001/results/results0000001.rds"
+#> [10] "analysis0000001/results/results0000002.rds"
+#> [11] "analysis0000001/results/results0000003.rds"
+#> [12] "analysis0000001/results/results0000004.rds"
+#> [13] "analysis0000001/results/results0000005.rds"
+#> [14] "data0000001.rds"                           
+#> [15] "data0000002.rds"                           
+#> [16] "data0000003.rds"                           
+#> [17] "data0000004.rds"                           
+#> [18] "data0000005.rds"                           
+#> [19] "performance/performance.rds"
 ```
 
 and read a particular file, e.g.
 
 ``` r
-readRDS(file.path(getwd(), files[13]))
+readRDS(file.path(getwd(), files[19]))
 #> $bias.var
-#> [1] 0.8519969
+#> [1] 1.246529
 #> 
 #> $cp.quantile.var
-#> [1] 0.6666667
+#> [1] 1
 #> 
 #> $mse.var
-#> [1] 4.384704
+#> [1] 6.994789
 #> 
 #> an nlist object with 3 natomic elements
 ```
