@@ -76,21 +76,23 @@ sma_set_mode <- function(mode = "report",
   
   if (mode == "quick") {
     
+    ess = ifelse(missing(ess), 1, ess)
+    
     list(n.chains = ifelse(missing(n.chains), 2L, n.chains),
          
          n.adapt = ifelse(missing(n.adapt), 200L, n.adapt),
          
-         n.save = ifelse(missing(n.save), 10L, n.save),
+         ess = ess,
          
-         max.iter = ifelse(missing(max.iter), 10L, max.iter),
-         
+         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
+
          r.hat = ifelse(missing(r.hat), 1.05, r.hat),
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          
-         ess = ifelse(missing(ess), 10, ess),
+         n.save = ifelse(missing(n.save), 10*ess, n.save),
          
-         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
+         max.iter = ifelse(missing(max.iter), 10*ess, max.iter),
          
          max.time = ifelse(missing(max.time), .Machine$double.xmax, max.time),
          
@@ -98,21 +100,23 @@ sma_set_mode <- function(mode = "report",
     
   } else if (mode == "report") {
     
+    ess = ifelse(missing(ess), 400, ess)
+    
     list(n.chains = ifelse(missing(n.chains), 3L, n.chains),
          
          n.adapt = ifelse(missing(n.adapt), 5000L, n.adapt),
          
-         n.save = ifelse(missing(n.save), 400L, n.save),
+         ess = ess,
          
-         max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
+         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
          
          r.hat = ifelse(missing(r.hat), 1.05, r.hat),
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          
-         ess = ifelse(missing(ess), 400, ess),
+         n.save = ifelse(missing(n.save), 10*ess, n.save),
          
-         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
+         max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
          
          max.time = ifelse(missing(max.time), .Machine$double.xmax, max.time),
          
@@ -121,21 +125,23 @@ sma_set_mode <- function(mode = "report",
     
   } else if (mode == "paper") {
     
+    ess = ifelse(missing(ess), 1000, ess)
+    
     list(n.chains = ifelse(missing(n.chains), 3L, n.chains),
          
          n.adapt = ifelse(missing(n.adapt), 10000L, n.adapt),
          
-         n.save = ifelse(missing(n.save), 4000L, n.save),
+         ess = ess,
          
-         max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
+         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
          
          r.hat = ifelse(missing(r.hat), 1.01, r.hat),
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          
-         ess = ifelse(missing(ess), 4000, ess),
+         n.save = ifelse(missing(n.save), 10*ess, n.save),
          
-         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
+         max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
          
          max.time = ifelse(missing(max.time), .Machine$double.xmax, max.time),
          

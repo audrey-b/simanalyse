@@ -156,42 +156,42 @@ results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 2.65194
+#> [1] 2.656139
 #> 
 #> nchains:  3 
-#> niters:  400 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 3.504703
+#> [1] 3.37433
 #> 
 #> nchains:  3 
-#> niters:  400 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 5.663514
+#> [1] 5.681759
 #> 
 #> nchains:  3 
-#> niters:  400 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr4
 #> $var
-#> [1] 2.616731
+#> [1] 2.50968
 #> 
 #> nchains:  3 
-#> niters:  400 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr5
 #> $var
-#> [1] 7.80122
+#> [1] 7.397053
 #> 
 #> nchains:  3 
-#> niters:  400
+#> niters:  4000
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -218,7 +218,7 @@ sma_evaluate(results.derived, parameters=params.derived)
 #> , , 1
 #> 
 #>          [,1]
-#> [1,] 1.246529
+#> [1,] 1.145122
 #> 
 #> 
 #> $cp.quantile.var
@@ -232,7 +232,7 @@ sma_evaluate(results.derived, parameters=params.derived)
 #> , , 1
 #> 
 #>          [,1]
-#> [1,] 6.994789
+#> [1,] 6.439299
 #> 
 #> 
 #> an nlist object with 3 natomic elements
@@ -257,7 +257,7 @@ sma_evaluate(results.derived,
 #> , , 1
 #> 
 #>          [,1]
-#> [1,] 1.246529
+#> [1,] 1.145122
 #> 
 #> 
 #> $cp.quantile.var
@@ -271,7 +271,7 @@ sma_evaluate(results.derived,
 #> , , 1
 #> 
 #>          [,1]
-#> [1,] 6.994789
+#> [1,] 6.439299
 #> 
 #> 
 #> an nlist object with 3 natomic elements
@@ -346,11 +346,11 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.879]
-#> v data0000002.rds [00:00:00.775]
-#> v data0000003.rds [00:00:00.873]
-#> v data0000004.rds [00:00:00.930]
-#> v data0000005.rds [00:00:00.717]
+#> v data0000001.rds [00:00:00.251]
+#> v data0000002.rds [00:00:00.255]
+#> v data0000003.rds [00:00:00.245]
+#> v data0000004.rds [00:00:00.245]
+#> v data0000005.rds [00:00:00.254]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -372,11 +372,11 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.870]
-#> v results0000002.rds [00:00:00.818]
-#> v results0000003.rds [00:00:00.802]
-#> v results0000004.rds [00:00:00.711]
-#> v results0000005.rds [00:00:00.740]
+#> v results0000001.rds [00:00:00.913]
+#> v results0000002.rds [00:00:00.968]
+#> v results0000003.rds [00:00:01.003]
+#> v results0000004.rds [00:00:01.066]
+#> v results0000005.rds [00:00:01.071]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -416,13 +416,13 @@ and read a particular file, e.g.
 ``` r
 readRDS(file.path(getwd(), files[19]))
 #> $bias.var
-#> [1] 1.246529
+#> [1] 1.145122
 #> 
 #> $cp.quantile.var
 #> [1] 1
 #> 
 #> $mse.var
-#> [1] 6.994789
+#> [1] 6.439299
 #> 
 #> an nlist object with 3 natomic elements
 ```
