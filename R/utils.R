@@ -41,4 +41,8 @@ cp.upper = function(x, alpha) quantile(x, 1-alpha/2)
 
 name_of_function = function(fun) deparse(substitute(fun))
 
-correct_modulo_sprintf = function(x) gsub(" %*% ", " %%*%% ", x, fixed=TRUE)
+sprintf_custom = function(code, code.add){
+  spl <- strsplit(code, "\\?")[[1]]
+  chk_equal(length(code.add), length(spl)-1)
+  return(paste0(spl, c(code.add,""), collapse = ""))
+}

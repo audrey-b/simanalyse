@@ -1,8 +1,8 @@
 context("internal")
 
 test_that("make_code works",{
-  expect_identical(prepare_code("a ~ dnorm(%s,1)", 
-                                c("b ~ dnorm(%s,sigma)", "sigma=1"), 
+  expect_identical(prepare_code("a ~ dnorm(?,1)", 
+                                c("b ~ dnorm(?,sigma)", "sigma=1"), 
                                 c(-1,1)),
                    "a ~ dnorm(-1,1) \nb ~ dnorm(1,sigma) \nsigma=1") 
 })

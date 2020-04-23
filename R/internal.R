@@ -1,6 +1,6 @@
 add_model_block <- function(code){
   
-  sprintf("model{\n\n%s\n\n}", correct_modulo_sprintf(code))
+  sprintf_custom("model{\n\n?\n\n}", code)
   
 }
 
@@ -264,8 +264,9 @@ prepare_code <- function(code, code.add, code.values){
   if(str_detect(code, "^\\s*(data)|(model)\\s*[{]"))
     err("jags code must not be in a data or model block")
   
-  do.call(sprintf, args = as.list(c(correct_modulo_sprintf(code), code.values))) %>% 
-    return
+  if(!is.null(code.values)) code <- sprintf_custom(code, code.values)
+    
+  return(code)
 }
 
 fun.batchr <- function(file, path.save, sma.fun, suffix, ...){#, code, n.adapt, n.burnin, n.iter, monitor){

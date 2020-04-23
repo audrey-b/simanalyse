@@ -5,7 +5,7 @@
 #' @param sims An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.
 #' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
 #' @param code.add A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.
-#' @param code.values A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
+#' @param code.values A character vector to replace all instances of "?" in the model. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
 #' @param package A string with the name of the R package to analyse the data. Currently, only "rjags" is implemented.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.
 #' @param inits A list or a function. Initial values for the MCMC chains. If specifying a function, it should either have no arguments, or have a single argument named chain. In the latter case, the supplied function is called with the chain number as argument. In this way, initial values may be generated that depend systematically on the chain number.
@@ -39,7 +39,7 @@
 sma_analyse_bayesian <- function(sims = NULL,
                                  code,
                                  code.add="",
-                                 code.values="",
+                                 code.values=NULL,
                                  package="rjags",
                                  monitor = ".*",
                                  inits=list(),
@@ -71,7 +71,7 @@ sma_analyse_bayesian <- function(sims = NULL,
   
   chk_string(code)
   chk_string(code.add)
-  chk_string(code.values)
+  if(!is.null(code.values)) chk_string(code.values)
   chk_string(package)
   chk_character(monitor)
   chkor(chk_list(inits), chk_function(inits))

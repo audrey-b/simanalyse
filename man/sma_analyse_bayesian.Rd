@@ -5,7 +5,7 @@
 \title{Analyse data for a simulation study}
 \usage{
 sma_analyse_bayesian(sims = NULL, code, code.add = "",
-  code.values = "", package = "rjags", monitor = ".*",
+  code.values = NULL, package = "rjags", monitor = ".*",
   inits = list(), mode = sma_set_mode("report"), deviance = TRUE,
   path = ".", analysis = "analysis0000001", progress = FALSE,
   options = furrr::future_options(seed = TRUE))
@@ -17,7 +17,7 @@ sma_analyse_bayesian(sims = NULL, code, code.add = "",
 
 \item{code.add}{A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.}
 
-\item{code.values}{A character vector to pass to sprintf before analysing the data. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.}
+\item{code.values}{A character vector to replace all instances of "?" in the model. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.}
 
 \item{package}{A string with the name of the R package to analyse the data. Currently, only "rjags" is implemented.}
 
