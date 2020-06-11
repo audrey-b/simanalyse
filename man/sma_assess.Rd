@@ -4,8 +4,15 @@
 \alias{sma_assess}
 \title{Calculates posterior predictive checks (Bayesian p-values)}
 \usage{
-sma_assess(object, expr, data, code, constants = nlist(),
-  nsamples = 100L, statistic = "FT")
+sma_assess(
+  object,
+  expr,
+  data,
+  code,
+  constants = nlist(),
+  nsamples = 100L,
+  statistic = "FT"
+)
 }
 \arguments{
 \item{object}{An mcmcr object of results}

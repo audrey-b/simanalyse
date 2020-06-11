@@ -5,8 +5,13 @@
 \title{Apply R code to each element of an nlist object. This can be used to derive new variables or create some missing data in the simulated data 
 or in the results of the analyses.}
 \usage{
-sma_summarise(object, measures = c("mean", "lower.q", "upper.q"),
-  monitor = ".*", alpha = 0.05, custom_funs = list())
+sma_summarise(
+  object,
+  measures = c("mean", "lower.q", "upper.q"),
+  monitor = ".*",
+  alpha = 0.05,
+  custom_funs = list()
+)
 }
 \arguments{
 \item{object}{An mcmcr or mcmcrs object.}

@@ -4,8 +4,19 @@
 \alias{sma_set_mode}
 \title{Set mode for data analysis}
 \usage{
-sma_set_mode(mode = "report", n.chains, n.adapt, n.save, max.iter, r.hat,
-  r.hat.nodes, ess, ess.nodes, max.time, units)
+sma_set_mode(
+  mode = "report",
+  n.chains,
+  n.adapt,
+  n.save,
+  max.iter,
+  r.hat,
+  r.hat.nodes,
+  ess,
+  ess.nodes,
+  max.time,
+  units
+)
 }
 \arguments{
 \item{mode}{A string of the analysis mode. One of "quick", "report" or "paper". The mode determines the values of the parameters below unless they are specified.}

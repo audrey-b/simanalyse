@@ -4,11 +4,21 @@
 \alias{sma_analyse_bayesian}
 \title{Analyse data for a simulation study}
 \usage{
-sma_analyse_bayesian(sims = NULL, code, code.add = "",
-  code.values = NULL, package = "rjags", monitor = ".*",
-  inits = list(), mode = sma_set_mode("report"), deviance = TRUE,
-  path = ".", analysis = "analysis0000001", progress = FALSE,
-  options = furrr::future_options(seed = TRUE))
+sma_analyse_bayesian(
+  sims = NULL,
+  code,
+  code.add = "",
+  code.values = NULL,
+  package = "rjags",
+  monitor = ".*",
+  inits = list(),
+  mode = sma_set_mode("report"),
+  deviance = TRUE,
+  path = ".",
+  analysis = "analysis0000001",
+  progress = FALSE,
+  options = furrr::future_options(seed = TRUE)
+)
 }
 \arguments{
 \item{sims}{An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.}

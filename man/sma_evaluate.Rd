@@ -4,11 +4,21 @@
 \alias{sma_evaluate}
 \title{Calculates measures to evaluate the performance of the model}
 \usage{
-sma_evaluate(object = NULL, measures = c("bias", "mse", "cp.quantile"),
-  estimator = mean, alpha = 0.05, parameters = NULL,
-  monitor = ".*", path = ".", analysis = "analysis0000001",
-  custom_funs, custom_expr_before = "", custom_expr_after = "",
-  progress = FALSE, options = furrr::future_options())
+sma_evaluate(
+  object = NULL,
+  measures = c("bias", "mse", "cp.quantile"),
+  estimator = mean,
+  alpha = 0.05,
+  parameters = NULL,
+  monitor = ".*",
+  path = ".",
+  analysis = "analysis0000001",
+  custom_funs,
+  custom_expr_before = "",
+  custom_expr_after = "",
+  progress = FALSE,
+  options = furrr::future_options()
+)
 }
 \arguments{
 \item{object}{A list of nlists object of results or a single nlists of results. If set to NULL, the object is read from \code{path} instead.}

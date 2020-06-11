@@ -4,9 +4,16 @@
 \alias{sma_derive}
 \title{Apply R code to derive new variables.}
 \usage{
-sma_derive(object = NULL, code, monitor = ".*", values = list(),
-  path = ".", analysis = "analysis0000001", progress = FALSE,
-  options = furrr::future_options())
+sma_derive(
+  object = NULL,
+  code,
+  monitor = ".*",
+  values = list(),
+  path = ".",
+  analysis = "analysis0000001",
+  progress = FALSE,
+  options = furrr::future_options()
+)
 }
 \arguments{
 \item{object}{An mcmcrs object or an object that can be coerced to mcmcrs such as list, nlist, nlists, mcmc or mcmc.list. If set to NULL, the object is read from \code{path} instead.}

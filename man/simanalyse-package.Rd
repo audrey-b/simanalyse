@@ -21,7 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Joe Thorley \email{joe@poissonconsulting.ca} (0000-0002-7683-4592)
+  \item Joe Thorley \email{joe@poissonconsulting.ca} (\href{https://orcid.org/0000-0002-7683-4592}{ORCID})
 }
 
 }
