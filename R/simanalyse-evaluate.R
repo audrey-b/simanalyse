@@ -120,7 +120,7 @@ sma_evaluate <- function(object = NULL,
         if(!read.file){
                 return(performance)
         }else{
-                dir <- file.path(path, "performance"); dir.create(dir)
+                dir <- file.path(path, analysis, "performance"); dir.create(dir)
                 saveRDS(performance, file.path(dir, "performance.rds"))
         }  
         

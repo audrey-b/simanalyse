@@ -144,20 +144,6 @@ Derive posterior samples for new parameters.
 
 ``` r
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
 print(results.derived)
 #> $mcmcr1
 #> $var
@@ -310,11 +296,11 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.338]
-#> v data0000002.rds [00:00:00.338]
-#> v data0000003.rds [00:00:00.353]
-#> v data0000004.rds [00:00:00.351]
-#> v data0000005.rds [00:00:00.334]
+#> v data0000001.rds [00:00:00.312]
+#> v data0000002.rds [00:00:00.326]
+#> v data0000003.rds [00:00:00.324]
+#> v data0000004.rds [00:00:00.343]
+#> v data0000005.rds [00:00:00.355]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -322,25 +308,11 @@ sma_analyse(code = code,
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-
-#> Warning: The following parameters were not in expr and so were dropped from
-#> object: 'deviance'.
-#> v results0000001.rds [00:00:01.143]
-#> v results0000002.rds [00:00:01.195]
-#> v results0000003.rds [00:00:01.253]
-#> v results0000004.rds [00:00:01.275]
-#> v results0000005.rds [00:00:01.332]
+#> v results0000001.rds [00:00:01.326]
+#> v results0000002.rds [00:00:01.320]
+#> v results0000003.rds [00:00:01.387]
+#> v results0000004.rds [00:00:01.371]
+#> v results0000005.rds [00:00:01.417]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -354,31 +326,31 @@ You may show the files created with
 ``` r
 files <- list.files(getwd(), recursive=TRUE, all.files=TRUE)
 print(files)
-#>  [1] ".sims.rds"                                 
-#>  [2] "analysis0000001/.seeds.rds"                
-#>  [3] "analysis0000001/derived/.parameters.rds"   
-#>  [4] "analysis0000001/derived/deriv0000001.rds"  
-#>  [5] "analysis0000001/derived/deriv0000002.rds"  
-#>  [6] "analysis0000001/derived/deriv0000003.rds"  
-#>  [7] "analysis0000001/derived/deriv0000004.rds"  
-#>  [8] "analysis0000001/derived/deriv0000005.rds"  
-#>  [9] "analysis0000001/results/results0000001.rds"
-#> [10] "analysis0000001/results/results0000002.rds"
-#> [11] "analysis0000001/results/results0000003.rds"
-#> [12] "analysis0000001/results/results0000004.rds"
-#> [13] "analysis0000001/results/results0000005.rds"
-#> [14] "data0000001.rds"                           
-#> [15] "data0000002.rds"                           
-#> [16] "data0000003.rds"                           
-#> [17] "data0000004.rds"                           
-#> [18] "data0000005.rds"                           
-#> [19] "performance/performance.rds"
+#>  [1] ".sims.rds"                                  
+#>  [2] "analysis0000001/.seeds.rds"                 
+#>  [3] "analysis0000001/derived/.parameters.rds"    
+#>  [4] "analysis0000001/derived/deriv0000001.rds"   
+#>  [5] "analysis0000001/derived/deriv0000002.rds"   
+#>  [6] "analysis0000001/derived/deriv0000003.rds"   
+#>  [7] "analysis0000001/derived/deriv0000004.rds"   
+#>  [8] "analysis0000001/derived/deriv0000005.rds"   
+#>  [9] "analysis0000001/performance/performance.rds"
+#> [10] "analysis0000001/results/results0000001.rds" 
+#> [11] "analysis0000001/results/results0000002.rds" 
+#> [12] "analysis0000001/results/results0000003.rds" 
+#> [13] "analysis0000001/results/results0000004.rds" 
+#> [14] "analysis0000001/results/results0000005.rds" 
+#> [15] "data0000001.rds"                            
+#> [16] "data0000002.rds"                            
+#> [17] "data0000003.rds"                            
+#> [18] "data0000004.rds"                            
+#> [19] "data0000005.rds"
 ```
 
 and read a particular file, e.g.
 
 ``` r
-readRDS(file.path(getwd(), files[19]))
+readRDS(file.path(getwd(), files[9]))
 #>   term     bias cpQuantile      mse
 #> 1  var 1.145122          1 6.439299
 ```

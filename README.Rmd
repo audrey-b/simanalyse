@@ -133,7 +133,7 @@ print(files)
 
 and read a particular file, e.g.
 ```{r}
-readRDS(file.path(getwd(), files[19]))
+readRDS(file.path(getwd(), files[9]))
 ```
 
 

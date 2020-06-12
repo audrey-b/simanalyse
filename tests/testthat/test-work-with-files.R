@@ -19,7 +19,7 @@ test_that("work with files",{
                        deviance=FALSE)
   sma_derive(code="mu2=mu^2", path=tempdir)
   sma_evaluate(path=tempdir)
-  res1 <- readRDS(file.path(tempdir, "performance", "performance.rds"))
+  res1 <- readRDS(file.path(tempdir, "analysis0000001", "performance", "performance.rds"))
   
   #compare to without files
   set.seed(10L)
@@ -64,7 +64,7 @@ test_that("work with files",{
                        deviance=FALSE)
   sma_derive(code="mu2=mu^2", path=tempdir2)
   sma_evaluate(path=tempdir2)
-  res3 <- readRDS(file.path(tempdir2, "performance", "performance.rds"))
+  res3 <- readRDS(file.path(tempdir2, "analysis0000001", "performance", "performance.rds"))
   #identical(res1, res3)
   
   #compare to parallel without files
