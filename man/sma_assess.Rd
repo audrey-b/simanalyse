@@ -2,7 +2,7 @@
 % Please edit documentation in R/simanalyse-assess.R
 \name{sma_assess}
 \alias{sma_assess}
-\title{Calculates posterior predictive checks (Bayesian p-values)}
+\title{Calculates posterior predictive checks (Bayesian p-values).}
 \usage{
 sma_assess(
   object,
@@ -33,13 +33,13 @@ sma_assess(
 A flag.
 }
 \description{
-Calculates posterior predictive checks (Bayesian p-values)
+This function is in development. Use at your own risk.
 }
 \examples{
 code="for(i in 1:10){
 a[i] ~ dpois(mu)}"
 sims <- sims::sims_simulate(code, parameters=nlist(mu=5), nsims=1)
-res <- sma_analyse_bayesian(sims, 
+res <- sma_analyse(sims, 
                            code, 
                            "mu ~ dunif(0,10)", 
                            monitor = "mu",

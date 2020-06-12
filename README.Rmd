@@ -63,7 +63,7 @@ print(sims)
 Analyse the 5 datasets in "report" mode. This mode runs iterations until convergence, based on r.hat < 1.1 and an effective sample size >400. See ?sma_set_mode for other choices of analysis mode.
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
-results <- sma_analyse_bayesian(sims = sims,
+results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 mode = sma_set_mode("report"))
@@ -116,7 +116,7 @@ sims::sims_simulate(code,
                     save=TRUE,
                     exists = NA)
 
-sma_analyse_bayesian(code = code,
+sma_analyse(code = code,
                      code.add = prior,
                      mode = sma_set_mode("report"))
 

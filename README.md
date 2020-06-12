@@ -75,12 +75,12 @@ print(sims)
 ### Analyse Data
 
 Analyse the 5 datasets in “report” mode. This mode runs iterations until
-convergence, based on r.hat \>1.05 and an effective sample size \>400.
+convergence, based on r.hat \< 1.1 and an effective sample size \>400.
 See ?sma\_set\_mode for other choices of analysis mode.
 
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
-results <- sma_analyse_bayesian(sims = sims,
+results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 mode = sma_set_mode("report"))
@@ -257,7 +257,7 @@ sims::sims_simulate(code,
                     exists = NA)
 #> [1] TRUE
 
-sma_analyse_bayesian(code = code,
+sma_analyse(code = code,
                      code.add = prior,
                      mode = sma_set_mode("report"))
 #> module dic loaded
@@ -310,11 +310,11 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:01.898]
-#> v data0000002.rds [00:00:01.623]
-#> v data0000003.rds [00:00:01.374]
-#> v data0000004.rds [00:00:01.272]
-#> v data0000005.rds [00:00:01.294]
+#> v data0000001.rds [00:00:00.338]
+#> v data0000002.rds [00:00:00.338]
+#> v data0000003.rds [00:00:00.353]
+#> v data0000004.rds [00:00:00.351]
+#> v data0000005.rds [00:00:00.334]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -336,11 +336,11 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:03.790]
-#> v results0000002.rds [00:00:04.717]
-#> v results0000003.rds [00:00:10.346]
-#> v results0000004.rds [00:00:08.080]
-#> v results0000005.rds [00:00:08.518]
+#> v results0000001.rds [00:00:01.143]
+#> v results0000002.rds [00:00:01.195]
+#> v results0000003.rds [00:00:01.253]
+#> v results0000004.rds [00:00:01.275]
+#> v results0000005.rds [00:00:01.332]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0

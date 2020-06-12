@@ -1,4 +1,6 @@
-#' Calculates posterior predictive checks (Bayesian p-values)
+#' Calculates posterior predictive checks (Bayesian p-values).
+#' 
+#' This function is in development. Use at your own risk.
 #' 
 #' @param object An mcmcr object of results
 #' @param expr An expression to calculate the expectations, e.g. "X = mu" if the expectation of X is mu
@@ -7,7 +9,7 @@
 #' @param constants Constants to pass with the code
 #' @param nsamples Number of samples to take from the posterior distribution
 #' @param statistic A string, one of "FT" (Freeman-Tukey), "LR" (Likelihood Ratio), or "chi2" (Chi-square)
-# @param expr.var An expression to calculate the variances, e.g. "X = mu" if the variace of X is mu
+# @param expr.var An expression to calculate the variances, e.g. "X = mu" if the variance of X is mu
 #' @return A flag.
 #' @export
 #'
@@ -15,7 +17,7 @@
 #' code="for(i in 1:10){
 #' a[i] ~ dpois(mu)}"
 #' sims <- sims::sims_simulate(code, parameters=nlist(mu=5), nsims=1)
-#' res <- sma_analyse_bayesian(sims, 
+#' res <- sma_analyse(sims, 
 #'                            code, 
 #'                            "mu ~ dunif(0,10)", 
 #'                            monitor = "mu",
@@ -34,6 +36,8 @@ sma_assess <- function(object,
                        constants=nlist(),
                        nsamples=100L,
                        statistic = "FT"){
+  
+  warning("This function is in development. Use at your own risk.")
   
   data <- data[[1]]
   

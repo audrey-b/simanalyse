@@ -1,10 +1,10 @@
 context("analyse-bayesian")
 
-test_that("sma_analyse_bayesian",{
+test_that("sma_analyse",{
    set.seed(10L)
    params <- nlist(mu=0)
    dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
-   result <- sma_analyse_bayesian(sims=dat,
+   result <- sma_analyse(sims=dat,
                                   code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
                                   mode=sma_set_mode("quick"),
@@ -30,7 +30,7 @@ test_that("inits is a list of inits for multiple chains",{
    inits1 <- list("mu"=-2, "tt"=0)
    inits2 <- list("mu"=-2, "tt"=0)
    inits3 <- list("mu"=-2, "tt"=0)
-   result <- sma_analyse_bayesian(sims=sims,
+   result <- sma_analyse(sims=sims,
                                   code = code,
                                   code.add = prior,
                                   mode=sma_set_mode("quick", n.chains=3),
@@ -52,7 +52,7 @@ test_that("inits is a function and reproducible",{
       return(list("mu"=mu, "tt"=tt))
    }
    set.seed(99L)
-   result1 <- sma_analyse_bayesian(sims=sims,
+   result1 <- sma_analyse(sims=sims,
                                    code = code,
                                    code.add = prior,
                                    mode=sma_set_mode("quick"),
@@ -60,7 +60,7 @@ test_that("inits is a function and reproducible",{
                                    inits=inits.fun,
                                    deviance=FALSE)
    set.seed(99L)
-   result2 <- sma_analyse_bayesian(sims=sims,
+   result2 <- sma_analyse(sims=sims,
                                    code = code,
                                    code.add = prior,
                                    mode=sma_set_mode("quick"),
@@ -74,7 +74,7 @@ test_that("modulo_in_code and default monitor",{
    set.seed(10L)
    params <- nlist(mu=0)
    dat <- sims_simulate("a ~ dnorm(mu,10) \n b = 10 %*% 2", parameters = params, nsims=2)
-   result <- sma_analyse_bayesian(sims=dat,
+   result <- sma_analyse(sims=dat,
                                   code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
                                   mode=sma_set_mode("quick"))
@@ -99,7 +99,7 @@ test_that("use r.hat.nodes and ess.nodes",{
                                                 N.1=100,
                                                 sigma=5),
                                latent=NA, stochastic = NA, monitor=c("Y"))
-   result <- sma_analyse_bayesian(sims=sims,
+   result <- sma_analyse(sims=sims,
                                   code = code,
                                   code.add = "phi ~ dunif(0,1) \n sigma ~ dunif(0,20) \n N.1 ~ dpois(100)",
                                   mode=sma_set_mode("quick", r.hat.nodes="phi", ess.nodes = "phi"))
@@ -112,7 +112,7 @@ test_that("lists instead of nlists in simanalyse",{
    params <- list(mu=0)
    dat <- sims_simulate("a ~ dnorm(mu,10) \n b = 10 %*% 2", parameters = params, nsims=2)
    data.list <- list(list(a=dat[[1]]$a), list(a=dat[[2]]$a))
-   result <- sma_analyse_bayesian(sims=data.list,
+   result <- sma_analyse(sims=data.list,
                                   code = "a ~ dnorm(mu,1)
                                          mu ~ dunif(-3,3)",
                                   mode=sma_set_mode("quick"))

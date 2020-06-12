@@ -32,7 +32,7 @@
 # dat <- sims::sims_simulate("a ~ dnorm(mu, 1)", 
 #                            parameters = params, 
 #                            nsims=5)
-# result <- sma_analyse_bayesian(sims=dat,
+# result <- sma_analyse(sims=dat,
 #                                       code = "a ~ dnorm(mu, 1)
 #                                               mu ~ dunif(-3,3)",
 #                                       mode=sma_set_mode("quick"),

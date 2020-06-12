@@ -11,7 +11,7 @@ test_that("work with files",{
                 save=TRUE,
                 exists=NA)
   sims_data_files(tempdir)
-  sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
+  sma_analyse(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                        mode=sma_set_mode("quick"),
                        monitor = "mu",
@@ -29,7 +29,7 @@ test_that("work with files",{
                 nsims=2,
                 path=tempdir,
                 exists=NA)
-  res <- sma_analyse_bayesian(sims=sims,
+  res <- sma_analyse(sims=sims,
                        code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                        mode=sma_set_mode("quick"),
@@ -56,7 +56,7 @@ test_that("work with files",{
                 save=TRUE,
                 exists=NA)
   sims_data_files(tempdir2)
-  sma_analyse_bayesian(code = "a ~ dnorm(mu,1)
+  sma_analyse(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                        mode=sma_set_mode("quick"),
                        monitor = "mu",
@@ -75,7 +75,7 @@ test_that("work with files",{
                         nsims=2,
                         path=tempdir,
                         exists=NA)
-  res <- sma_analyse_bayesian(sims=sims,
+  res <- sma_analyse(sims=sims,
                               code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                               mode=sma_set_mode("quick"),

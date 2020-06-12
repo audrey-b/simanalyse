@@ -4,7 +4,7 @@ test_that("sma_assess",{
   code="for(i in 1:10){
   a[i] ~ dpois(mu)}"
   sims <- sims::sims_simulate(code, parameters=nlist(mu=5), nsims=1)
-  res <- sma_analyse_bayesian(sims, 
+  res <- sma_analyse(sims, 
                               code, 
                               "mu ~ dunif(0,10)", 
                               monitor = "mu",

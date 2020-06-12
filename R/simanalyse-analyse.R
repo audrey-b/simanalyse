@@ -29,13 +29,13 @@
 #'  code <- "a ~ dnorm(mu,1)"
 #'  sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
 #'  prior = "mu ~ dunif(-3,3)"
-#'  result <- sma_analyse_bayesian(sims=sims,
+#'  result <- sma_analyse(sims=sims,
 #'                                        code = code,
 #'                                        code.add = prior,
 #'                                        mode=sma_set_mode("quick"),
 #'                                        monitor = "mu")
 
-sma_analyse_bayesian <- function(sims = NULL,
+sma_analyse <- function(sims = NULL,
                                  code,
                                  code.add="",
                                  code.values=NULL,
