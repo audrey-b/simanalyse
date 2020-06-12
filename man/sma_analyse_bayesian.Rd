@@ -9,7 +9,6 @@ sma_analyse_bayesian(
   code,
   code.add = "",
   code.values = NULL,
-  package = "rjags",
   monitor = ".*",
   inits = list(),
   mode = sma_set_mode("report"),
@@ -28,8 +27,6 @@ sma_analyse_bayesian(
 \item{code.add}{A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.}
 
 \item{code.values}{A character vector to replace all instances of "?" in the model. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.}
-
-\item{package}{A string with the name of the R package to analyse the data. Currently, only "rjags" is implemented.}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.}
 
