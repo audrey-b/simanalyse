@@ -16,7 +16,7 @@ sma_derive(
 )
 }
 \arguments{
-\item{object}{An mcmcrs object or an object that can be coerced to mcmcrs such as list, nlist, nlists, mcmc or mcmc.list. If set to NULL, the object is read from \code{path} instead.}
+\item{object}{An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist. If set to NULL, the object is read from \code{path} instead.}
 
 \item{code}{A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".}
 

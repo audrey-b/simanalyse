@@ -2,7 +2,7 @@
 #' 
 #' Apply R code to derive new variables.
 #' 
-#' @param object An mcmcrs object or an object that can be coerced to mcmcrs such as list, nlist, nlists, mcmc or mcmc.list. If set to NULL, the object is read from \code{path} instead.
+#' @param object An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist. If set to NULL, the object is read from \code{path} instead.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param values A named list of additional R objects to evaluate in the R expression.
@@ -38,11 +38,12 @@ sma_derive <- function(object=NULL, code, monitor=".*",
                        progress = FALSE,
                        options = furrr::future_options()) {
   
-  
-  if(!mcmcr::is.mcmcr(object) && !mcmcr::is.mcmcr(object) && length(lengths(object))==1){
+
+  if(class(object) == "list") object <- as_nlist(object)
+  if(!mcmcr::is.mcmcr(object) & !is_nlist(object) & length(lengths(object))==1){
     object <- mcmcr::as.mcmcr(object)
     mcmcr::chk_mcmcr(object)}
-  if(!is_nlist(object) && !is_nlists(object) && length(lengths(object))>1){
+  if(!is_nlists(object) & !mcmcr::is.mcmcrs(object) & length(lengths(object))>1){
     object <- mcmcr::as.mcmcrs(object)
     mcmcr::chk_mcmcrs(object)
   }

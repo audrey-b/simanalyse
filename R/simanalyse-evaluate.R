@@ -7,9 +7,9 @@
 #' 
 #' @param object A list of nlists object of results or a single nlists of results. If set to NULL, the object is read from \code{path} instead.
 #' @param measures A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation), 
-#' "cp.quantile" (coverage probability of quantile-based CrIs), "cp.length" (length of quantile-based CrIs),
+#' "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
 #' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
-#'  bias), "br" (bias ratio), "var" (variance), "se" (standard error), rmse (root mean square error), "rrmse" (relative root mean square error),
+#'  bias), "br" (bias ratio), "var" (variance), "se" (standard error), "rmse" (root mean square error), "rrmse" (relative root mean square error),
 #' "cv" (coefficient of variation), "all" (all the measures)
 #' @param parameters An nlist object (or list that can be coerced to nlist). True values of parameters to be used to calculate the performance measures.
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.
@@ -53,7 +53,7 @@
 #  silent A flag specifying whether to suppress warnings.
 
 sma_evaluate <- function(object = NULL, 
-                         measures=c("bias", "mse", "cp.quantile"), 
+                         measures=c("bias", "mse", "cpQuantile"), 
                          estimator=mean, 
                          alpha=0.05,
                          parameters = NULL,
@@ -111,6 +111,12 @@ sma_evaluate <- function(object = NULL,
                                              parameters,
                                              progress=progress,
                                              options=options)
+        performance <- nlist::as_term_frame(performance)
+        
+        performance$measure = sapply(strsplit(performance$term, "\\."), function(x) x[1])
+        performance$term = sapply(strsplit(performance$term, "\\."), function(x) x[-1])
+        performance <- reshape::cast(performance, term ~ measure)
+
         if(!read.file){
                 return(performance)
         }else{

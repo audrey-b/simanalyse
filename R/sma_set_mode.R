@@ -110,7 +110,7 @@ sma_set_mode <- function(mode = "report",
          
          ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
          
-         r.hat = ifelse(missing(r.hat), 1.05, r.hat),
+         r.hat = ifelse(missing(r.hat), 1.1, r.hat),
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          
@@ -135,7 +135,7 @@ sma_set_mode <- function(mode = "report",
          
          ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
          
-         r.hat = ifelse(missing(r.hat), 1.01, r.hat),
+         r.hat = ifelse(missing(r.hat), 1.05, r.hat),
          
          r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
          

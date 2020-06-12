@@ -60,7 +60,7 @@ print(sims)
 
 ### Analyse Data
 
-Analyse the 5 datasets in "report" mode. This mode runs iterations until convergence, based on r.hat >1.05 and an effective sample size >400. See ?sma_set_mode for other choices of analysis mode.
+Analyse the 5 datasets in "report" mode. This mode runs iterations until convergence, based on r.hat < 1.1 and an effective sample size >400. See ?sma_set_mode for other choices of analysis mode.
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse_bayesian(sims = sims,
@@ -100,7 +100,7 @@ sma_evaluate(results.derived,
                                  cp.upp = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
-                              cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
+                              cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 ```
 
 ## Saving to file

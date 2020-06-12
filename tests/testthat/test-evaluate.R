@@ -16,7 +16,7 @@ test_that("sma_evaluate",{
                                  deviance=FALSE)
   sma_evaluate(result, measures="bias", parameters=parameters, monitor=".*")
   sma_evaluate(result, measures="mse", parameters=parameters, monitor=".*")
-  sma_evaluate(result, measures="cp.quantile", parameters=parameters, monitor=".*")
+  sma_evaluate(result, measures="cpQuantile", parameters=parameters, monitor=".*")
   sma_evaluate(result, measures=c("bias","mse"), parameters=parameters, monitor=".*")
 })
 

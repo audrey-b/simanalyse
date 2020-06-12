@@ -19,7 +19,8 @@ Imports:
   rjags,
   batchr,
   furrr,
-  cli
+  cli,
+  reshape
 Suggests: 
     covr,
     testthat,

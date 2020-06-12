@@ -56,15 +56,20 @@ sims <- sims::sims_simulate(code,
                            constants = constants,
                            nsims = 5,
                            silent = TRUE)
+#> 
+#> Attaching package: 'purrr'
+#> The following object is masked from 'package:nlist':
+#> 
+#>     is_numeric
 print(sims)
 #> $y
-#>  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792
-#>  [6] -0.82298676  1.03237779  1.69966601 -1.33777215 -0.77232720
+#>  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792 -0.82298676
+#>  [7]  1.03237779  1.69966601 -1.33777215 -0.77232720
 #> 
 #> $mu
 #> [1] 0
 #> 
-#> an nlists object of 5 nlist objects each with 2 natomic elements
+#> an nlists object of 5 nlist objects each with 2 numeric elements
 ```
 
 ### Analyse Data
@@ -204,8 +209,7 @@ print(params.derived)
 #> $var
 #> [1] 4
 #> 
-#> nchains:  1 
-#> niters:  1
+#> an nlist object with 1 numeric element
 ```
 
 ### Summarise the results of the simulation study
@@ -214,28 +218,8 @@ Evaluate the performance of the model using the 3 analyses
 
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
-#> $bias.var
-#> , , 1
-#> 
-#>          [,1]
-#> [1,] 1.145122
-#> 
-#> 
-#> $cp.quantile.var
-#> , , 1
-#> 
-#>      [,1]
-#> [1,]    1
-#> 
-#> 
-#> $mse.var
-#> , , 1
-#> 
-#>          [,1]
-#> [1,] 6.439299
-#> 
-#> 
-#> an nlist object with 3 natomic elements
+#>   term     bias cpQuantile      mse
+#> 1  var 1.145122          1 6.439299
 ```
 
 Several more performance measures are available and can be specified
@@ -252,29 +236,9 @@ sma_evaluate(results.derived,
                                  cp.upp = function(x) quantile(x, 0.975)),
               custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
-                              cp.quantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
-#> $bias.var
-#> , , 1
-#> 
-#>          [,1]
-#> [1,] 1.145122
-#> 
-#> 
-#> $cp.quantile.var
-#> , , 1
-#> 
-#>      [,1]
-#> [1,]    1
-#> 
-#> 
-#> $mse.var
-#> , , 1
-#> 
-#>          [,1]
-#> [1,] 6.439299
-#> 
-#> 
-#> an nlist object with 3 natomic elements
+                              cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
+#>   term     bias cpQuantile      mse
+#> 1  var 1.145122          1 6.439299
 ```
 
 ## Saving to file
@@ -346,11 +310,11 @@ sma_analyse_bayesian(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.251]
-#> v data0000002.rds [00:00:00.255]
-#> v data0000003.rds [00:00:00.245]
-#> v data0000004.rds [00:00:00.245]
-#> v data0000005.rds [00:00:00.254]
+#> v data0000001.rds [00:00:01.898]
+#> v data0000002.rds [00:00:01.623]
+#> v data0000003.rds [00:00:01.374]
+#> v data0000004.rds [00:00:01.272]
+#> v data0000005.rds [00:00:01.294]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -372,11 +336,11 @@ sma_derive(code="var=sigma^2", monitor="var")
 
 #> Warning: The following parameters were not in expr and so were dropped from
 #> object: 'deviance'.
-#> v results0000001.rds [00:00:00.913]
-#> v results0000002.rds [00:00:00.968]
-#> v results0000003.rds [00:00:01.003]
-#> v results0000004.rds [00:00:01.066]
-#> v results0000005.rds [00:00:01.071]
+#> v results0000001.rds [00:00:03.790]
+#> v results0000002.rds [00:00:04.717]
+#> v results0000003.rds [00:00:10.346]
+#> v results0000004.rds [00:00:08.080]
+#> v results0000005.rds [00:00:08.518]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -415,16 +379,8 @@ and read a particular file, e.g.
 
 ``` r
 readRDS(file.path(getwd(), files[19]))
-#> $bias.var
-#> [1] 1.145122
-#> 
-#> $cp.quantile.var
-#> [1] 1
-#> 
-#> $mse.var
-#> [1] 6.439299
-#> 
-#> an nlist object with 3 natomic elements
+#>   term     bias cpQuantile      mse
+#> 1  var 1.145122          1 6.439299
 ```
 
 ## Parallelization

@@ -136,7 +136,7 @@ make_expr_and_FUNS <- function(measures,
   if(sum(c("Epse", "all") %in% measures) > 0){
     aggregate.FUNS %<>% append(list(Epse = sd))
   }
-  if(sum(c("cp.quantile", "cp.length", "all") %in% measures) > 0){
+  if(sum(c("cpQuantile", "LQuantile", "all") %in% measures) > 0){
     cp.lower.with.alpha = function(x) do.call("cp.lower",list(x,"alpha"=alpha))
     cp.upper.with.alpha = function(x) do.call("cp.upper",list(x,"alpha"=alpha))
     aggregate.FUNS %<>% append(list(cp.lower = cp.lower.with.alpha, 
@@ -145,9 +145,9 @@ make_expr_and_FUNS <- function(measures,
   
   expr <- derive_expr(c("bias", "rb", "br", "var", "se"), "bias = estimator - parameters", measures, expr)
   expr <- derive_expr(c("mse", "br", "var", "se", "rmse", "rrmse"), "mse = (estimator - parameters)^2", measures, expr)
-  expr <- derive_expr(c("cp.quantile"), "cp.quantile = ifelse((parameters >= cp.lower) & (parameters <= cp.upper), 1, 0)", measures, expr)
+  expr <- derive_expr(c("cpQuantile"), "cpQuantile = ifelse((parameters >= cp.lower) & (parameters <= cp.upper), 1, 0)", measures, expr)
   expr <- derive_expr(c("E", "cv"), "E = estimator", measures, expr)
-  expr <- derive_expr(c("cp.length"), "cp.length = cp.upper - cp.lower", measures, expr)
+  expr <- derive_expr(c("LQuantile"), "LQuantile = cp.upper - cp.lower", measures, expr)
   derive_expr <- derive_expr(c("rb"), "rb = bias/parameters", measures, derive_expr)
   derive_expr <- derive_expr(c("var", "br", "se", "cv"), "var = mse - bias^2", measures, derive_expr)
   derive_expr <- derive_expr(c("br"), "br = bias/sqrt(var)", measures, derive_expr)
@@ -320,7 +320,9 @@ sma_derive_internal <- function(object, code, monitor, values, monitor.non.prima
   }else if(class(object)=="mcmcr" | class(object)=="nlist"){
     new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, values=values, primary=TRUE)    
     if(!(".*" %in% monitor)) new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
+    if(class(object)=="nlist") new_obj <- as_nlist(new_obj)
   }
+
   return(new_obj)
 }
 
