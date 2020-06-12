@@ -37,7 +37,8 @@ sma_assess <- function(object,
                        nsamples=100L,
                        statistic = "FT"){
   
-  warning("This function is in development. Use at your own risk.")
+  if(interactive()) yesno::yesno("This function is in development and has not been tested. Are you sure you want to continue?")
+  warning("This function is in development and has not been tested. Use at your own risks.")
   
   data <- data[[1]]
   
@@ -55,7 +56,7 @@ sma_assess <- function(object,
   sample <- subset(object, iters=sampleids)
   
   #calculate expectations
-  expectations <- mcmc_derive(sample, expr=expr)
+  expectations <- mcmc_derive(sample, expr=expr, silent=TRUE)
   monitor <- names(expectations)
   names(expectations) <- chk::p0("expectation.", names(expectations))
   
@@ -69,7 +70,7 @@ sma_assess <- function(object,
   expr.FT.1 <- chk::p0("D1 =", expr.stat)
   all.expr.FT.1 <- expand_expr(expr.FT.1, c("data", "expectation"), monitor, monitor)
   names(data) <- paste0("data.",names(data))
-  D1 <- mcmc_derive(expectations, all.expr.FT.1, values = data)
+  D1 <- mcmc_derive(expectations, all.expr.FT.1, values = data, silent=TRUE)
   
   #calculate Freeman-Tukey statistic with simulated data
   
@@ -78,20 +79,21 @@ sma_assess <- function(object,
     simdata[[i]] <- sims_simulate(code, 
                                   constants=constants, 
                                   parameters=as.nlist(subset(sample, iters = i)),
-                                  nsims=1)[[1]]
+                                  nsims=1,
+                                  silent = TRUE)[[1]]
   }
   expr.FT.2 <- "D2 = (sqrt(data) - sqrt(expectation))^2"
   all.expr.FT.2 <- expand_expr(expr.FT.2, c("data", "expectation"), monitor, monitor)
   simdata.mcmcr <- mcmcr::as.mcmcr(simdata)
   names(simdata.mcmcr) <- paste0("data.", names(simdata[[1]]))
   obj <- mcmcr::bind_parameters(expectations, simdata.mcmcr)
-  D2 <- mcmc_derive(obj, all.expr.FT.2)
+  D2 <- mcmc_derive(obj, all.expr.FT.2, silent=TRUE)
   
   #Calculate the bayesian p-value
   
   all.expr.p <- expand_expr("p = as.integer(D2 > D1)", c("D1", "D2"), monitor, monitor)
   zeroones <- mcmcr::bind_parameters(D1, D2) %>% 
-    mcmc_derive(all.expr.p) %>%
+    mcmc_derive(all.expr.p, silent=TRUE) %>%
     as.nlists
   p <- aggregate(zeroones, fun=mean)
   

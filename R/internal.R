@@ -318,7 +318,7 @@ sma_derive_internal <- function(object, code, monitor, values, monitor.non.prima
     new_obj <- future_map(object, mcmc_derive, expr=code, monitor=monitor.non.primary, values=values, primary=TRUE, .progress=progress, .options=options)
     if(!(".*" %in% monitor)) new_obj <- future_map(new_obj, subset, pars=monitor, .progress=progress, .options=options) #remove primary that are not in monitor
   }else if(class(object)=="mcmcr" | class(object)=="nlist"){
-    new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, values=values, primary=TRUE)    
+    new_obj <- mcmc_derive(object, code, monitor=monitor.non.primary, values=values, primary=TRUE, silent=TRUE)    
     if(!(".*" %in% monitor)) new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
     if(class(object)=="nlist") new_obj <- as_nlist(new_obj)
   }

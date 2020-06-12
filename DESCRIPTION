@@ -20,7 +20,8 @@ Imports:
   batchr,
   furrr,
   cli,
-  reshape
+  reshape,
+  yesno
 Suggests: 
     covr,
     testthat,
