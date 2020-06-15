@@ -116,7 +116,7 @@ sma_evaluate <- function(object = NULL,
         performance$measure = sapply(strsplit(performance$term, "\\."), function(x) x[1])
         performance$term = sapply(strsplit(performance$term, "\\."), function(x) x[-1])
         performance <- data.frame(reshape::cast(performance, term ~ measure))
-        if(custom_expr_before=="" & custom_expr_after=="") performance <- performance[,c("term", measures)]
+        if(custom_expr_before=="" & custom_expr_after=="" & !("all" %in% measures)) performance <- performance[,c("term", measures)]
 
         if(!read.file){
                 return(performance)
