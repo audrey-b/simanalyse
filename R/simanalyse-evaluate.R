@@ -60,7 +60,7 @@ sma_evaluate <- function(object = NULL,
                          monitor=".*",
                          path = ".",
                          analysis = "analysis0000001",
-                         custom_funs,
+                         custom_funs = list(),
                          custom_expr_before="",
                          custom_expr_after="",
                          progress = FALSE,
@@ -75,8 +75,9 @@ sma_evaluate <- function(object = NULL,
         chk_flag(progress)
         chk_s3_class(options, "future_options")
         
-        if(!missing(custom_funs)){
-                chk_list(custom_funs)
+        chk_list(custom_funs)
+        if(!length(custom_funs)==0){
+                chk_named(custom_funs)
                 lapply(custom_funs, chk_function)
         }else custom_funs=NULL
         

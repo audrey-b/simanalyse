@@ -13,7 +13,7 @@ sma_evaluate(
   monitor = ".*",
   path = ".",
   analysis = "analysis0000001",
-  custom_funs,
+  custom_funs = list(),
   custom_expr_before = "",
   custom_expr_after = "",
   progress = FALSE,

@@ -204,8 +204,8 @@ Evaluate the performance of the model using the 3 analyses
 
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
-#>   term     bias cpQuantile      mse
-#> 1  var 1.145122          1 6.439299
+#>   term     bias      mse cpQuantile
+#> 1  var 1.145122 6.439299          1
 ```
 
 Several more performance measures are available and can be specified
@@ -296,11 +296,11 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.312]
-#> v data0000002.rds [00:00:00.326]
-#> v data0000003.rds [00:00:00.324]
-#> v data0000004.rds [00:00:00.343]
-#> v data0000005.rds [00:00:00.355]
+#> v data0000001.rds [00:00:00.726]
+#> v data0000002.rds [00:00:00.756]
+#> v data0000003.rds [00:00:00.674]
+#> v data0000004.rds [00:00:00.619]
+#> v data0000005.rds [00:00:00.564]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -308,11 +308,11 @@ sma_analyse(code = code,
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:01.326]
-#> v results0000002.rds [00:00:01.320]
-#> v results0000003.rds [00:00:01.387]
-#> v results0000004.rds [00:00:01.371]
-#> v results0000005.rds [00:00:01.417]
+#> v results0000001.rds [00:00:01.858]
+#> v results0000002.rds [00:00:02.094]
+#> v results0000003.rds [00:00:01.945]
+#> v results0000004.rds [00:00:02.198]
+#> v results0000005.rds [00:00:02.352]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -351,8 +351,8 @@ and read a particular file, e.g.
 
 ``` r
 readRDS(file.path(getwd(), files[9]))
-#>   term     bias cpQuantile      mse
-#> 1  var 1.145122          1 6.439299
+#>   term     bias      mse cpQuantile
+#> 1  var 1.145122 6.439299          1
 ```
 
 ## Parallelization
