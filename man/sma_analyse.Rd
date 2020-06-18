@@ -22,7 +22,7 @@ sma_analyse(
 \arguments{
 \item{sims}{An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.}
 
-\item{code}{A string of code to analyse the data. JAGS code must not be in a data or model block.}
+\item{code}{A string of code to analyze the data. JAGS code must not be in a data or model block.}
 
 \item{code.add}{A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.}
 

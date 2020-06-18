@@ -83,7 +83,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   cum.time = batch.time
   
   if(".*" %in% r.hat.nodes){
-  r.hat.convergence <- mcmcr::rhat(sample)<=r.hat
+    r.hat.convergence <- mcmcr::rhat(sample)<=r.hat
   }else{ r.hat.convergence <- mcmcr::rhat(subset(sample, pars=r.hat.nodes))<=r.hat}
   
   if(".*" %in% ess.nodes){
@@ -169,10 +169,45 @@ evaluate_all_measures <- function(listnlists,
                                   progress = FALSE,
                                   options = furrr::future_options()){
   
-  future_map(listnlists, evaluate_within, 
-             expr = expr_FUNS[["expr"]], 
-             aggregate.FUNS = expr_FUNS[["aggregate.FUNS"]], 
-             parameters = parameters, .progress = progress, .options=options) %>%
+  future_res <- future_map(listnlists, evaluate_within, 
+                           expr = expr_FUNS[["expr"]], 
+                           aggregate.FUNS = expr_FUNS[["aggregate.FUNS"]], 
+                           parameters = parameters, .progress = progress, .options=options) 
+  
+  future::resetWorkers(future::plan())
+  
+  future_res %>%
+    as.nlists() %>%
+    evaluate_across(mean) %>%
+    derive_measures(expr_FUNS[["derive_expr"]], 
+                    measure_names(expr_FUNS[["expr"]]), 
+                    parameters) %>%
+    return
+}
+
+evaluate_all_measures_files <- function(files, 
+                                        expr_FUNS, 
+                                        parameters,
+                                        progress = FALSE,
+                                        options = furrr::future_options(),
+                                        monitor){
+  
+  future_res <- future_map(files, 
+                           function(file, expr, aggregate.FUNS, parameters){
+                             object = mcmcr::as.mcmcrs(readRDS(file))
+                             object %<>% lapply(function(x) as_nlists(mcmcr::collapse_chains(x)))
+                             chk_list(object); lapply(object, chk_nlists)
+                             if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
+                               #parameters %<>% parameters[monitor]
+                             }
+                             evaluate_within(object[[1]], expr, aggregate.FUNS, parameters)}, 
+                           expr = expr_FUNS[["expr"]], 
+                           aggregate.FUNS = expr_FUNS[["aggregate.FUNS"]], 
+                           parameters = parameters, .progress = progress, .options=options) 
+  
+  future::resetWorkers(future::plan())
+  
+  future_res %>%
     as.nlists() %>%
     evaluate_across(mean) %>%
     derive_measures(expr_FUNS[["derive_expr"]], 
@@ -265,7 +300,7 @@ prepare_code <- function(code, code.add, code.values){
     err("jags code must not be in a data or model block")
   
   if(!is.null(code.values)) code <- sprintf_custom(code, code.values)
-    
+  
   return(code)
 }
 
@@ -322,7 +357,7 @@ sma_derive_internal <- function(object, code, monitor, values, monitor.non.prima
     if(!(".*" %in% monitor)) new_obj <- subset(new_obj, pars=monitor) #remove primary that are not in monitor
     if(class(object)=="nlist") new_obj <- as_nlist(new_obj)
   }
-
+  
   return(new_obj)
 }
 

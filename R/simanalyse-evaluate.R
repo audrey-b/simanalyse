@@ -93,32 +93,41 @@ sma_evaluate <- function(object = NULL,
                         prefix="results"
                         parameters = sims_info(path)$parameters
                 }
+                
+                if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"
+                chk_nlist(parameters)
+                
                 files <- list.files(path=file.path(path, analysis), pattern=chk::p0("^", prefix, "\\d{7,7}.rds$"), recursive=TRUE, full.names=TRUE)
-                object <- mcmcr::as.mcmcrs(lapply(files, readRDS))
+                #object <- mcmcr::as.mcmcrs(lapply(files, readRDS))
+                performance <- evaluate_all_measures_files(files, 
+                                                     make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
+                                                     parameters,
+                                                     progress=progress,
+                                                     options=options,
+                                                     monitor=monitor)
+        }else{
+                if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"
+                chk_nlist(parameters)
+                
+                object %<>% lapply(function(x) as_nlists(mcmcr::collapse_chains(x)))
+                chk_list(object); lapply(object, chk_nlists)
+                if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
+                        #parameters %<>% parameters[monitor]
+                }
+                performance <- evaluate_all_measures(object, 
+                                                     make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
+                                                     parameters,
+                                                     progress=progress,
+                                                     options=options)
         }
         
-        if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"
-        chk_nlist(parameters)
-        
-        object %<>% lapply(function(x) as.nlists(mcmcr::collapse_chains(x)))
-        chk_list(object); lapply(object, chk_nlists)
-        
-        if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
-                #parameters %<>% parameters[monitor]
-        }
-        
-        performance <- evaluate_all_measures(object, 
-                                             make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
-                                             parameters,
-                                             progress=progress,
-                                             options=options)
         performance <- nlist::as_term_frame(performance)
         
         performance$measure = sapply(strsplit(performance$term, "\\."), function(x) x[1])
         performance$term = sapply(strsplit(performance$term, "\\."), function(x) x[-1])
         performance <- data.frame(reshape::cast(performance, term ~ measure))
         if(custom_expr_before=="" & custom_expr_after=="" & !("all" %in% measures)) performance <- performance[,c("term", measures)]
-
+        
         if(!read.file){
                 return(performance)
         }else{
@@ -126,7 +135,6 @@ sma_evaluate <- function(object = NULL,
                 saveRDS(performance, file.path(dir, "performance.rds"))
         } 
         
-        future::resetWorkers(future::plan())
 }
 
 
