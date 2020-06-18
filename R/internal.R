@@ -133,8 +133,8 @@ make_expr_and_FUNS <- function(measures,
   if(sum(c("Epvar", "all") %in% measures) > 0){
     aggregate.FUNS %<>% append(list(Epvar = var))
   }
-  if(sum(c("Epse", "all") %in% measures) > 0){
-    aggregate.FUNS %<>% append(list(Epse = sd))
+  if(sum(c("Epsd", "all") %in% measures) > 0){
+    aggregate.FUNS %<>% append(list(Epsd = sd))
   }
   if(sum(c("cpQuantile", "LQuantile", "all") %in% measures) > 0){
     cp.lower.with.alpha = function(x) do.call("cp.lower",list(x,"alpha"=alpha))
