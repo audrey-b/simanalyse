@@ -131,10 +131,10 @@ make_expr_and_FUNS <- function(measures,
     aggregate.FUNS %<>% append(list(estimator = estimator))
   }
   if(sum(c("Epvar", "all") %in% measures) > 0){
-    aggregate.FUNS %<>% append(list(Epvar = var))
+    aggregate.FUNS %<>% append(list(pvar = var))
   }
   if(sum(c("Epsd", "all") %in% measures) > 0){
-    aggregate.FUNS %<>% append(list(Epsd = sd))
+    aggregate.FUNS %<>% append(list(psd = sd))
   }
   if(sum(c("cpQuantile", "LQuantile", "all") %in% measures) > 0){
     cp.lower.with.alpha = function(x) do.call("cp.lower",list(x,"alpha"=alpha))
@@ -148,6 +148,8 @@ make_expr_and_FUNS <- function(measures,
   expr <- derive_expr(c("cpQuantile"), "cpQuantile = ifelse((parameters >= cp.lower) & (parameters <= cp.upper), 1, 0)", measures, expr)
   expr <- derive_expr(c("E", "cv"), "E = estimator", measures, expr)
   expr <- derive_expr(c("LQuantile"), "LQuantile = cp.upper - cp.lower", measures, expr)
+  expr <- derive_expr(c("Epvar"), "Epvar = pvar", measures, expr)
+  expr <- derive_expr(c("Epsd"), "Epsd = psd", measures, expr)
   derive_expr <- derive_expr(c("rb"), "rb = bias/parameters", measures, derive_expr)
   derive_expr <- derive_expr(c("var", "br", "se", "cv"), "var = mse - bias^2", measures, derive_expr)
   derive_expr <- derive_expr(c("br"), "br = bias/sqrt(var)", measures, derive_expr)
