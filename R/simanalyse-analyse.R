@@ -3,7 +3,7 @@
 #' Analyse data for a simulation study. Allows data to be read from files and results to be written to files.
 #' 
 #' @param sims An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.
-#' @param code A string of code to analyse the data. JAGS code must not be in a data or model block.
+#' @param code A string of code to analyze the data. JAGS code must not be in a data or model block.
 #' @param code.add A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.
 #' @param code.values A character vector to replace all instances of "?" in the model. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes to output from the analysis. By default all stochastic nodes are included.
@@ -142,5 +142,7 @@ sma_analyse <- function(sims = NULL,
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
     if(deviance == TRUE) unload.module("dic")
   }
+  
+  future::resetWorkers(future::plan())
 }
 

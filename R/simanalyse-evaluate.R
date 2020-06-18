@@ -124,8 +124,9 @@ sma_evaluate <- function(object = NULL,
         }else{
                 dir <- file.path(path, analysis, "performance"); dir.create(dir)
                 saveRDS(performance, file.path(dir, "performance.rds"))
-        }  
+        } 
         
+        future::resetWorkers(future::plan())
 }
 
 
