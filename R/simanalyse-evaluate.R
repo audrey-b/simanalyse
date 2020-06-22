@@ -88,10 +88,10 @@ sma_evaluate <- function(object = NULL,
                 derive.path <- file.path(path, analysis, "derived")
                 if(dir.exists(derive.path)){
                         prefix = "deriv"
-                        parameters = readRDS(list.files(path=derive.path, pattern=".parameters.rds", all.files=TRUE, full.names=TRUE))
+                        if(is.null(parameters)) parameters = readRDS(list.files(path=derive.path, pattern=".parameters.rds", all.files=TRUE, full.names=TRUE))
                 }else{                        
                         prefix="results"
-                        parameters = sims_info(path)$parameters
+                        if(is.null(parameters)) parameters = sims_info(path)$parameters
                 }
                 
                 if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"

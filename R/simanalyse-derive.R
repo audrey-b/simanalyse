@@ -29,7 +29,19 @@
 #' mode=sma_set_mode("quick"), monitor="variance")
 #' sma_derive(res, "sd=sqrt(variance)")
 #' sma_derive(parameters, "sd=sqrt(variance)")
-
+#' 
+# set.seed(10L)
+# code <- "for(i in 1:T){x[i] ~ dbinom(p[i],n[i])}"
+# constants = list(T=10, n=rep(30, 10))
+# parameters = list(p=rep(0.8, 10))
+# dat  <- sims::sims_simulate(code, constants=constants, parameters = parameters, nsims=2)
+# dat_outlier <- sma_derive(dat, "y = c(x[1:4], 1, x[6:10])", monitor=c("n","T","y"))
+# res <- sma_analyse(dat_outlier, sub("x\\[", "y\\[", code), 
+# code.add = "for(i in 1:T){p[i] = p.const}
+#             p.const ~ dunif(0,1)", 
+# mode=sma_set_mode("quick"), monitor="p.const")
+# sma_derive(res, "odds=p.const/(1-p.const)", monitor="odds")
+# sma_derive(parameters, "odds=p[1]/(1-p[1])", monitor="odds")
 
 sma_derive <- function(object=NULL, code, monitor=".*", 
                        values=list(),
