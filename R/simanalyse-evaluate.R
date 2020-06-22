@@ -15,6 +15,7 @@
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.
 #' @param alpha Scalar representing the alpha level used to construct credible intervals. Default is 0.05.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
+#' @param deviance Whether to calculate measures for deviance.
 #' @param path A string. If \code{object} is NULL, the object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.
 #' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
 #' @param custom_funs A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).
@@ -58,6 +59,7 @@ sma_evaluate <- function(object = NULL,
                          alpha=0.05,
                          parameters = NULL,
                          monitor=".*",
+                         deviance=FALSE,
                          path = ".",
                          analysis = "analysis0000001",
                          custom_funs = list(),
@@ -73,6 +75,7 @@ sma_evaluate <- function(object = NULL,
         chk_string(custom_expr_before)
         chk_string(custom_expr_after)
         chk_flag(progress)
+        chk_flag(deviance)
         chk_s3_class(options, "future_options")
         
         chk_list(custom_funs)
@@ -104,13 +107,18 @@ sma_evaluate <- function(object = NULL,
                                                      parameters,
                                                      progress=progress,
                                                      options=options,
-                                                     monitor=monitor)
+                                                     monitor=monitor,
+                                                     deviance=deviance)
         }else{
                 if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"
                 chk_nlist(parameters)
                 
                 object %<>% lapply(function(x) as_nlists(mcmcr::collapse_chains(x)))
                 chk_list(object); lapply(object, chk_nlists)
+                if((".*" %in% monitor) && deviance==FALSE){
+                        monitor = pars(object[[1]])
+                        monitor = monitor[monitor!="deviance"]
+                }
                 if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
                         #parameters %<>% parameters[monitor]
                 }

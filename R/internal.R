@@ -192,13 +192,18 @@ evaluate_all_measures_files <- function(files,
                                         parameters,
                                         progress = FALSE,
                                         options = furrr::future_options(),
-                                        monitor){
+                                        monitor,
+                                        deviance=deviance){
   
   future_res <- future_map(files, 
                            function(file, expr, aggregate.FUNS, parameters){
                              object = mcmcr::as.mcmcrs(readRDS(file))
                              object %<>% lapply(function(x) as_nlists(mcmcr::collapse_chains(x)))
                              chk_list(object); lapply(object, chk_nlists)
+                             if((".*" %in% monitor) && deviance==FALSE){
+                               monitor = pars(object[[1]])
+                               monitor = monitor[monitor!="deviance"]
+                             }
                              if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
                                #parameters %<>% parameters[monitor]
                              }

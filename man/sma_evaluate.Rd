@@ -11,6 +11,7 @@ sma_evaluate(
   alpha = 0.05,
   parameters = NULL,
   monitor = ".*",
+  deviance = FALSE,
   path = ".",
   analysis = "analysis0000001",
   custom_funs = list(),
@@ -36,6 +37,8 @@ sma_evaluate(
 \item{parameters}{An nlist object (or list that can be coerced to nlist). True values of parameters to be used to calculate the performance measures.}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.}
+
+\item{deviance}{Whether to calculate measures for deviance.}
 
 \item{path}{A string. If \code{object} is NULL, the object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.}
 
