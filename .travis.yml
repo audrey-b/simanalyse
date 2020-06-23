@@ -8,9 +8,6 @@ r_packages:
 apt_packages:
   - r-cran-rjags
 
-after_success:
-  - Rscript -e 'covr::codecov()'
-
 notifications:
   email: false
   slack:
