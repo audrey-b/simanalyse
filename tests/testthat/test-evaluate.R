@@ -88,8 +88,10 @@ for(i in 1:(T-1)){                                     #upper triangle
   params_M0 <- list(p0   = 0.5,            #capture probability
                     phi = c(0.8, 0.7, 0.9, 0.8))  #survival probability
   
-  sma_evaluate(analyse,
+  ev <- sma_evaluate(analyse,
                parameters= params_M0,
-               measures = c("rb", "rrmse", "cpQuantile", "LQuantile"), 
+               measures = c("all"), 
                alpha = 0.05)
+  expect_equal(ev$mse, ev$bias^2 + ev$var)
+  
 })

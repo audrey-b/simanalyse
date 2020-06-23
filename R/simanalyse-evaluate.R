@@ -122,6 +122,9 @@ sma_evaluate <- function(object = NULL,
                 if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
                         #parameters %<>% parameters[monitor]
                 }
+                
+                #no_nas_measures <- c("E", "LQuantile", "Epvar", "Epsd", "var", "se", "cv")
+                
                 performance <- evaluate_all_measures(object, 
                                                      make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
                                                      parameters,
