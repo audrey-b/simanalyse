@@ -108,7 +108,8 @@ sma_evaluate <- function(object = NULL,
                                                      progress=progress,
                                                      options=options,
                                                      monitor=monitor,
-                                                     deviance=deviance)
+                                                     deviance=deviance,
+                                                     measures=measures)
         }else{
                 if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"
                 chk_nlist(parameters)
@@ -121,15 +122,23 @@ sma_evaluate <- function(object = NULL,
                 }
                 if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
                         #parameters %<>% parameters[monitor]
-                }
+                }else{monitor = pars(object[[1]])}
                 
-                #no_nas_measures <- c("E", "LQuantile", "Epvar", "Epsd", "var", "se", "cv")
+                monitor.with.params <- names(parameters)[monitor %in% names(parameters)]
+                nas_measures <- c("bias", "cpQuantile", "rb", "br", "mse", "rmse", "rrmse", "all")
+                problem_measures <- nas_measures[nas_measures %in% measures]
+                if(!vld_equal(sort(monitor.with.params), sort(monitor)) && length(problem_measures)>0){
+                        err("True parameter values are missing for requested measures ", problem_measures)     
+                } 
                 
                 performance <- evaluate_all_measures(object, 
                                                      make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
                                                      parameters,
                                                      progress=progress,
                                                      options=options)
+                
+                no_nas_measures <- c("E", "LQuantile", "Epvar", "Epsd", "var", "se", "cv")
+                
         }
         
         performance <- nlist::as_term_frame(performance)

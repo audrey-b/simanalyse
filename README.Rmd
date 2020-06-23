@@ -60,7 +60,7 @@ print(sims)
 
 ### Analyse Data
 
-Analyse the 5 datasets in "report" mode. This mode runs iterations until convergence, based on r.hat < 1.1 and an effective sample size >400. See ?sma_set_mode for other choices of analysis mode.
+Analyse the 5 datasets in "report" mode. This mode runs iterations until convergence, based on r.hat <`r sma_set_mode("report")$r.hat` and an effective sample size >`r sma_set_mode("report")$ess`. See ?sma_set_mode for other choices of analysis mode.
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,

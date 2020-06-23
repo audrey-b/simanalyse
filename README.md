@@ -75,7 +75,7 @@ print(sims)
 ### Analyse Data
 
 Analyse the 5 datasets in “report” mode. This mode runs iterations until
-convergence, based on r.hat \< 1.1 and an effective sample size \>400.
+convergence, based on r.hat \<1.1 and an effective sample size \>400.
 See ?sma\_set\_mode for other choices of analysis mode.
 
 ``` r
@@ -296,11 +296,11 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.726]
-#> v data0000002.rds [00:00:00.756]
-#> v data0000003.rds [00:00:00.674]
-#> v data0000004.rds [00:00:00.619]
-#> v data0000005.rds [00:00:00.564]
+#> v data0000001.rds [00:00:00.609]
+#> v data0000002.rds [00:00:00.598]
+#> v data0000003.rds [00:00:00.731]
+#> v data0000004.rds [00:00:00.857]
+#> v data0000005.rds [00:00:00.883]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -308,11 +308,11 @@ sma_analyse(code = code,
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:01.858]
-#> v results0000002.rds [00:00:02.094]
-#> v results0000003.rds [00:00:01.945]
-#> v results0000004.rds [00:00:02.198]
-#> v results0000005.rds [00:00:02.352]
+#> v results0000001.rds [00:00:02.352]
+#> v results0000002.rds [00:00:02.324]
+#> v results0000003.rds [00:00:02.126]
+#> v results0000004.rds [00:00:01.762]
+#> v results0000005.rds [00:00:02.110]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0

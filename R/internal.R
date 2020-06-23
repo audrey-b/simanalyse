@@ -194,17 +194,29 @@ evaluate_all_measures_files <- function(files,
                                         progress = FALSE,
                                         options = furrr::future_options(),
                                         monitor,
-                                        deviance=deviance){
+                                        deviance=deviance,
+                                        measures=measures){
   
   future_res <- future_map(files, 
                            function(file, expr, aggregate.FUNS, parameters){
                              object = mcmcr::as.mcmcrs(readRDS(file))
                              object %<>% lapply(function(x) as_nlists(mcmcr::collapse_chains(x)))
                              chk_list(object); lapply(object, chk_nlists)
-                             if(".*" %in% monitor){
+                             if((".*" %in% monitor) && deviance==FALSE){
                                monitor = pars(object[[1]])
-                               if(deviance==FALSE) monitor = monitor[monitor!="deviance"]
-                             }else{object %<>% lapply(subset, pars=monitor)}
+                               monitor = monitor[monitor!="deviance"]
+                             }
+                             if(!(".*" %in% monitor)){object %<>% lapply(subset, pars=monitor)
+                               #parameters %<>% parameters[monitor]
+                             }else{monitor = pars(object[[1]])}
+                             
+                             monitor.with.params <- names(parameters)[monitor %in% names(parameters)]
+                             nas_measures <- c("bias", "cpQuantile", "rb", "br", "mse", "rmse", "rrmse", "all")
+                             problem_measures <- nas_measures[nas_measures %in% measures]
+                             if(!vld_equal(sort(monitor.with.params), sort(monitor)) && length(problem_measures)>0){
+                               err("True parameter values are missing for requested measures ", problem_measures)     
+                             } 
+                             
                              evaluate_within(object[[1]], expr, aggregate.FUNS, parameters)}, 
                            expr = expr_FUNS[["expr"]], 
                            aggregate.FUNS = expr_FUNS[["aggregate.FUNS"]], 
