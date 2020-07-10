@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - master
+      - housekeeping
   pull_request:
     branches:
       - master
