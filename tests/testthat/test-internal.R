@@ -27,7 +27,7 @@ test_that("summarise one measure - bias",{
   #bias
   expr="error = estimator - parameters"
   result <- lapply(listnlists, evaluate_within, expr, aggregate.FUNS, parameters) %>%
-    as.nlists()
+    as_nlists()
   error.mu1 <- c(mean(mu11), mean(mu12)) - parameters$mu
   error.mu2 <- c(mean(mu21), mean(mu22)) - parameters$mu
   error.theta1 <- mean(theta1) - parameters$theta

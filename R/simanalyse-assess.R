@@ -78,7 +78,7 @@ sma_assess <- function(object,
   for(i in 1L:nsamples){
     simdata[[i]] <- sims_simulate(code, 
                                   constants=constants, 
-                                  parameters=as.nlist(subset(sample, iters = i)),
+                                  parameters=as_nlist(subset(sample, iters = i)),
                                   nsims=1,
                                   silent = TRUE)[[1]]
   }
@@ -94,8 +94,8 @@ sma_assess <- function(object,
   all.expr.p <- expand_expr("p = as.integer(D2 > D1)", c("D1", "D2"), monitor, monitor)
   zeroones <- mcmcr::bind_parameters(D1, D2) %>% 
     mcmc_derive(all.expr.p, silent=TRUE) %>%
-    as.nlists
-  p <- aggregate(zeroones, fun=mean)
+    as_nlists
+  p <- estimates(zeroones, fun=mean)
   
   return(p)
   
