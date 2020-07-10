@@ -75,6 +75,7 @@ for(i in 1:(T-1)){                                     #upper triangle
   sims <- sims::sims_simulate(code=code,
                       constants=constants,
                       parameters=params_M0,
+                      monitor="m",
                       nsims = 2,                  #number of datasets per setup
                       exists = NA,                  #allow to overwrite directory
                       ask = FALSE)      #do not ask if ok to overwrite directory 
