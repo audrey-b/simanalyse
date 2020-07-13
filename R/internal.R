@@ -180,7 +180,7 @@ evaluate_all_measures <- function(listnlists,
   future::resetWorkers(future::plan())
   
   future_res %>%
-    as.nlists() %>%
+    as_nlists() %>%
     evaluate_across(mean) %>%
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
@@ -225,7 +225,7 @@ evaluate_all_measures_files <- function(files,
   future::resetWorkers(future::plan())
   
   future_res %>%
-    as.nlists() %>%
+    as_nlists() %>%
     evaluate_across(mean) %>%
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
@@ -246,7 +246,7 @@ derive_measures <- function(nlist, derive_expr, keywords, parameters){
 
 evaluate_across <- function(summary.nlist, FUN){
   summary.nlist %>% 
-    aggregate(fun = mean) %>%
+    estimates(fun = mean) %>%
     return
 }
 
@@ -271,7 +271,7 @@ evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
   aggregate.list <- nlists %>% 
     summarise_one_result(aggregate.FUNS)%>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
-    as.nlist()
+    as_nlist()
   #apply expr
   if(!is.null(expr)){
     expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
