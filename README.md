@@ -7,16 +7,12 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build
-status](https://travis-ci.com/audrey-b/simanalyse.svg?branch=master)](https://travis-ci.com/audrey-b/simanalyse)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/audrey-b/simanalyse?branch=master&svg=true)](https://ci.appveyor.com/project/audrey-b/simanalyse)
+[![R build
+status](https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg)](https://github.com/audrey-b/simanalyse/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/audrey-b/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/audrey-b/simanalyse?branch=master)
+coverage](https://codecov.io/gh/poissonconsulting/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/poissonconsulting/simanalyse?branch=master)
 [![License:
 GPL3](https://img.shields.io/badge/License-GPL3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
-[![Tinyverse
-status](https://tinyverse.netlify.com/badge/simanalyse)](https://CRAN.R-project.org/package=simanalyse)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/simanalyse)](https://cran.r-project.org/package=simanalyse)
 ![CRAN downloads](http://cranlogs.r-pkg.org/badges/simanalyse)
@@ -42,7 +38,34 @@ number of datasets for the sake of illustration).
 
 ``` r
 library(simanalyse)
-#> Loading required package: nlist
+#> Registered S3 methods overwritten by 'mcmcr':
+#>   method                    from      
+#>   as_nlist.mcmc             nlist     
+#>   as_nlist.mcmc.list        nlist     
+#>   as_nlists.mcmc            nlist     
+#>   as_term.mcmc              nlist     
+#>   collapse_chains.default   universals
+#>   collapse_chains.mcmc.list nlist     
+#>   complete_terms.mcmc       nlist     
+#>   nchains.mcmc              nlist     
+#>   nchains.mcmc.list         nlist     
+#>   niters.mcmc               nlist     
+#>   niters.mcmc.list          nlist     
+#>   npdims.mcmc.list          nlist     
+#>   nterms.mcmc               nlist     
+#>   nterms.mcmc.list          nlist     
+#>   pars.mcmc                 nlist     
+#>   pars.mcmc.list            nlist     
+#>   pdims.mcmc                nlist     
+#>   pdims.mcmc.list           nlist     
+#>   set_pars.mcmc             nlist     
+#>   set_pars.mcmc.list        nlist     
+#>   sort.mcmc                 nlist     
+#>   sort.mcmc.list            nlist     
+#>   subset.mcmc               nlist     
+#>   subset.mcmc.list          nlist     
+#>   tidy.mcmc                 nlist     
+#>   tidy.mcmc.list            nlist
 #> Registered S3 method overwritten by 'rjags':
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
@@ -56,11 +79,6 @@ sims <- sims::sims_simulate(code,
                            constants = constants,
                            nsims = 5,
                            silent = TRUE)
-#> 
-#> Attaching package: 'purrr'
-#> The following object is masked from 'package:nlist':
-#> 
-#>     is_numeric
 print(sims)
 #> $y
 #>  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792 -0.82298676
@@ -296,11 +314,11 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.609]
-#> v data0000002.rds [00:00:00.598]
-#> v data0000003.rds [00:00:00.731]
-#> v data0000004.rds [00:00:00.857]
-#> v data0000005.rds [00:00:00.883]
+#> v data0000001.rds [00:00:00.359]
+#> v data0000002.rds [00:00:00.376]
+#> v data0000003.rds [00:00:00.361]
+#> v data0000004.rds [00:00:00.347]
+#> v data0000005.rds [00:00:00.349]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -308,11 +326,11 @@ sma_analyse(code = code,
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:02.352]
-#> v results0000002.rds [00:00:02.324]
-#> v results0000003.rds [00:00:02.126]
-#> v results0000004.rds [00:00:01.762]
-#> v results0000005.rds [00:00:02.110]
+#> v results0000001.rds [00:00:00.998]
+#> v results0000002.rds [00:00:01.031]
+#> v results0000003.rds [00:00:01.186]
+#> v results0000004.rds [00:00:01.184]
+#> v results0000005.rds [00:00:01.170]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -374,6 +392,9 @@ Please report any
 [Pull requests](https://github.com/audrey-b/simanalyse/pulls) are always
 welcome.
 
-Please note that this project is released with a [Contributor Code of
-Conduct](https://github.com/audrey-b/simanalyse/blob/master/CODE_OF_CONDUCT.md).
-By contributing, you agree to abide by its terms.
+## Code of Conduct
+
+Please note that the simanalyse project is released with a [Contributor
+Code of
+Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
