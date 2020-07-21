@@ -45,7 +45,7 @@ jobs:
 
       - name: Install JAGS macOS
         if: runner.os == 'macOS'
-        run: brew link --overwrite gcc; brew install jags
+        run: brew unlink gcc; brew rm gfortran; brew cleanup; brew install jags
         
       - name: Install JAGS Linux
         if: runner.os == 'Linux'
