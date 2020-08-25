@@ -59,7 +59,7 @@ sma_assess <- function(object,
   sample <- subset(object, iters=sampleids)
   
   #calculate expectations
-  expectations <- mcmc_derive(sample, expr=expr, silent=TRUE)
+  expectations <- mcmc_derive(sample, expr=expr, silent=TRUE, values=constants)
   monitor <- names(expectations)
   #names(expectations) <- chk::p0("expectation.", names(expectations))
   
