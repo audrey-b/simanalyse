@@ -90,6 +90,7 @@ sma_assess <- function(object,
                                   nsims=1,
                                   silent = TRUE)[[1]]
   }
+  simdata <- subset(simdata, pars=names(expectations))
   #expr.FT.2 <- "D2 = (sqrt(data) - sqrt(expectation))^2"
   #all.expr.FT.2 <- expand_expr(expr.FT.2, c("data", "expectation"), monitor, monitor)
   simdata.mcmcr <- mcmcr::as.mcmcr(simdata)
