@@ -43,6 +43,9 @@ res <- sma_analyse(sims,
                            code, 
                            "mu ~ dunif(0,10)", 
                            monitor = "mu",
+                           deviance=FALSE,
                            mode=sma_set_mode("quick", n.save=300, max.iter=300))
-sma_assess(res, "a = mu", sims, code)
+sma_assess(res, expr="a = rep(mu, 10)", sims, code, nsamples=10)
+
+
 }

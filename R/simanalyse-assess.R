@@ -21,8 +21,11 @@
 #'                            code, 
 #'                            "mu ~ dunif(0,10)", 
 #'                            monitor = "mu",
+#'                            deviance=FALSE,
 #'                            mode=sma_set_mode("quick", n.save=300, max.iter=300))
-#' sma_assess(res, "a = mu", sims, code)
+#' sma_assess(res, expr="a = rep(mu, 10)", sims, code, nsamples=10)
+#' 
+#' 
 
 #parallel option
 #omnibus = FALSE TRUE NA (over all parameters)
@@ -58,19 +61,24 @@ sma_assess <- function(object,
   #calculate expectations
   expectations <- mcmc_derive(sample, expr=expr, silent=TRUE)
   monitor <- names(expectations)
-  names(expectations) <- chk::p0("expectation.", names(expectations))
+  #names(expectations) <- chk::p0("expectation.", names(expectations))
   
-  #statistic
-  if(statistic == "FT"){expr.stat <- "(sqrt(data) - sqrt(expectation))^2"
-  }else if(statistic == "LR"){ expr.stat <- "2*data*log(data/expectation)"
-  }else if(statistic == "chi2"){ expr.stat <- "(data - expectation)^2/expectation" #general case: denom is variance
+  #discrepancy
+  if(statistic == "FT"){fun.stat <- function(data, expectation) (sqrt(data) - sqrt(expectation))^2
+  }else if(statistic == "LR"){ fun.stat <- function(data, expectation) 2*data*log(data/expectation)
+  }else if(statistic == "chi2"){ fun.stat <- function(data, expectation) (data - expectation)^2/expectation #general case: denom is variance
   }
   
   #calculate Freeman-Tukey statistic with data
-  expr.FT.1 <- chk::p0("D1 =", expr.stat)
-  all.expr.FT.1 <- expand_expr(expr.FT.1, c("data", "expectation"), monitor, monitor)
-  names(data) <- paste0("data.",names(data))
-  D1 <- mcmc_derive(expectations, all.expr.FT.1, values = data, silent=TRUE)
+  #expr.FT.1 <- chk::p0("D1 =", expr.stat)
+  #all.expr.FT.1 <- expand_expr(expr.FT.1, c("data", "expectation"), monitor, monitor)
+  #names(data) <- paste0("data.",names(data))
+  #D1 <- mcmc_derive(expectations, all.expr.FT.1, values = data, silent=TRUE)
+  
+  #have to check this always does the right thing
+  D1 <- lapply(names(expectations), function(x) fun.stat(data[[x]], mcmcr::as.mcarray(expectations[[x]])))
+  names(D1) = names(expectations)
+  D1 <- mcmcr::as.mcmcr(D1) 
   
   #calculate Freeman-Tukey statistic with simulated data
   
@@ -82,22 +90,29 @@ sma_assess <- function(object,
                                   nsims=1,
                                   silent = TRUE)[[1]]
   }
-  expr.FT.2 <- "D2 = (sqrt(data) - sqrt(expectation))^2"
-  all.expr.FT.2 <- expand_expr(expr.FT.2, c("data", "expectation"), monitor, monitor)
+  #expr.FT.2 <- "D2 = (sqrt(data) - sqrt(expectation))^2"
+  #all.expr.FT.2 <- expand_expr(expr.FT.2, c("data", "expectation"), monitor, monitor)
   simdata.mcmcr <- mcmcr::as.mcmcr(simdata)
-  names(simdata.mcmcr) <- paste0("data.", names(simdata[[1]]))
-  obj <- mcmcr::bind_parameters(expectations, simdata.mcmcr)
-  D2 <- mcmc_derive(obj, all.expr.FT.2, silent=TRUE)
+  #names(simdata.mcmcr) <- paste0("data.", names(simdata[[1]]))
+  #obj <- mcmcr::bind_parameters(expectations, simdata.mcmcr)
+  #D2 <- mcmc_derive(obj, all.expr.FT.2, silent=TRUE)
+  
+  D2 <- mcmcr::combine_samples(expectations, simdata.mcmcr, fun=function(x)fun.stat(x[2],x[1]))
+  
+  #D2 <- lapply(names(expectations), function(x) fun.stat(as_nlist(subset(simdata.mcmcr, iters=1)), expectations[[x]]))
+  names(D2) = names(expectations)
   
   #Calculate the bayesian p-value
   
-  all.expr.p <- expand_expr("p = as.integer(D2 > D1)", c("D1", "D2"), monitor, monitor)
-  zeroones <- mcmcr::bind_parameters(D1, D2) %>% 
-    mcmc_derive(all.expr.p, silent=TRUE) %>%
-    as_nlists
-  p <- estimates(zeroones, fun=mean)
+  p <- mcmcr::combine_samples(D1, D2, fun=function(x) as.integer(x[2] > x[1]))
   
-  return(p)
+  #all.expr.p <- expand_expr("p = as.integer(D2 > D1)", c("D1", "D2"), monitor, monitor)
+  #zeroones <- mcmcr::bind_parameters(D1, D2) %>% 
+  #  mcmc_derive(all.expr.p, silent=TRUE) %>%
+  #  as_nlists
+  #p <- estimates(zeroones, fun=mean)
+  
+  return(mcmcr::estimates(p, mean))
   
 }
 
