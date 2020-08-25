@@ -70,15 +70,15 @@ sma_assess <- function(object,
   }
   
   #calculate Freeman-Tukey statistic with data
-  #expr.FT.1 <- chk::p0("D1 =", expr.stat)
-  #all.expr.FT.1 <- expand_expr(expr.FT.1, c("data", "expectation"), monitor, monitor)
-  #names(data) <- paste0("data.",names(data))
-  #D1 <- mcmc_derive(expectations, all.expr.FT.1, values = data, silent=TRUE)
+  data_mcmcr <- subset(mcmcr::as.mcmcr(data), pars=names(expectations))
+  data_mcmcr0 <- data_mcmcr
   
-  #have to check this always does the right thing
-  D1 <- lapply(names(expectations), function(x) fun.stat(data[[x]], mcmcr::as.mcarray(expectations[[x]])))
-  names(D1) = names(expectations)
-  D1 <- mcmcr::as.mcmcr(D1) 
+  for(i in 1:(nsamples-1))
+    data_mcmcr <- mcmcr::bind_chains(data_mcmcr, data_mcmcr0)
+  data_mcmcr <- mcmcr::collapse_chains(data_mcmcr)
+  
+  D1 <- mcmcr::combine_samples(expectations, data_mcmcr, 
+                               fun = function(x) fun.stat(x[2], x[1]))
   
   #calculate Freeman-Tukey statistic with simulated data
   
@@ -91,29 +91,17 @@ sma_assess <- function(object,
                                   silent = TRUE)[[1]]
   }
   simdata <- subset(simdata, pars=names(expectations))
-  #expr.FT.2 <- "D2 = (sqrt(data) - sqrt(expectation))^2"
-  #all.expr.FT.2 <- expand_expr(expr.FT.2, c("data", "expectation"), monitor, monitor)
   simdata.mcmcr <- mcmcr::as.mcmcr(simdata)
-  #names(simdata.mcmcr) <- paste0("data.", names(simdata[[1]]))
-  #obj <- mcmcr::bind_parameters(expectations, simdata.mcmcr)
-  #D2 <- mcmc_derive(obj, all.expr.FT.2, silent=TRUE)
-  
+ 
   D2 <- mcmcr::combine_samples(expectations, simdata.mcmcr, fun=function(x)fun.stat(x[2],x[1]))
-  
-  #D2 <- lapply(names(expectations), function(x) fun.stat(as_nlist(subset(simdata.mcmcr, iters=1)), expectations[[x]]))
-  names(D2) = names(expectations)
+  #names(D2) = names(expectations) #should delete?
   
   #Calculate the bayesian p-value
   
   p <- mcmcr::combine_samples(D1, D2, fun=function(x) as.integer(x[2] > x[1]))
+  mean.p <- mcmcr::estimates(p, mean)
   
-  #all.expr.p <- expand_expr("p = as.integer(D2 > D1)", c("D1", "D2"), monitor, monitor)
-  #zeroones <- mcmcr::bind_parameters(D1, D2) %>% 
-  #  mcmc_derive(all.expr.p, silent=TRUE) %>%
-  #  as_nlists
-  #p <- estimates(zeroones, fun=mean)
-  
-  return(mcmcr::estimates(p, mean))
+  return(mean.p)
   
 }
 
