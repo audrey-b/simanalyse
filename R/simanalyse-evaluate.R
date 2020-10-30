@@ -66,7 +66,7 @@ sma_evaluate <- function(object = NULL,
                          custom_expr_before="",
                          custom_expr_after="",
                          progress = FALSE,
-                         options = furrr::future_options()){
+                         options = furrr::furrr_options()){
         
         chk_vector(measures); chk_all(measures, "chk_string")
         chk_function(estimator)
@@ -76,7 +76,7 @@ sma_evaluate <- function(object = NULL,
         chk_string(custom_expr_after)
         chk_flag(progress)
         chk_flag(deviance)
-        chk_s3_class(options, "future_options")
+        chk_s3_class(options, "furrr_options")
         
         chk_list(custom_funs)
         if(!length(custom_funs)==0){
