@@ -79,7 +79,7 @@ sma_analyse <- function(sims = NULL,
   #need to check that r.hat.node and ess.nodes are contained within monitor
   
   chk_flag(progress)
-  chk_s3_class(options, "future_options")
+  chk_s3_class(options, "furrr_options")
   
   
   if(!is.list(options$seed)){ #error if list not the right length
