@@ -18,7 +18,7 @@ sma_evaluate(
   custom_expr_before = "",
   custom_expr_after = "",
   progress = FALSE,
-  options = furrr::future_options()
+  options = furrr::furrr_options()
 )
 }
 \arguments{

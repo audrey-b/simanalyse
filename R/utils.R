@@ -41,8 +41,8 @@ cp.upper = function(x, alpha) quantile(x, 1-alpha/2)
 
 name_of_function = function(fun) deparse(substitute(fun))
 
-sprintf_custom = function(code, code.add){
+sprintf_custom = function(code, code.value){
   spl <- strsplit(code, "\\?")[[1]]
-  chk_equal(length(code.add), length(spl)-1)
-  return(paste0(spl, c(code.add,""), collapse = ""))
+  chk_equal(length(code.value), length(spl)-1)
+  return(paste0(spl, c(code.value,""), collapse = ""))
 }

@@ -69,7 +69,7 @@ sma_analyse <- function(sims = NULL,
   
   chk_string(code)
   chk_string(code.add)
-  if(!is.null(code.values)) chk_string(code.values)
+  if(!is.null(code.values)) chk_all(code.values, chk_string)
   chk_character(monitor)
   chkor(chk_list(inits), chk_function(inits))
   #lapply(chk_) need to figure out

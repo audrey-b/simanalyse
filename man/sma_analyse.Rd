@@ -16,7 +16,7 @@ sma_analyse(
   path = ".",
   analysis = "analysis0000001",
   progress = FALSE,
-  options = furrr::future_options(seed = TRUE)
+  options = furrr::furrr_options(seed = TRUE)
 )
 }
 \arguments{

@@ -5,8 +5,9 @@ test_that("sma_analyse",{
    params <- nlist(mu=0)
    dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
    result <- sma_analyse(sims=dat,
-                                  code = "a ~ dnorm(mu,1)
-                                         mu ~ dunif(-3,3)",
+                                  code = "a ~ dnorm(mu,?)
+                                         mu ~ dunif(-3,?)",
+                                  code.value = c("1","3"),
                                   mode=sma_set_mode("quick"),
                                   monitor = "mu")
    expect_true(class(result)=="mcmcrs")
