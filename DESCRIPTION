@@ -15,7 +15,7 @@ Imports:
   sims,
   mcmcr,
   mcmcderive,
-  nlist (>= 0.3.0.9003),
+  nlist (>= 0.3.0),
   magrittr,
   stringr,
   rjags,
