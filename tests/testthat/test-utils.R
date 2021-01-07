@@ -1,3 +1,6 @@
+library(testthat)
+library(simanalyse)
+
 context("internal-utils")
 
 test_that("set_class",{

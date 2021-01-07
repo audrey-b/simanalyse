@@ -1,3 +1,6 @@
+library(testthat)
+library(simanalyse)
+
 context("function-summarise")
 
 test_that("sma_summarise works", {
