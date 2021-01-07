@@ -30,9 +30,7 @@ Suggests:
     future
 Remotes:
   poissonconsulting/sims,
-  poissonconsulting/batchr,
-  poissonconsulting/mcmcr,
-  poissonconsulting/mcmcderive
+  poissonconsulting/batchr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1.9000
