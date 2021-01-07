@@ -7,8 +7,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![R build
-status](https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg)](https://github.com/Harmohit-Singh-b/simanalyse/actions)
+![R-CMD-check](https://github.com/Harmohit-Singh/simanalyse/workflows/R-CMD-check/badge.svg)
 [![Codecov test
 coverage](https://codecov.io/gh/poissonconsulting/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/poissonconsulting/simanalyse?branch=master)
 [![License:
