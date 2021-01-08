@@ -21,7 +21,6 @@ Imports:
   rjags,
   batchr,
   furrr,
-  cli,
   reshape,
   yesno
 Suggests: 
