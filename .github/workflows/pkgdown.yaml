@@ -30,6 +30,27 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          
+          
+      - name: Install JAGS macOS
+        if: runner.os == 'macOS'
+        run: |
+          rm '/usr/local/bin/gfortran'
+          brew install jags
+          
+      - name: Install JAGS Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get install jags
+
+      - name: Download JAGS Windows
+        if: runner.os == 'Windows'
+        run: (New-Object System.Net.WebClient).DownloadFile('https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/JAGS-4.3.0.exe', 'C:\JAGS-4.3.0.exe')
+        shell: powershell
+        
+      - name: Install JAGS Windows
+        if: runner.os == 'Windows'
+        run: C:\JAGS-4.3.0.exe /S
+        shell: cmd
 
       - name: Install dependencies
         run: |
@@ -44,12 +65,3 @@ jobs:
       - name: Deploy package
         run: pkgdown::deploy_to_branch(new_process = FALSE)
         shell: Rscript {0}
-      - name: action-slack
-        if: failure()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        uses: 8398a7/action-slack@v3.0.0
-        with:
-          status: ${{ job.status }}
-          author_name: "github action: pkgdown"
-          fields: repo, workflow, commit, message, author, action

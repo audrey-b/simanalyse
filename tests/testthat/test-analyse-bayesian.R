@@ -1,3 +1,6 @@
+library(testthat)
+library(simanalyse)
+
 context("analyse-bayesian")
 
 test_that("sma_analyse",{

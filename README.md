@@ -7,10 +7,9 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![R build
-status](https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg)](https://github.com/audrey-b/simanalyse/actions)
+![R-CMD-check](https://github.com/Harmohit-Singh/simanalyse/workflows/R-CMD-check/badge.svg)
 [![Codecov test
-coverage](https://codecov.io/gh/poissonconsulting/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/poissonconsulting/simanalyse?branch=master)
+coverage](https://codecov.io/gh/Harmohit-Singh/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/Harmohit-Singh/simanalyse?branch=master)
 [![License:
 GPL3](https://img.shields.io/badge/License-GPL3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![CRAN

@@ -1,3 +1,6 @@
+library(testthat)
+library(simanalyse)
+
 context("internal")
 
 test_that("make_code works",{

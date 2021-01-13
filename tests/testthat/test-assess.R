@@ -1,3 +1,5 @@
+library(testthat)
+library(simanalyse)
 
 test_that("sma_assess",{
   set.seed(10L)

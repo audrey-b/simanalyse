@@ -15,13 +15,12 @@ Imports:
   sims,
   mcmcr,
   mcmcderive,
-  nlist,
+  nlist (>= 0.3.0),
   magrittr,
   stringr,
   rjags,
   batchr,
   furrr,
-  cli,
   reshape,
   yesno
 Suggests: 
@@ -30,9 +29,7 @@ Suggests:
     future
 Remotes:
   poissonconsulting/sims,
-  poissonconsulting/batchr,
-  poissonconsulting/mcmcr,
-  poissonconsulting/mcmcderive
+  poissonconsulting/batchr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1.9000

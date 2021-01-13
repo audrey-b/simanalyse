@@ -1,3 +1,6 @@
+library(testthat)
+library(simanalyse)
+
 context("function-derive")
 
 test_that("sma_derive works", {
