@@ -64,7 +64,9 @@ prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                mode = sma_set_mode("report"))
+                                mode = sma_set_mode("report", 
+                                                    n.save=300, 
+                                                    n.chains = 2))
 ```
 
 ### Derive new parameters (if required)
@@ -116,7 +118,9 @@ sims::sims_simulate(code,
 
 sma_analyse(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("report"))
+                     mode = sma_set_mode("report", 
+                                         n.save=300, 
+                                         n.chains = 2))
 
 sma_derive(code="var=sigma^2", monitor="var")
 
