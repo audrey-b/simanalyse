@@ -22,7 +22,7 @@ knitr::opts_knit$set(root.dir = file.path(tempdir(), "sims"))
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![R build status](https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg)](https://github.com/audrey-b/simanalyse/actions)
-[![Codecov test coverage](https://codecov.io/gh/poissonconsulting/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/poissonconsulting/simanalyse?branch=master)
+[![Codecov test coverage](https://github.com/audrey-b/simanalyse/workflows/test-coverage/badge.svg)](https://codecov.io/gh/audrey-b/simanalyse?branch=master)
 [![License: GPL3](https://img.shields.io/badge/License-GPL3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![CRAN status](https://www.r-pkg.org/badges/version/simanalyse)](https://cran.r-project.org/package=simanalyse)
 ![CRAN downloads](http://cranlogs.r-pkg.org/badges/simanalyse)
@@ -65,7 +65,7 @@ results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 mode = sma_set_mode("report", 
-                                                    n.save=300, 
+                                                    n.save=300,
                                                     n.chains = 2))
 ```
 
@@ -118,8 +118,8 @@ sims::sims_simulate(code,
 
 sma_analyse(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("report", 
-                                         n.save=300, 
+                     mode = sma_set_mode("report",
+                                         n.save=300,
                                          n.chains = 2))
 
 sma_derive(code="var=sigma^2", monitor="var")

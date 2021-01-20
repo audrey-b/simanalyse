@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R build
 status](https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg)](https://github.com/audrey-b/simanalyse/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/poissonconsulting/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/poissonconsulting/simanalyse?branch=master)
+coverage](https://github.com/audrey-b/simanalyse/workflows/test-coverage/badge.svg)](https://codecov.io/gh/audrey-b/simanalyse?branch=master)
 [![License:
 GPL3](https://img.shields.io/badge/License-GPL3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![CRAN
@@ -74,7 +74,7 @@ results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
                                 mode = sma_set_mode("report", 
-                                                    n.save=300, 
+                                                    n.save=300,
                                                     n.chains = 2))
 #> module dic loaded
 #> Compiling model graph
@@ -241,8 +241,8 @@ sims::sims_simulate(code,
 
 sma_analyse(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("report", 
-                                         n.save=300, 
+                     mode = sma_set_mode("report",
+                                         n.save=300,
                                          n.chains = 2))
 #> module dic loaded
 #> Compiling model graph
@@ -294,11 +294,11 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.128]
-#> v data0000002.rds [00:00:00.184]
-#> v data0000003.rds [00:00:00.157]
-#> v data0000004.rds [00:00:00.163]
-#> v data0000005.rds [00:00:00.162]
+#> v data0000001.rds [00:00:00.109]
+#> v data0000002.rds [00:00:00.149]
+#> v data0000003.rds [00:00:00.171]
+#> v data0000004.rds [00:00:00.159]
+#> v data0000005.rds [00:00:00.152]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -306,11 +306,11 @@ sma_analyse(code = code,
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:00.060]
-#> v results0000002.rds [00:00:00.056]
-#> v results0000003.rds [00:00:00.057]
-#> v results0000004.rds [00:00:00.052]
-#> v results0000005.rds [00:00:00.052]
+#> v results0000001.rds [00:00:00.067]
+#> v results0000002.rds [00:00:00.057]
+#> v results0000003.rds [00:00:00.069]
+#> v results0000004.rds [00:00:00.053]
+#> v results0000005.rds [00:00:00.060]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
