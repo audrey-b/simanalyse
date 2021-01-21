@@ -170,7 +170,7 @@ evaluate_all_measures <- function(listnlists,
                                   expr_FUNS, 
                                   parameters,
                                   progress = FALSE,
-                                  options = furrr::future_options()){
+                                  options = furrr::furrr_options()){
   
   future_res <- future_map(listnlists, evaluate_within, 
                            expr = expr_FUNS[["expr"]], 
@@ -192,7 +192,7 @@ evaluate_all_measures_files <- function(files,
                                         expr_FUNS, 
                                         parameters,
                                         progress = FALSE,
-                                        options = furrr::future_options(),
+                                        options = furrr::furrr_options(),
                                         monitor,
                                         deviance=deviance,
                                         measures=measures){
