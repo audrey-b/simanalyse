@@ -7,9 +7,10 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-![R-CMD-check](https://github.com/Harmohit-Singh/simanalyse/workflows/R-CMD-check/badge.svg)
+[![R build
+status](https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg)](https://github.com/audrey-b/simanalyse/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/Harmohit-Singh/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/Harmohit-Singh/simanalyse?branch=master)
+coverage](https://github.com/audrey-b/simanalyse/workflows/test-coverage/badge.svg)](https://codecov.io/gh/audrey-b/simanalyse?branch=master)
 [![License:
 GPL3](https://img.shields.io/badge/License-GPL3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![CRAN
@@ -37,34 +38,6 @@ number of datasets for the sake of illustration).
 
 ``` r
 library(simanalyse)
-#> Registered S3 methods overwritten by 'mcmcr':
-#>   method                    from      
-#>   as_nlist.mcmc             nlist     
-#>   as_nlist.mcmc.list        nlist     
-#>   as_nlists.mcmc            nlist     
-#>   as_term.mcmc              nlist     
-#>   collapse_chains.default   universals
-#>   collapse_chains.mcmc.list nlist     
-#>   complete_terms.mcmc       nlist     
-#>   nchains.mcmc              nlist     
-#>   nchains.mcmc.list         nlist     
-#>   niters.mcmc               nlist     
-#>   niters.mcmc.list          nlist     
-#>   npdims.mcmc.list          nlist     
-#>   nterms.mcmc               nlist     
-#>   nterms.mcmc.list          nlist     
-#>   pars.mcmc                 nlist     
-#>   pars.mcmc.list            nlist     
-#>   pdims.mcmc                nlist     
-#>   pdims.mcmc.list           nlist     
-#>   set_pars.mcmc             nlist     
-#>   set_pars.mcmc.list        nlist     
-#>   sort.mcmc                 nlist     
-#>   sort.mcmc.list            nlist     
-#>   subset.mcmc               nlist     
-#>   subset.mcmc.list          nlist     
-#>   tidy.mcmc                 nlist     
-#>   tidy.mcmc.list            nlist
 #> Registered S3 method overwritten by 'rjags':
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
@@ -100,7 +73,9 @@ prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                mode = sma_set_mode("report"))
+                                mode = sma_set_mode("report", 
+                                                    n.save=300,
+                                                    n.chains = 2))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -161,45 +136,49 @@ Derive posterior samples for new parameters.
 
 ``` r
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
+#> Warning: `future_options()` is deprecated as of furrr 0.2.0.
+#> Please use `furrr_options()` instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_warnings()` to see where this warning was generated.
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 2.656139
+#> [1] 2.473183
 #> 
-#> nchains:  3 
-#> niters:  4000 
+#> nchains:  2 
+#> niters:  300 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 3.37433
+#> [1] 3.307718
 #> 
-#> nchains:  3 
-#> niters:  4000 
+#> nchains:  2 
+#> niters:  300 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 5.681759
+#> [1] 5.520055
 #> 
-#> nchains:  3 
-#> niters:  4000 
+#> nchains:  2 
+#> niters:  300 
 #> 
 #> 
 #> $mcmcr4
 #> $var
-#> [1] 2.50968
+#> [1] 2.549401
 #> 
-#> nchains:  3 
-#> niters:  4000 
+#> nchains:  2 
+#> niters:  300 
 #> 
 #> 
 #> $mcmcr5
 #> $var
-#> [1] 7.397053
+#> [1] 7.38072
 #> 
-#> nchains:  3 
-#> niters:  4000
+#> nchains:  2 
+#> niters:  300
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -222,7 +201,7 @@ Evaluate the performance of the model using the 3 analyses
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #>   term     bias      mse cpQuantile
-#> 1  var 1.145122 6.439299          1
+#> 1  var 1.077448 6.734285          1
 ```
 
 Several more performance measures are available and can be specified
@@ -241,7 +220,7 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #>   term     bias cpQuantile      mse
-#> 1  var 1.145122          1 6.439299
+#> 1  var 1.077448          1 6.734285
 ```
 
 ## Saving to file
@@ -262,7 +241,9 @@ sims::sims_simulate(code,
 
 sma_analyse(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("report"))
+                     mode = sma_set_mode("report",
+                                         n.save=300,
+                                         n.chains = 2))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -313,11 +294,11 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.359]
-#> v data0000002.rds [00:00:00.376]
-#> v data0000003.rds [00:00:00.361]
-#> v data0000004.rds [00:00:00.347]
-#> v data0000005.rds [00:00:00.349]
+#> v data0000001.rds [00:00:00.109]
+#> v data0000002.rds [00:00:00.149]
+#> v data0000003.rds [00:00:00.171]
+#> v data0000004.rds [00:00:00.159]
+#> v data0000005.rds [00:00:00.152]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -325,11 +306,11 @@ sma_analyse(code = code,
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:00.998]
-#> v results0000002.rds [00:00:01.031]
-#> v results0000003.rds [00:00:01.186]
-#> v results0000004.rds [00:00:01.184]
-#> v results0000005.rds [00:00:01.170]
+#> v results0000001.rds [00:00:00.067]
+#> v results0000002.rds [00:00:00.057]
+#> v results0000003.rds [00:00:00.069]
+#> v results0000004.rds [00:00:00.053]
+#> v results0000005.rds [00:00:00.060]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -369,7 +350,7 @@ and read a particular file, e.g.
 ``` r
 readRDS(file.path(getwd(), files[9]))
 #>   term     bias      mse cpQuantile
-#> 1  var 1.145122 6.439299          1
+#> 1  var 1.077448 6.734285          1
 ```
 
 ## Parallelization
