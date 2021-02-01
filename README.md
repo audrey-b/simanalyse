@@ -18,7 +18,7 @@ status](https://www.r-pkg.org/badges/version/simanalyse)](https://cran.r-project
 ![CRAN downloads](http://cranlogs.r-pkg.org/badges/simanalyse)
 <!-- badges: end -->
 
-simanalyse is an R package to facilitate model comparisons and
+simanalyse  is an R package to facilitate model comparisons and
 simulation studies.
 
 To install the latest development version from

@@ -25,23 +25,23 @@ test_that("sma_analyse",{
 
 
 
-test_that("inits is a list of inits for multiple chains",{
-   set.seed(10L)
-   code <- "a ~ dnorm(mu,1)"
-   sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
-   prior = "mu ~ dunif(-3,3)
-           tt ~ dnorm(0,1)"
-   inits1 <- list("mu"=-2, "tt"=0)
-   inits2 <- list("mu"=-2, "tt"=0)
-   inits3 <- list("mu"=-2, "tt"=0)
-   result <- sma_analyse(sims=sims,
-                                  code = code,
-                                  code.add = prior,
-                                  mode=sma_set_mode("quick", n.chains=3),
-                                  monitor = c("mu", "tt"),
-                                  inits=list(inits1, inits2, inits3),
-                                  deviance=FALSE)
-})
+#test_that("inits is a list of inits for multiple chains",{
+#   set.seed(10L)
+#   code <- "a ~ dnorm(mu,1)"
+#   sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
+#   prior = "mu ~ dunif(-3,3)
+#           tt ~ dnorm(0,1)"
+#   inits1 <- list("mu"=-2, "tt"=0)
+#   inits2 <- list("mu"=-2, "tt"=0)
+#   inits3 <- list("mu"=-2, "tt"=0)
+#   result <- sma_analyse(sims=sims,
+#                                  code = code,
+#                                  code.add = prior,
+#                                  mode=sma_set_mode("quick", n.chains=3),
+#                                  monitor = c("mu", "tt"),
+#                                  inits=list(inits1, inits2, inits3),
+#                                  deviance=FALSE)
+#})
 
 
 test_that("inits is a function and reproducible",{

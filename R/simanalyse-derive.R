@@ -48,7 +48,7 @@ sma_derive <- function(object=NULL, code, monitor=".*",
                        path = ".",
                        analysis = "analysis0000001",
                        progress = FALSE,
-                       options = furrr::future_options()) {
+                       options = furrr::furrr_options()) {
   
 
   if(class(object) == "list") object <- as_nlist(object)

@@ -12,7 +12,7 @@ sma_derive(
   path = ".",
   analysis = "analysis0000001",
   progress = FALSE,
-  options = furrr::future_options()
+  options = furrr::furrr_options()
 )
 }
 \arguments{
