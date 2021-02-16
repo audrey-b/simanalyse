@@ -266,19 +266,28 @@ summarise_one_result <- function(nlists, aggregate.FUNS){
 }
 
 evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
-  monitor = nlists[[1]] %>% names()
+  monitor = nlists[1] %>% names()
   #calculate aggregates
+  
   aggregate.list <- nlists %>% 
     summarise_one_result(aggregate.FUNS)%>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as_nlist()
+  
+#  aggregate.list <- nlists %>%
+#    summarise_one_result(aggregate.FUNS)
+  
   #apply expr
   if(!is.null(expr)){
+    
     expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
     names(parameters) <- paste0("parameters.",names(parameters))
+    
+    ################### Error here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     mcmc_derive(object = aggregate.list, expr = expr.all.params, values = parameters, silent=TRUE) %>%
       return
-  }else{return(aggregate.list)}
+  
+    }else{return(aggregate.list)}
 }
 
 make_one_expr <- function(param, expr, keywords){

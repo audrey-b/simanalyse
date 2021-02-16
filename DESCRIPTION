@@ -22,7 +22,8 @@ Imports:
   batchr,
   furrr,
   reshape,
-  yesno
+  yesno,
+  coda
 Suggests: 
     covr,
     testthat,

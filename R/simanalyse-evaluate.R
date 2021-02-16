@@ -111,11 +111,12 @@ sma_evaluate <- function(object = NULL,
                                                      deviance=deviance,
                                                      measures=measures)
         }else{
-                if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"
+                if(is.list(parameters) && !is_nlist(parameters)) 
+                   class(parameters) <- "nlist"
                 chk_nlist(parameters)
                 
-                object %<>% lapply(function(x) as_nlists(mcmcr::collapse_chains(x)))
-                chk_list(object); lapply(object, chk_nlists)
+                object %<>% lapply(function(x) mcmcr::collapse_chains(x))
+                #chk_list(object); lapply(object, chk_nlists)
                 if((".*" %in% monitor) && deviance==FALSE){
                         monitor = pars(object[[1]])
                         monitor = monitor[monitor!="deviance"]
