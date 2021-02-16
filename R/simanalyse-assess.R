@@ -98,7 +98,7 @@ sma_assess <- function(object,
   
   #Calculate the bayesian p-value
   
-  p <- mcmcr::combine_samples(D1, D2, fun=function(x) as.integer(x[2] > x[1])) #sims>data
+  p <- mcmcr::combine_samples(D1, D2, fun=function(x) as.integer(x[2] > x[1])+0.5*as.integer(x[2] == x[1])) #sims>data
   mean.p <- mcmcr::estimates(p, mean)
   
   #Fit (mean D.data)
