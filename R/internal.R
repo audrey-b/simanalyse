@@ -266,19 +266,28 @@ summarise_one_result <- function(nlists, aggregate.FUNS){
 }
 
 evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
-  monitor = nlists[[1]] %>% names()
+  
+  # if statement addes because as_nlists was removed from sma_evaluate()
+  # It was removed because it made the function very slow
+  if(class(nlists) == "nlists") {monitor = nlists[[1]] %>% names()}
+  else {monitor = nlists %>% names()}
   #calculate aggregates
+  
   aggregate.list <- nlists %>% 
     summarise_one_result(aggregate.FUNS)%>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as_nlist()
+  
   #apply expr
   if(!is.null(expr)){
+    
     expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
     names(parameters) <- paste0("parameters.",names(parameters))
+    
     mcmc_derive(object = aggregate.list, expr = expr.all.params, values = parameters, silent=TRUE) %>%
       return
-  }else{return(aggregate.list)}
+  
+    }else{return(aggregate.list)}
 }
 
 make_one_expr <- function(param, expr, keywords){
