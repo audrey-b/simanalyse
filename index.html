@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -69,10 +71,10 @@
 <!-- badges: start -->
 
 <p>simanalyse is an R package to facilitate model comparisons and simulation studies.</p>
-<p>To install the latest development version from <a href="https://github.com/audrey-b/simanalyse">GitHub</a></p>
+<p>To install the latest development version from <a href="https://github.com/audrey-b/simanalyse" class="external-link">GitHub</a></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"audrey-b/simanalyse"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"audrey-b/simanalyse"</span><span class="op">)</span></code></pre></div>
 <div id="demonstration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#demonstration" class="anchor"></a>Demonstration</h2>
@@ -81,21 +83,21 @@
 <a href="#simulate-data" class="anchor"></a>Simulate Data</h3>
 <p>Simulate 5 datasets using the sims package (here we use only a small number of datasets for the sake of illustration).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/audrey-b/simanalyse">simanalyse</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/audrey-b/simanalyse" class="external-link">simanalyse</a></span><span class="op">)</span>
 <span class="co">#&gt; Registered S3 method overwritten by 'rjags':</span>
 <span class="co">#&gt;   method               from </span>
 <span class="co">#&gt;   as.mcmc.list.mcarray mcmcr</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span>
-<span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sigma <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="va">constants</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mu <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span>
+<span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sigma <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="va">constants</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>mu <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="va">code</span> <span class="op">&lt;-</span> <span class="st">"for(i in 1:10){
           y[i] ~ dnorm(mu, 1/sigma^2)}"</span>
-<span class="va">sims</span> <span class="op">&lt;-</span> <span class="fu">sims</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sims/man/sims_simulate.html">sims_simulate</a></span><span class="op">(</span><span class="va">code</span>, 
+<span class="va">sims</span> <span class="op">&lt;-</span> <span class="fu">sims</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sims/man/sims_simulate.html" class="external-link">sims_simulate</a></span><span class="op">(</span><span class="va">code</span>, 
                            parameters <span class="op">=</span> <span class="va">params</span>, 
                            constants <span class="op">=</span> <span class="va">constants</span>,
                            nsims <span class="op">=</span> <span class="fl">5</span>,
                            silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span>
 <span class="co">#&gt; $y</span>
 <span class="co">#&gt;  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792 -0.82298676</span>
 <span class="co">#&gt;  [7]  1.03237779  1.69966601 -1.33777215 -0.77232720</span>
@@ -180,7 +182,7 @@
 <span class="co">#&gt; Please use `furrr_options()` instead.</span>
 <span class="co">#&gt; This warning is displayed once every 8 hours.</span>
 <span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">results.derived</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results.derived</span><span class="op">)</span>
 <span class="co">#&gt; $mcmcr1</span>
 <span class="co">#&gt; $var</span>
 <span class="co">#&gt; [1] 2.473183</span>
@@ -222,7 +224,7 @@
 <p>The same transformation must be applied to the true parameter values for eventually evaluating the performance (e.g. bias) of the method for those new parameters,</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">params.derived</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sma_derive.html">sma_derive</a></span><span class="op">(</span><span class="va">params</span>, <span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">params.derived</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">params.derived</span><span class="op">)</span>
 <span class="co">#&gt; $var</span>
 <span class="co">#&gt; [1] 4</span>
 <span class="co">#&gt; </span>
@@ -241,9 +243,9 @@
 <code class="sourceCode R"><span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="va">results.derived</span>,
               measures <span class="op">=</span> <span class="st">""</span>, 
               parameters <span class="op">=</span> <span class="va">params.derived</span>, 
-              custom_funs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>estimator <span class="op">=</span> <span class="va">mean</span>,
-                                 cp.low <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.025</span><span class="op">)</span>,
-                                 cp.upp <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span>,
+              custom_funs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>estimator <span class="op">=</span> <span class="va">mean</span>,
+                                 cp.low <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.025</span><span class="op">)</span>,
+                                 cp.upp <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span>,
               custom_expr_b <span class="op">=</span> <span class="st">"bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters &gt;= cp.low) &amp; (parameters &lt;= cp.upp), 1, 0)"</span><span class="op">)</span>
@@ -256,8 +258,8 @@
 <a href="#saving-to-file" class="anchor"></a>Saving to file</h2>
 <p>When running simulation studies, it is often preferable to save all the results to disk. By default, when the <em>path</em> argument is not specified, results are saved in your working directory.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span>
-<span class="fu">sims</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sims/man/sims_simulate.html">sims_simulate</a></span><span class="op">(</span><span class="va">code</span>, 
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span>
+<span class="fu">sims</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sims/man/sims_simulate.html" class="external-link">sims_simulate</a></span><span class="op">(</span><span class="va">code</span>, 
                     parameters <span class="op">=</span> <span class="va">params</span>, 
                     constants <span class="op">=</span> <span class="va">constants</span>,
                     nsims <span class="op">=</span> <span class="fl">5</span>,
@@ -345,8 +347,8 @@
 <span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>You may show the files created with</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, all.files<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, all.files<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span>
 <span class="co">#&gt;  [1] ".sims.rds"                                  </span>
 <span class="co">#&gt;  [2] "analysis0000001/.seeds.rds"                 </span>
 <span class="co">#&gt;  [3] "analysis0000001/derived/.parameters.rds"    </span>
@@ -368,14 +370,14 @@
 <span class="co">#&gt; [19] "data0000005.rds"</span></code></pre></div>
 <p>and read a particular file, e.g.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">files</span><span class="op">[</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">files</span><span class="op">[</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;   term     bias      mse cpQuantile</span>
 <span class="co">#&gt; 1  var 1.077448 6.734285          1</span></code></pre></div>
 </div>
 <div id="parallelization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#parallelization" class="anchor"></a>Parallelization</h2>
-<p>Parallelization is achieved using the <a href="https://github.com/HenrikBengtsson/future">future</a> package.</p>
+<p>Parallelization is achieved using the <a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a> package.</p>
 <p>To use all available cores on the local machine simply execute the following code before calling any of the package’s functions.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">library</span>(future)</span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="kw">plan</span>(multisession)</span></code></pre></div>
@@ -383,20 +385,20 @@
 <div id="contribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contribution" class="anchor"></a>Contribution</h2>
-<p>Please report any <a href="https://github.com/audrey-b/simanalyse/issues">issues</a>.</p>
-<p><a href="https://github.com/audrey-b/simanalyse/pulls">Pull requests</a> are always welcome.</p>
+<p>Please report any <a href="https://github.com/audrey-b/simanalyse/issues" class="external-link">issues</a>.</p>
+<p><a href="https://github.com/audrey-b/simanalyse/pulls" class="external-link">Pull requests</a> are always welcome.</p>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
 <a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
-<p>Please note that the simanalyse project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the simanalyse project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/audrey-b/simanalyse/">https://​github.com/​audrey-b/​simanalyse/​</a>
 </li>
@@ -404,38 +406,43 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Audrey Beliveau <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Joe Thorley <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7683-4592" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/audrey-b/simanalyse/actions"><img src="https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/audrey-b/simanalyse?branch=master"><img src="https://github.com/audrey-b/simanalyse/workflows/test-coverage/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/badge/License-GPL3-blue.svg" alt="License: GPL3"></a></li>
-<li><a href="https://cran.r-project.org/package=simanalyse"><img src="https://www.r-pkg.org/badges/version/simanalyse" alt="CRAN status"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://github.com/audrey-b/simanalyse/actions" class="external-link"><img src="https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://codecov.io/gh/audrey-b/simanalyse?branch=master" class="external-link"><img src="https://github.com/audrey-b/simanalyse/workflows/test-coverage/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://www.gnu.org/licenses/gpl-3.0.html" class="external-link"><img src="https://img.shields.io/badge/License-GPL3-blue.svg" alt="License: GPL3"></a></li>
+<li><a href="https://cran.r-project.org/package=simanalyse" class="external-link"><img src="https://www.r-pkg.org/badges/version/simanalyse" alt="CRAN status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
@@ -452,6 +459,8 @@
 
   
 
+
+  
 
   </body>
 </html>
