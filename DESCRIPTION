@@ -3,8 +3,8 @@ Title: Facilitate Model Comparisons and Simulation Studies
 Version: 0.0.0.9001
 Authors@R: c(
     person("Audrey", "Beliveau", , "audrey.beliveau@uwaterloo.ca", c("aut", "cre")),
-    person("Joe", "Thorley", , "joe@poissonconsulting.ca", c("aut"), comment = c(ORCID = "0000-0002-7683-4592"))
-    person("Harmohit Singh", "Bindra", email = "hsbindra@uwaterloo.ca", role = c("ctb")) 
+    person("Joe", "Thorley", , "joe@poissonconsulting.ca", c("aut"), comment = c(ORCID = "0000-0002-7683-4592")),
+    person("Harmohit Singh", "Bindra", , email = "hsbindra@uwaterloo.ca", role = c("ctb")) 
     )
 Description: Facilitates model comparisons and simulation studies.
 License: GPL-3

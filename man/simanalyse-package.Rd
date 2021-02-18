@@ -24,5 +24,10 @@ Authors:
   \item Joe Thorley \email{joe@poissonconsulting.ca} (\href{https://orcid.org/0000-0002-7683-4592}{ORCID})
 }
 
+Other contributors:
+\itemize{
+  \item Harmohit Singh Bindra \email{hsbindra@uwaterloo.ca} [contributor]
+}
+
 }
 \keyword{internal}
