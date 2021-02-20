@@ -1,13 +1,20 @@
 #' Set mode for data analysis
 #'
-#' Set mode for data analysis. The algorithm starts with an adaptation phase of `n.adapt` iterations.
-#' Then `n.chains` are ran for `n.save` iterations without thinning. The algorithm stops if convergence
-#' was achieved according to `r.hat` and the minimum effective sampling rate was achieved or `max.time`
-#' was reached or is projected to be reached in the next round of iterations. If the algorithm is not stopped,
-#' the iterations so far are discarded as burnin. The number of iterations is doubled from the previous round
-#' and thinning is multiplied by 2. The stop criteria is applied again and so on.
+#' Set mode for data analysis. 
+#' The algorithm starts with an adaptation phase of `n.adapt` iterations.
+#' Then `n.chains` are ran for `n.save` iterations without thinning. 
+#' The algorithm stops if convergence was achieved according to `r.hat` and 
+#' the minimum effective sampling rate was achieved or `max.time` was reached or
+#'  is projected to be reached in the next round of iterations. 
+#'  If the algorithm is not stopped, 
+#'  the iterations so far are discarded as burnin. 
+#'  The number of iterations is doubled from the previous round and 
+#'  thinning is multiplied by 2. 
+#'  The stop criteria is applied again and so on.
 #'
-#' @param mode A string of the analysis mode. One of "quick", "report" or "paper". The mode determines the values of the parameters below unless they are specified.
+#' @param mode A string of the analysis mode. 
+#' One of "quick", "report" or "paper". 
+#' The mode determines the values of the parameters below unless they are specified.
 #' @param n.chains A count for number of chains.
 #' @param n.adapt A count for the number of adaptations.
 #' @param n.save A count for the number of (potentially thinned) samples to save.
@@ -17,7 +24,8 @@
 #' @param ess A number specifying the minimum effective sample size.
 #' @param ess.nodes A character vector of nodes to be used to assess ess.
 #' @param max.time A number specifying the maximum time to spend on analysis.
-#' @param units A character string specifying the units of time for `max.time`. See `difftime`.
+#' @param units A character string specifying the units of time for `max.time`. 
+#' See `difftime`.
 
 #' The possible modes are as follows:
 
@@ -54,20 +62,20 @@ sma_set_mode <- function(mode = "report",
   chk_string(mode)
   if (!missing(n.chains)) {
     chk_whole_number(n.chains)
-    chk_range(n.chains, c(1, .max_integer))
+    chk_gte(n.chains, 1)
   }
   if (!missing(n.adapt)) {
     chk_whole_number(n.adapt)
-    chk_range(n.adapt, c(0, .max_integer))
+    chk_gte(n.adapt)
   }
-  # chk_whole_number(n.burnin); chk_range(n.burnin, c(0, .max_integer))
-  # chk_whole_number(n.iter); chk_range(n.iter, c(1, .max_integer))
+  # chk_whole_number(n.burnin); chk_gte(n.burnin)
+  # chk_whole_number(n.iter); chk_gte(n.iter, 1)
   # chk_number(thin); chk_range(thin, c(1, n.iter))
   if (!missing(n.save)) chk_whole_number(n.save)
   if (!missing(max.iter)) chk_whole_number(max.iter)
   if (!missing(max.time)) {
     chk_number(max.time)
-    chk_gt(max.time, 0)
+    chk_gt(max.time)
   }
   if (!missing(r.hat.nodes)) chk_character(r.hat.nodes)
   if (!missing(ess.nodes)) chk_character(ess.nodes)

@@ -73,7 +73,7 @@ sma_evaluate <- function(object = NULL,
   chk_vector(monitor)
   chk_all(monitor, chk_string)
   chk_number(alpha)
-  chk_range(alpha, c(0, 1))
+  chk_range(alpha)
   chk_string(custom_expr_before)
   chk_string(custom_expr_after)
   chk_flag(progress)
