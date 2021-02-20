@@ -36,16 +36,22 @@ A flag.
 This function is in development. Use at your own risk.
 }
 \examples{
-code="for(i in 1:10){
+code <- "for(i in 1:10){
 a[i] ~ dpois(mu)}"
-sims <- sims::sims_simulate(code, parameters=nlist(mu=5), nsims=1)
-res <- sma_analyse(sims, 
-                           code, 
-                           "mu ~ dunif(0,10)", 
-                           monitor = "mu",
-                           deviance=FALSE,
-                           mode=sma_set_mode("quick", n.save=300, max.iter=300))
-sma_assess(res, expr="a = rep(mu, 10)", sims, code, nsamples=10)
+sims <- sims::sims_simulate(code, parameters = nlist(mu = 5), nsims = 1)
+res <- sma_analyse(sims,
+  code,
+  "mu ~ dunif(0,10)",
+  monitor = "mu",
+  deviance = FALSE,
+  mode = sma_set_mode("quick", n.save = 300, max.iter = 300)
+)
+sma_assess(res, expr = "a = rep(mu, 10)", sims, code, nsamples = 10)
 
 
+
+# parallel option
+# omnibus = FALSE TRUE NA (over all parameters)
+# A guide to Bayesian model checking for ecologists
+# POSTERIOR PREDICTIVE ASSESSMENT OF MODEL FITNESS VIA REALIZED DISCREPANCIES
 }

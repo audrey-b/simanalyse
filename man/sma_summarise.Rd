@@ -2,7 +2,7 @@
 % Please edit documentation in R/simanalyse-summarise.R
 \name{sma_summarise}
 \alias{sma_summarise}
-\title{Apply R code to each element of an nlist object. This can be used to derive new variables or create some missing data in the simulated data 
+\title{Apply R code to each element of an nlist object. This can be used to derive new variables or create some missing data in the simulated data
 or in the results of the analyses.}
 \usage{
 sma_summarise(
@@ -16,8 +16,8 @@ sma_summarise(
 \arguments{
 \item{object}{An mcmcr or mcmcrs object.}
 
-\item{measures}{A vector of strings indicating which functions to calculate over the mcmc samples. Strings may include "mean", 
-"median", "lower.q" (lower bound of the quantile-based credible interval), "upper.q" (upper bound of the quantile-based 
+\item{measures}{A vector of strings indicating which functions to calculate over the mcmc samples. Strings may include "mean",
+"median", "lower.q" (lower bound of the quantile-based credible interval), "upper.q" (upper bound of the quantile-based
 credible interval), "var", "sd", "q1" (1st quartile), "q3" (3rd quartile)}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}

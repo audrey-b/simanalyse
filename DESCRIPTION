@@ -1,34 +1,46 @@
 Package: simanalyse
 Title: Facilitate Model Comparisons and Simulation Studies
 Version: 0.0.0.9001
-Authors@R: c(
-    person("Audrey", "Beliveau", , "audrey.beliveau@uwaterloo.ca", c("aut", "cre")),
-    person("Joe", "Thorley", , "joe@poissonconsulting.ca", c("aut"), comment = c(ORCID = "0000-0002-7683-4592")),
-    person("Harmohit Singh", "Bindra", , email = "hsbindra@uwaterloo.ca", role = c("ctb")) 
-    )
-Description: Facilitates model comparisons and simulation studies.
+Authors@R: 
+    c(person(given = "Audrey",
+             family = "Beliveau",
+             role = c("aut", "cre"),
+             email = "audrey.beliveau@uwaterloo.ca"),
+      person(given = "Joe",
+             family = "Thorley",
+             role = "aut",
+             email = "joe@poissonconsulting.ca",
+             comment = c(ORCID = "0000-0002-7683-4592")),
+      person(given = "Harmohit Singh",
+             family = "Bindra",
+             role = "ctb",
+             email = "hsbindra@uwaterloo.ca"))
+Description: Facilitates model comparisons and simulation
+    studies.
 License: GPL-3
 URL: https://github.com/audrey-b/simanalyse
 BugReports: https://github.com/audrey-b/simanalyse/issues
-Depends: R (>= 3.6)
+Depends: 
+    R (>= 3.6)
 Imports: 
-  chk,
-  sims,
-  mcmcr,
-  mcmcderive,
-  nlist (>= 0.3.0),
-  magrittr,
-  stringr,
-  rjags,
-  furrr,
-  reshape,
-  yesno,
-  batchr
+    batchr,
+    chk,
+    furrr,
+    magrittr,
+    mcmcderive,
+    mcmcr,
+    nlist,
+    reshape,
+    rjags,
+    sims,
+    stringr,
+    yesno
 Suggests: 
     covr,
-    testthat,
-    future
+    future,
+    testthat
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.1.9000
 Language: en-US
+LazyData: true
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)

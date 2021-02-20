@@ -19,7 +19,9 @@ sma_set_mode(
 )
 }
 \arguments{
-\item{mode}{A string of the analysis mode. One of "quick", "report" or "paper". The mode determines the values of the parameters below unless they are specified.}
+\item{mode}{A string of the analysis mode.
+One of "quick", "report" or "paper".
+The mode determines the values of the parameters below unless they are specified.}
 
 \item{n.chains}{A count for number of chains.}
 
@@ -39,24 +41,32 @@ sma_set_mode(
 
 \item{max.time}{A number specifying the maximum time to spend on analysis.}
 
-\item{units}{A character string specifying the units of time for \code{max.time}. See \code{difftime}.
+\item{units}{A character string specifying the units of time for \code{max.time}.
+See \code{difftime}.
 The possible modes are as follows:
 \describe{
-  \item{'quick'}{To rapidly identify problems with a model definition.}
-  \item{'report'}{To produce results for a report.}
-  \item{'paper'}{To produce results for a peer-reviewed paper.}
+\item{'quick'}{To rapidly identify problems with a model definition.}
+\item{'report'}{To produce results for a report.}
+\item{'paper'}{To produce results for a peer-reviewed paper.}
 }}
 }
 \description{
-Set mode for data analysis. The algorithm starts with an adaptation phase of \code{n.adapt} iterations.
-Then \code{n.chains} are ran for \code{n.save} iterations without thinning. The algorithm stops if convergence
-was achieved according to \code{r.hat} and the minimum effective sampling rate was achieved or \code{max.time}
-was reached or is projected to be reached in the next round of iterations. If the algorithm is not stopped,
-the iterations so far are discarded as burnin. The number of iterations is doubled from the previous round
-and thinning is multiplied by 2. The stop criteria is applied again and so on.
+Set mode for data analysis.
+The algorithm starts with an adaptation phase of \code{n.adapt} iterations.
+Then \code{n.chains} are ran for \code{n.save} iterations without thinning.
+The algorithm stops if convergence was achieved according to \code{r.hat} and
+the minimum effective sampling rate was achieved or \code{max.time} was reached or
+is projected to be reached in the next round of iterations.
+If the algorithm is not stopped,
+the iterations so far are discarded as burnin.
+The number of iterations is doubled from the previous round and
+thinning is multiplied by 2.
+The stop criteria is applied again and so on.
 }
 \examples{
+
 \dontrun{
 sma_set_mode("quick")
 }
+
 }

@@ -8,19 +8,20 @@ on:
       - main
       - master
 
-name: test-coverage
+name: coverage
 
 jobs:
-  test-coverage:
+  coverage:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-r@master
 
-      - uses: r-lib/actions/setup-pandoc@v1
+      - uses: r-lib/actions/setup-pandoc@master
 
       - name: Query dependencies
         run: |
@@ -40,10 +41,9 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install jags
-      
+
       - name: Install dependencies
         run: |
-          install.packages(c("remotes"))
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr")
         shell: Rscript {0}

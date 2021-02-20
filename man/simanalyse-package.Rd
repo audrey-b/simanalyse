@@ -6,7 +6,8 @@
 \alias{simanalyse-package}
 \title{simanalyse: Facilitate Model Comparisons and Simulation Studies}
 \description{
-Facilitates model comparisons and simulation studies.
+Facilitates model comparisons and simulation
+    studies.
 }
 \seealso{
 Useful links:
