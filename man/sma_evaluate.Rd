@@ -24,10 +24,10 @@ sma_evaluate(
 \arguments{
 \item{object}{A list of nlists object of results or a single nlists of results. If set to NULL, the object is read from \code{path} instead.}
 
-\item{measures}{A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation), 
+\item{measures}{A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation),
 "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
-"Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
- bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error), 
+"Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative
+ bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error),
  "rrmse" (relative root mean square error), "cv" (coefficient of variation), "all" (all the measures)}
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.}
@@ -59,7 +59,7 @@ A flag.
 }
 \description{
 Calculates measures to evaluate the performance of the model
-The results are compared with the true parameter values by calculating performance measures 
+The results are compared with the true parameter values by calculating performance measures
 such as bias, mean square error and coverage probability.
 R code can be used to customize the performance measures
 }

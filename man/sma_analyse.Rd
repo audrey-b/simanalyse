@@ -51,13 +51,15 @@ A flag.
 Analyse data for a simulation study. Allows data to be read from files and results to be written to files.
 }
 \examples{
- set.seed(10L)
- code <- "a ~ dnorm(mu,1)"
- sims <- sims::sims_simulate(code, parameters = nlist(mu=0), nsims=2)
- prior = "mu ~ dunif(-3,3)"
- result <- sma_analyse(sims=sims,
-                                       code = code,
-                                       code.add = prior,
-                                       mode=sma_set_mode("quick"),
-                                       monitor = "mu")
+set.seed(10L)
+code <- "a ~ dnorm(mu,1)"
+sims <- sims::sims_simulate(code, parameters = nlist(mu = 0), nsims = 2)
+prior <- "mu ~ dunif(-3,3)"
+result <- sma_analyse(
+  sims = sims,
+  code = code,
+  code.add = prior,
+  mode = sma_set_mode("quick"),
+  monitor = "mu"
+)
 }

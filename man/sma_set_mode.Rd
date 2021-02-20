@@ -56,7 +56,10 @@ the iterations so far are discarded as burnin. The number of iterations is doubl
 and thinning is multiplied by 2. The stop criteria is applied again and so on.
 }
 \examples{
+
 \dontrun{
+
 sma_set_mode("quick")
 }
+
 }
