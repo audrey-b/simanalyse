@@ -41,7 +41,8 @@ The mode determines the values of the parameters below unless they are specified
 
 \item{max.time}{A number specifying the maximum time to spend on analysis.}
 
-\item{units}{A character string specifying the units of time for \code{max.time}. See \code{difftime}.
+\item{units}{A character string specifying the units of time for \code{max.time}.
+See \code{difftime}.
 The possible modes are as follows:
 \describe{
 \item{'quick'}{To rapidly identify problems with a model definition.}

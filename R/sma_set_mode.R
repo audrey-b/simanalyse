@@ -60,6 +60,8 @@ sma_set_mode <- function(mode = "report",
                          max.time,
                          units) {
   chk_string(mode)
+  chk_subset(mode, c("quick", "report", "paper"))
+  
   if (!missing(n.chains)) {
     chk_whole_number(n.chains)
     chk_gte(n.chains, 1)
@@ -155,7 +157,5 @@ sma_set_mode <- function(mode = "report",
 
       units = ifelse(missing(units), "mins", units)
     )
-  } else {
-    err("mode '", mode, "' unrecognised (possible values are 'quick', 'report' or 'paper')")
   }
 }
