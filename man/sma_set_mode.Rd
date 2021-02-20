@@ -66,7 +66,6 @@ The stop criteria is applied again and so on.
 \examples{
 
 \dontrun{
-
 sma_set_mode("quick")
 }
 
