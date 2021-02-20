@@ -4,11 +4,11 @@
 #' #'
 #' #' @param sims A list of nlist objects containing the data. Alternatively, path can be used to specify to read the data from files.
 #' #' @param FUN An R function to analyse the data. It should contain an argument called data which takes an nlist of the data.
-#' #' @param path A string specifying the path to the directory where the data sets are saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
+#' #' @param path A string specifying the path to the directory where the data sets are saved. By default `path = NULL ` the data sets are not saved but are returned as an nlists object.
 #' #' @param seed An integer specifying the random seed to use for analysing the data.
-#' #' @param exists A flag specifying whether the directory should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.
+#' #' @param exists A flag specifying whether the directory should already exist. If `exists = NA` it doesn't matter. If the directory already exists it is overwritten if `exists = TRUE` or `exists = NA` otherwise an error is thrown.
 #' #' @param silent A flag specifying whether to suppress warnings.
-#' #' @param ... Arguments to be passed to \code{FUN}.
+#' #' @param ... Arguments to be passed to `FUN`.
 #' #'
 #' #' @return A flag.
 #' #' @export

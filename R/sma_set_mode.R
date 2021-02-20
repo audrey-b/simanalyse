@@ -1,8 +1,8 @@
 #' Set mode for data analysis
 #'
-#' Set mode for data analysis. The algorithm starts with an adaptation phase of \code{n.adapt} iterations.
-#' Then \code{n.chains} are ran for \code{n.save} iterations without thinning. The algorithm stops if convergence
-#' was achieved according to \code{r.hat} and the minimum effective sampling rate was achieved or \code{max.time}
+#' Set mode for data analysis. The algorithm starts with an adaptation phase of `n.adapt` iterations.
+#' Then `n.chains` are ran for `n.save` iterations without thinning. The algorithm stops if convergence
+#' was achieved according to `r.hat` and the minimum effective sampling rate was achieved or `max.time`
 #' was reached or is projected to be reached in the next round of iterations. If the algorithm is not stopped,
 #' the iterations so far are discarded as burnin. The number of iterations is doubled from the previous round
 #' and thinning is multiplied by 2. The stop criteria is applied again and so on.
@@ -17,7 +17,7 @@
 #' @param ess A number specifying the minimum effective sample size.
 #' @param ess.nodes A character vector of nodes to be used to assess ess.
 #' @param max.time A number specifying the maximum time to spend on analysis.
-#' @param units A character string specifying the units of time for \code{max.time}. See \code{difftime}.
+#' @param units A character string specifying the units of time for `max.time`. See `difftime`.
 
 #' The possible modes are as follows:
 

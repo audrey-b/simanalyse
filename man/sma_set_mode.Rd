@@ -42,9 +42,9 @@ sma_set_mode(
 \item{units}{A character string specifying the units of time for \code{max.time}. See \code{difftime}.
 The possible modes are as follows:
 \describe{
-  \item{'quick'}{To rapidly identify problems with a model definition.}
-  \item{'report'}{To produce results for a report.}
-  \item{'paper'}{To produce results for a peer-reviewed paper.}
+\item{'quick'}{To rapidly identify problems with a model definition.}
+\item{'report'}{To produce results for a report.}
+\item{'paper'}{To produce results for a peer-reviewed paper.}
 }}
 }
 \description{

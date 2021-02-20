@@ -27,8 +27,8 @@ sma_evaluate(
 \item{measures}{A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation),
 "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
 "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative
- bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error),
- "rrmse" (relative root mean square error), "cv" (coefficient of variation), "all" (all the measures)}
+bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error),
+"rrmse" (relative root mean square error), "cv" (coefficient of variation), "all" (all the measures)}
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.}
 

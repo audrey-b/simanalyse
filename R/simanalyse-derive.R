@@ -2,12 +2,12 @@
 #'
 #' Apply R code to derive new variables.
 #'
-#' @param object An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist. If set to NULL, the object is read from \code{path} instead.
+#' @param object An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist. If set to NULL, the object is read from `path` instead.
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
-#' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
+#' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in `object` and/or `code` to monitor. By default all variables are included.
 #' @param values A named list of additional R objects to evaluate in the R expression.
 #' @param path A string. If object is NULL, analyses results are read from that path on disk.
-#' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
+#' @param analysis If `path` is used, a string for the name of the folder that contains the analysis.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 
@@ -17,7 +17,7 @@
 # @param silent A flag specifying whether to suppress warnings.
 # @param path.save A string specifying the path to the directory to save the derived results. By default path = NULL and the results are not saved but returned as a list of nlists objects.
 
-#' @return An object of the same class as \code{object}
+#' @return An object of the same class as `object`
 #' @export
 #'
 #' @examples

@@ -8,9 +8,9 @@
 #' "median", "lower.q" (lower bound of the quantile-based credible interval), "upper.q" (upper bound of the quantile-based
 #' credible interval), "var", "sd", "q1" (1st quartile), "q3" (3rd quartile)
 #' @param alpha scalar representing the alpha level used to construct credible intervals. Default is 0.05.
-#' @param monitor  A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
+#' @param monitor  A character vector (or regular expression if a string) specifying the names of the variables in `object` and/or `code` to monitor. By default all variables are included.
 #' @param custom_funs A named list of functions to calculate over the mcmc samples. This optional argument can be used to calculate
-#' measures that cannot be specified through \code{measures}. E.g. list(posteriormedian = median).
+#' measures that cannot be specified through `measures`. E.g. list(posteriormedian = median).
 
 # @param parallel An integer specifying the number of CPU cores to use for generating the datasets in parallel. Defaul is 1 (not parallel).
 # @param path A string specifying the path to the directory to save the data sets in. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
