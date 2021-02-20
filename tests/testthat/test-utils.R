@@ -1,8 +1,3 @@
-library(testthat)
-library(simanalyse)
-
-context("internal-utils")
-
 test_that("str_extract", {
   expect_error(
     str_extract(character(0), character(0)),

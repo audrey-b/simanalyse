@@ -1,6 +1,3 @@
-library(testthat)
-library(simanalyse)
-
 test_that("sma_assess", {
   set.seed(10L)
   code <- "for(i in c(1,3,6,8)){

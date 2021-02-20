@@ -1,6 +1,3 @@
-library(testthat)
-library(simanalyse)
-
 test_that("work with files", {
   tempdir <- file.path(tempdir(), "sims12")
   unlink(tempdir, recursive = TRUE)

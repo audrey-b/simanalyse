@@ -1,8 +1,3 @@
-library(testthat)
-library(simanalyse)
-
-context("function-derive")
-
 test_that("sma_derive works", {
   set.seed(10L)
   code <- "for(i in 1:10){x[i] ~ dnorm(0,1/variance)}"

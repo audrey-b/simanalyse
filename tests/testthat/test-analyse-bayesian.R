@@ -1,8 +1,3 @@
-library(testthat)
-library(simanalyse)
-
-context("analyse-bayesian")
-
 test_that("sma_analyse", {
   set.seed(10L)
   params <- nlist(mu = 0)

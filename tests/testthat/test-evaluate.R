@@ -1,6 +1,3 @@
-library(testthat)
-library(simanalyse)
-
 test_that("sma_evaluate", {
   set.seed(10L)
   parameters <- nlist(theta = c(0, 1), df = 3)
