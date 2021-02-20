@@ -1,20 +1,13 @@
 ## Test environments
 
-release 3.6.1
+release 4.0.4
 
-* OS X (local) - release
-
-* Ubuntu (travis) - oldrelease, release and devel
-* Ubuntu (rhub) - release
-
-* Fedora (rhub) - devel
-
-* Windows (appveyor) - release
-* Windows (win-builder) - release and devel
-* Windows (rhub) - devel
+* OSX (local) - release
+* OSX (actions) - release
+* Ubuntu (actions) - 3.4 to 3.6, oldrel, release and devel
+* Windows (actions) - release
+* Windows (winbuilder) - devel
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 notes
