@@ -85,9 +85,14 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
   if(".*" %in% r.hat.nodes) r.hat.nodes <- pars(sample)
   if(".*" %in% ess.nodes) ess.nodes <- pars(sample)
   
-  r.hat.convergence <- max(mcmcr::rhat(sample, as_df=TRUE, by="term")$rhat, na.rm=TRUE)<=r.hat
-  ess.convergence <- min(mcmcr::ess(sample, as_df=TRUE, by="term")$ess, na.rm=TRUE)>=ess
+  r.hat.convergence <- max(mcmcr::rhat(subset(sample, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
+  ess.convergence <- min(mcmcr::ess(subset(sample, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
   
+  cat(paste0("\nMax r.hat= ", r.hat.convergence, "\n"))
+  cat(paste0("Min ess= ", ess.convergence, "\n"))
+  
+  r.hat.convergence <- r.hat.convergence<=r.hat
+  ess.convergence <- ess.convergence>=ess
   convergence <- (r.hat.convergence & ess.convergence) 
   
   while(cum.time+batch.time*2 <= max.time & cum.iter+n.save*(thin+1) <= max.iter & !convergence){
@@ -101,9 +106,15 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
     batch.time = as.double(difftime(Sys.time(), time0, units=units))-cum.time
     cum.time = cum.time + batch.time
     
-    r.hat.convergence <- max(mcmcr::rhat(sample, as_df=TRUE, by="term")$rhat, na.rm=TRUE)<=r.hat
-    ess.convergence <- min(mcmcr::ess(sample, as_df=TRUE, by="term")$ess, na.rm=TRUE)>=ess
-    convergence <- (r.hat.convergence & ess.convergence)    
+    r.hat.convergence <- max(mcmcr::rhat(subset(sample, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
+    ess.convergence <- min(mcmcr::ess(subset(sample, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
+    
+    cat(paste0("\nMax r.hat= ", r.hat.convergence, "\n"))
+    cat(paste0("Min ess= ", ess.convergence, "\n"))
+
+    r.hat.convergence <- r.hat.convergence<=r.hat
+    ess.convergence <- ess.convergence>=ess
+    convergence <- (r.hat.convergence & ess.convergence)  
   }
   return(mcmcr::as.mcmcr(sample))
 }

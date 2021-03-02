@@ -106,8 +106,10 @@ test_that("use r.hat.nodes and ess.nodes",{
    result <- sma_analyse(sims=sims,
                                   code = code,
                                   code.add = "phi ~ dunif(0,1) \n sigma ~ dunif(0,20) \n N.1 ~ dpois(100)",
-                                  mode=sma_set_mode("quick", r.hat.nodes="phi", ess.nodes = "phi"))
+                                  mode=sma_set_mode("report", r.hat.nodes="phi", ess.nodes = "phi", n.save=250))
    expect_true(class(result)=="mcmcrs")
+   expect_true(mcmcr::ess(result, by="term")[[1]]$phi==535)
+   expect_true(mcmcr::rhat(result, by="term")[[1]]$phi==1)
 })
 
 
