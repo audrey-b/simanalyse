@@ -58,15 +58,13 @@ print(sims)
 
 ### Analyse Data
 
-Analyse the 5 datasets in "report" mode. This mode runs iterations until convergence, based on r.hat <`r sma_set_mode("report")$r.hat` and an effective sample size >`r sma_set_mode("report")$ess`. See ?sma_set_mode for other choices of analysis mode.
+Analyse each of the dataset in "report" mode. By default, this mode runs `r sma_set_mode("report")$n.chains` chains until the following two criteria are met: convergence based on r.hat <`r sma_set_mode("report")$r.hat` and a minimum effective sample size of `r sma_set_mode("report")$ess`. The chains are thinned to `r sma_set_mode("report")$n.save` iterations to preserve disk and memory usage. See ?sma_set_mode for other choices of analysis mode and customization.
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                mode = sma_set_mode("report", 
-                                                    n.save=300,
-                                                    n.chains = 2))
+                                mode = sma_set_mode("report"))
 ```
 
 ### Derive new parameters (if required)
@@ -76,7 +74,6 @@ Derive posterior samples for new parameters.
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
 print(results.derived)
 ```
-
 The same transformation must be applied to the true parameter values for eventually evaluating the performance (e.g. bias) of the method for those new parameters, 
 
 ```{r}
@@ -86,7 +83,7 @@ print(params.derived)
 
 ### Summarise the results of the simulation study 
 
-Evaluate the performance of the model using the 3 analyses
+Evaluate the performance of the model using the 5 analyses
 ```{r}
 sma_evaluate(results.derived, parameters=params.derived)
 ```
@@ -118,9 +115,7 @@ sims::sims_simulate(code,
 
 sma_analyse(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("report",
-                                         n.save=300,
-                                         n.chains = 2))
+                     mode = sma_set_mode("report"))
 
 sma_derive(code="var=sigma^2", monitor="var")
 
