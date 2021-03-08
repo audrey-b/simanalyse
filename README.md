@@ -18,7 +18,7 @@ status](https://www.r-pkg.org/badges/version/simanalyse)](https://cran.r-project
 ![CRAN downloads](http://cranlogs.r-pkg.org/badges/simanalyse)
 <!-- badges: end -->
 
-simanalyse  is an R package to facilitate model comparisons and
+simanalyse is an R package to facilitate model comparisons and
 simulation studies.
 
 To install the latest development version from
@@ -38,6 +38,9 @@ number of datasets for the sake of illustration).
 
 ``` r
 library(simanalyse)
+#> Registered S3 method overwritten by 'mcmcr':
+#>   method              from 
+#>   as_nlists.mcmc.list nlist
 #> Registered S3 method overwritten by 'rjags':
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
@@ -64,18 +67,18 @@ print(sims)
 
 ### Analyse Data
 
-Analyse the 5 datasets in “report” mode. This mode runs iterations until
-convergence, based on r.hat \<1.1 and an effective sample size \>400.
-See ?sma\_set\_mode for other choices of analysis mode.
+Analyse the 5 datasets in “report” mode. By default, this mode runs 3
+chains until the following two criteria are met: convergence based on
+r.hat &lt;1.1 and a minimum effective sample size of 400. The chains are
+thinned to 4000 iterations to preserve disk and memory usage. See
+?sma\_set\_mode for other choices of analysis mode and customization.
 
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,
                                 code = code,
                                 code.add = prior,
-                                mode = sma_set_mode("report", 
-                                                    n.save=300,
-                                                    n.chains = 2))
+                                mode = sma_set_mode("report"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -136,49 +139,45 @@ Derive posterior samples for new parameters.
 
 ``` r
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
-#> Warning: `future_options()` is deprecated as of furrr 0.2.0.
-#> Please use `furrr_options()` instead.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_warnings()` to see where this warning was generated.
 print(results.derived)
 #> $mcmcr1
 #> $var
-#> [1] 2.473183
+#> [1] 2.535958
 #> 
-#> nchains:  2 
-#> niters:  300 
+#> nchains:  3 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr2
 #> $var
-#> [1] 3.307718
+#> [1] 3.34022
 #> 
-#> nchains:  2 
-#> niters:  300 
+#> nchains:  3 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr3
 #> $var
-#> [1] 5.520055
+#> [1] 5.490214
 #> 
-#> nchains:  2 
-#> niters:  300 
+#> nchains:  3 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr4
 #> $var
-#> [1] 2.549401
+#> [1] 2.534139
 #> 
-#> nchains:  2 
-#> niters:  300 
+#> nchains:  3 
+#> niters:  4000 
 #> 
 #> 
 #> $mcmcr5
 #> $var
-#> [1] 7.38072
+#> [1] 7.283483
 #> 
-#> nchains:  2 
-#> niters:  300
+#> nchains:  3 
+#> niters:  4000
 ```
 
 The same transformation must be applied to the true parameter values for
@@ -196,12 +195,12 @@ print(params.derived)
 
 ### Summarise the results of the simulation study
 
-Evaluate the performance of the model using the 3 analyses
+Evaluate the performance of the model using the 5 analyses
 
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
 #>   term     bias      mse cpQuantile
-#> 1  var 1.077448 6.734285          1
+#> 1  var 1.092141 6.162797          1
 ```
 
 Several more performance measures are available and can be specified
@@ -220,7 +219,7 @@ sma_evaluate(results.derived,
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #>   term     bias cpQuantile      mse
-#> 1  var 1.077448          1 6.734285
+#> 1  var 1.092141          1 6.162797
 ```
 
 ## Saving to file
@@ -241,9 +240,7 @@ sims::sims_simulate(code,
 
 sma_analyse(code = code,
                      code.add = prior,
-                     mode = sma_set_mode("report",
-                                         n.save=300,
-                                         n.chains = 2))
+                     mode = sma_set_mode("report"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -294,11 +291,11 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.109]
-#> v data0000002.rds [00:00:00.149]
-#> v data0000003.rds [00:00:00.171]
-#> v data0000004.rds [00:00:00.159]
-#> v data0000005.rds [00:00:00.152]
+#> v data0000001.rds [00:00:00.286]
+#> v data0000002.rds [00:00:00.282]
+#> v data0000003.rds [00:00:00.303]
+#> v data0000004.rds [00:00:00.274]
+#> v data0000005.rds [00:00:00.271]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -306,11 +303,11 @@ sma_analyse(code = code,
 #> Module dic unloaded
 
 sma_derive(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:00.067]
-#> v results0000002.rds [00:00:00.057]
-#> v results0000003.rds [00:00:00.069]
-#> v results0000004.rds [00:00:00.053]
-#> v results0000005.rds [00:00:00.060]
+#> v results0000001.rds [00:00:01.046]
+#> v results0000002.rds [00:00:01.350]
+#> v results0000003.rds [00:00:01.296]
+#> v results0000004.rds [00:00:00.903]
+#> v results0000005.rds [00:00:00.954]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
@@ -350,7 +347,7 @@ and read a particular file, e.g.
 ``` r
 readRDS(file.path(getwd(), files[9]))
 #>   term     bias      mse cpQuantile
-#> 1  var 1.077448 6.734285          1
+#> 1  var 1.092141 6.162797          1
 ```
 
 ## Parallelization
