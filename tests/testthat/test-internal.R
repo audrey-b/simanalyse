@@ -66,8 +66,9 @@ test_that("analyse_dataset_bayesian with data works",{
                                      r.hat=1.5,
                                      r.hat.nodes = ".*",
                                      ess.nodes=".*")
-  expect_true(class(result)=="mcmcr")
-  #expect_equal(result$mu[1] %>% as.numeric, -3.944967, tolerance = 0.000001)
+  
+  result1 <- readRDS("Internal_results/result1.rds")
+  expect_equal(result, result1)
 })
 
 test_that("analyse_dataset_bayesian works",{
@@ -81,8 +82,9 @@ test_that("analyse_dataset_bayesian works",{
                                      r.hat=1.5,
                                      r.hat.nodes = ".*",
                                      ess.nodes=".*")
-  expect_true(class(result)=="mcmcr")
-  #expect_equal(result$a[1] %>% as.numeric, -1.636731, tolerance = 0.000001)
+  
+  result2 <- readRDS("Internal_results/result2.rds")
+  expect_equal(result, result2)
 })
 
 

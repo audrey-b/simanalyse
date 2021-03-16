@@ -89,7 +89,7 @@ test_that("modulo_in_code and default monitor",{
 })
 
 
-test_that("use r.hat.nodes and ess.nodes",{
+test_that("use r.hat.nodes and ess.nodes",{  ###WORK HERE!!!!!!!!!!!!!!
    set.seed(100L)
    code = "N[2] ~ dbin(1-phi, N.1)
       for(t in 3:K){
@@ -110,17 +110,11 @@ test_that("use r.hat.nodes and ess.nodes",{
                                   code = code,
                                   code.add = "phi ~ dunif(0,1) \n sigma ~ dunif(0,20) \n N.1 ~ dpois(100)",
 
-                                  mode=sma_set_mode("quick", r.hat.nodes="phi", ess.nodes = "phi"))
+                         mode=sma_set_mode("report", r.hat.nodes="phi", ess.nodes = "phi", n.save=250))
    
    result5 <- readRDS("Bayesian_results/result5.rds")
    
    expect_equal(result, result5)
-   
-
-                                  mode=sma_set_mode("report", r.hat.nodes="phi", ess.nodes = "phi", n.save=250)
-   expect_true(class(result)=="mcmcrs")
-   expect_true(mcmcr::ess(result, by="term")[[1]]$phi==535)
-   expect_true(mcmcr::rhat(result, by="term")[[1]]$phi==1)
 
 })
 
