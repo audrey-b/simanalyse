@@ -150,6 +150,8 @@ sma_evaluate <- function(object = NULL,
         if(custom_expr_before=="" & custom_expr_after=="" & !("all" %in% measures)) performance <- performance[,c("term", measures)]
         
         if(!read.file){
+                # Order alphabetically. This method is consistent across all OS
+                performance <- performance[,stringr::str_sort(colnames(performance))]
                 return(performance)
         }else{
                 dir <- file.path(path, analysis, "performance"); dir.create(dir)
