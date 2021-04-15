@@ -14,7 +14,7 @@ test_that("work with files",{
                 save=TRUE,
                 exists=NA)
   sims_data_files(tempdir)
-  sma_analyse(code = "a ~ dnorm(mu,1)
+  sma_analyse_files(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                        mode=sma_set_mode("quick"),
                        monitor = "mu",
@@ -59,7 +59,7 @@ test_that("work with files",{
                 save=TRUE,
                 exists=NA)
   sims_data_files(tempdir2)
-  sma_analyse(code = "a ~ dnorm(mu,1)
+  sma_analyse_files(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                        mode=sma_set_mode("quick"),
                        monitor = "mu",

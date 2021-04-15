@@ -119,18 +119,3 @@ test_that("use r.hat.nodes and ess.nodes",{  ###WORK HERE!!!!!!!!!!!!!!
 })
 
 
-test_that("lists instead of nlists in simanalyse",{
-   set.seed(10L)
-   params <- list(mu=0)
-   dat <- sims_simulate("a ~ dnorm(mu,10) \n b = 10 %*% 2", parameters = params, nsims=2)
-   data.list <- list(list(a=dat[[1]]$a), list(a=dat[[2]]$a))
-   result <- sma_analyse(sims=data.list,
-                                  code = "a ~ dnorm(mu,1)
-                                         mu ~ dunif(-3,3)",
-                                  mode=sma_set_mode("quick"))
-   
-   result6 <- readRDS("Bayesian_results/result6.rds")
-   
-   expect_equal(result, result6)
-   
-})

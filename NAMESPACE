@@ -2,6 +2,7 @@
 
 export(nlist)
 export(sma_analyse)
+export(sma_analyse_files)
 export(sma_assess)
 export(sma_derive)
 export(sma_evaluate)

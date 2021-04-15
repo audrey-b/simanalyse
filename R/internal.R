@@ -278,7 +278,7 @@ summarise_one_result <- function(nlists, aggregate.FUNS){
 
 evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
   
-  # if statement addes because as_nlists was removed from sma_evaluate()
+  # if statement added because as_nlists was removed from sma_evaluate()
   # It was removed because it made the function very slow
   if(class(nlists) == "nlists") {monitor = nlists[[1]] %>% names()}
   else {monitor = nlists %>% names()}
@@ -288,6 +288,7 @@ evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
     summarise_one_result(aggregate.FUNS)%>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as_nlist()
+    print(aggregate.list)
   
   #apply expr
   if(!is.null(expr)){
@@ -295,6 +296,9 @@ evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
     expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
     names(parameters) <- paste0("parameters.",names(parameters))
     
+    #### Slow here!!!!!!!!!!!!!!!!!!!
+    #### Solution: Not give mcmc_derive an nlist 
+    print("Hi")
     mcmc_derive(object = aggregate.list, expr = expr.all.params, values = parameters, silent=TRUE) %>%
       return
   
