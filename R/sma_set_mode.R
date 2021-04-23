@@ -68,9 +68,10 @@ sma_set_mode <- function(mode = "report",
   if(!missing(max.time)){
     chk_number(max.time)
     chk_gt(max.time, 0)}
-  if(!missing(r.hat.nodes)) chk_character(r.hat.nodes)
-  if(!missing(ess.nodes)) chk_character(ess.nodes)
-  
+  if(missing(r.hat.nodes)) r.hat.nodes <- ".*"
+  chk_character(r.hat.nodes)
+  if(missing(ess.nodes)) ess.nodes <- ".*"
+  chk_character(ess.nodes)
   #units?
   #other checks
   
@@ -84,11 +85,11 @@ sma_set_mode <- function(mode = "report",
          
          ess = ess,
          
-         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
+         ess.nodes  = ess.nodes,
 
          r.hat = ifelse(missing(r.hat), 1.05, r.hat),
          
-         r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
+         r.hat.nodes  = r.hat.nodes,
          
          n.save = ifelse(missing(n.save), 10*ess, n.save),
          
@@ -108,11 +109,11 @@ sma_set_mode <- function(mode = "report",
          
          ess = ess,
          
-         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
+         ess.nodes  = ess.nodes,
          
          r.hat = ifelse(missing(r.hat), 1.1, r.hat),
          
-         r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
+         r.hat.nodes  = r.hat.nodes,
          
          n.save = ifelse(missing(n.save), 10*ess, n.save),
          
@@ -133,11 +134,11 @@ sma_set_mode <- function(mode = "report",
          
          ess = ess,
          
-         ess.nodes  = ifelse(missing(ess.nodes), ".*", ess.nodes),
+         ess.nodes  = ess.nodes,
          
          r.hat = ifelse(missing(r.hat), 1.05, r.hat),
          
-         r.hat.nodes  = ifelse(missing(r.hat.nodes), ".*", r.hat.nodes),
+         r.hat.nodes  = r.hat.nodes,
          
          n.save = ifelse(missing(n.save), 10*ess, n.save),
          
