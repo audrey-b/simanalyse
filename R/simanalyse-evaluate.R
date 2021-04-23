@@ -149,9 +149,13 @@ sma_evaluate <- function(object = NULL,
         performance <- data.frame(reshape::cast(performance, term ~ measure))
         if(custom_expr_before=="" & custom_expr_after=="" & !("all" %in% measures)) performance <- performance[,c("term", measures)]
         
+        # remove excess measures
+        if(any(measures != "all") & any(measures != "")) performance <-  performance[,c("term", measures)]
+        
         if(!read.file){
                 # Order alphabetically. This method is consistent across all OS
-                performance <- performance[,stringr::str_sort(colnames(performance))]
+                # Sort all except term which should be the 1st column
+                performance <- performance[, c("term", stringr::str_sort(colnames(performance)[colnames(performance)!="term"]))]
                 return(performance)
         }else{
                 dir <- file.path(path, analysis, "performance"); dir.create(dir)

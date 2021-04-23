@@ -288,7 +288,6 @@ evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
     summarise_one_result(aggregate.FUNS)%>%
     unlist(recursive=FALSE) %>% #now names are of the form estimator.mu
     as_nlist()
-    print(aggregate.list)
   
   #apply expr
   if(!is.null(expr)){
@@ -296,9 +295,6 @@ evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
     expr.all.params <- expand_expr(expr, names(aggregate.FUNS), monitor, parameters)
     names(parameters) <- paste0("parameters.",names(parameters))
     
-    #### Slow here!!!!!!!!!!!!!!!!!!!
-    #### Solution: Not give mcmc_derive an nlist 
-    print("Hi")
     mcmc_derive(object = aggregate.list, expr = expr.all.params, values = parameters, silent=TRUE) %>%
       return
   
