@@ -20,7 +20,7 @@ test_that("work with files",{
                        monitor = "mu",
                        path = tempdir,
                        deviance=FALSE)
-  sma_derive(code="mu2=mu^2", path=tempdir)
+  sma_derive_files(code="mu2=mu^2", path=tempdir)
   sma_evaluate(path=tempdir)
   res1 <- readRDS(file.path(tempdir, "analysis0000001", "performance", "performance.rds"))
   
@@ -65,7 +65,7 @@ test_that("work with files",{
                        monitor = "mu",
                        path = tempdir2,
                        deviance=FALSE)
-  sma_derive(code="mu2=mu^2", path=tempdir2)
+  sma_derive_files(code="mu2=mu^2", path=tempdir2)
   sma_evaluate(path=tempdir2)
   res3 <- readRDS(file.path(tempdir2, "analysis0000001", "performance", "performance.rds"))
   #identical(res1, res3)
