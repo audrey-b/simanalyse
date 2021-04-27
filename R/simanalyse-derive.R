@@ -41,6 +41,8 @@
 # sma_derive(res, "odds=p.const/(1-p.const)", monitor="odds")
 # sma_derive(parameters, "odds=p[1]/(1-p[1])", monitor="odds")
 
+## No Files
+
 sma_derive <- function(object=NULL, code, monitor=".*", 
                        values=list(),
             
@@ -57,6 +59,8 @@ sma_derive <- function(object=NULL, code, monitor=".*",
   
   
 }
+
+###### Files
 
 #' Apply R code to derive new variables.
 #' 
