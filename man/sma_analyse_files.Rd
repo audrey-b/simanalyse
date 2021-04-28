@@ -12,7 +12,7 @@ sma_analyse_files(
   inits = list(),
   mode = sma_set_mode("report"),
   deviance = TRUE,
-  path,
+  path = ".",
   analysis = "analysis0000001",
   progress = FALSE,
   options = furrr::furrr_options(seed = TRUE)

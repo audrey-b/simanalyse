@@ -127,7 +127,7 @@ sma_analyse_files <- function(
                                deviance = TRUE,
                                #pD = FALSE,
                                #save= NA,
-                               path,
+                               path = ".",
                                analysis = "analysis0000001",
                                progress = FALSE,
                                options = furrr::furrr_options(seed = TRUE)){
