@@ -37,9 +37,9 @@ sma_evaluate_files(
 
 \item{deviance}{Whether to calculate measures for deviance.}
 
-\item{path}{A string. If \code{object} is NULL, the object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.}
+\item{path}{A string. The object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.}
 
-\item{analysis}{If \code{path} is used, a string for the name of the folder that contains the analysis.}
+\item{analysis}{A string for the name of the folder that contains the analysis.}
 
 \item{custom_funs}{A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).}
 

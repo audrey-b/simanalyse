@@ -12,7 +12,6 @@ sma_evaluate(
   parameters = NULL,
   monitor = ".*",
   deviance = FALSE,
-  analysis = "analysis0000001",
   custom_funs = list(),
   custom_expr_before = "",
   custom_expr_after = "",
@@ -21,7 +20,7 @@ sma_evaluate(
 )
 }
 \arguments{
-\item{object}{A list of nlists object of results or a single nlists of results. If set to NULL, the object is read from \code{path} instead.}
+\item{object}{A list of nlists object of results or a single nlists of results.}
 
 \item{measures}{A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation), 
 "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
@@ -38,8 +37,6 @@ sma_evaluate(
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.}
 
 \item{deviance}{Whether to calculate measures for deviance.}
-
-\item{analysis}{If \code{path} is used, a string for the name of the folder that contains the analysis.}
 
 \item{custom_funs}{A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).}
 

@@ -21,9 +21,9 @@ sma_derive_files(
 
 \item{values}{A named list of additional R objects to evaluate in the R expression.}
 
-\item{path}{A string. If object is NULL, analyses results are read from that path on disk.}
+\item{path}{A string. Analyses results are read from that path on disk.}
 
-\item{analysis}{If \code{path} is used, a string for the name of the folder that contains the analysis.}
+\item{analysis}{A string for the name of the folder that contains the analysis.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

@@ -13,13 +13,12 @@ sma_analyse(
   inits = list(),
   mode = sma_set_mode("report"),
   deviance = TRUE,
-  analysis = "analysis0000001",
   progress = FALSE,
   options = furrr::furrr_options(seed = TRUE)
 )
 }
 \arguments{
-\item{sims}{An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.}
+\item{sims}{An nlists or nlist object of the data (or list that can be coerced to nlist or nlists).}
 
 \item{code}{A string of code to analyze the data. JAGS code must not be in a data or model block.}
 
@@ -34,8 +33,6 @@ sma_analyse(
 \item{mode}{A list obtained from sma_set_mode which sets the parameters of the mcmc sampling.}
 
 \item{deviance}{A flag. Indicates whether to monitor deviance for future DIC calculation.}
-
-\item{analysis}{If \code{path} is specified, a string for the name of the folder that contains the results.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

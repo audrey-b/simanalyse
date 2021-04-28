@@ -5,7 +5,7 @@
 #' such as bias, mean square error and coverage probability.
 #' R code can be used to customize the performance measures
 #' 
-#' @param object A list of nlists object of results or a single nlists of results. If set to NULL, the object is read from \code{path} instead.
+#' @param object A list of nlists object of results or a single nlists of results.
 #' @param measures A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation), 
 #' "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
 #' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
@@ -16,7 +16,7 @@
 #' @param alpha Scalar representing the alpha level used to construct credible intervals. Default is 0.05.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
 #' @param deviance Whether to calculate measures for deviance.
-#' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
+
 #' @param custom_funs A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).
 #' @param custom_expr_before A string of R code to derive custom measures. This code is used BEFORE averaging over all simulations. E.g. "mse = (posteriormedian - parameters)^2". Functions from \code{custom_funs} may be used as well as the keywords 'parameters' (the true values of the parameters) and 'estimator' (the estimator defined in \code{estimator}).
 #' @param custom_expr_after A string of R code to derive additional custom measures. This code is used AFTER averaging over all simulations. E.g. "rmse = sqrt(mse)". Measures calculated from \code{custom_expr_before} may be used as well as the keyword 'parameters' (the true values of the parameters). 
@@ -62,7 +62,7 @@ sma_evaluate <- function(object = NULL,
                                   monitor=".*",
                                   deviance=FALSE,
         
-                                  analysis = "analysis0000001",
+                                  
                                   custom_funs = list(),
                                   custom_expr_before="",
                                   custom_expr_after="",
@@ -77,7 +77,7 @@ sma_evaluate <- function(object = NULL,
                               monitor=monitor,
                               deviance=deviance,
                               path = NULL,
-                              analysis = analysis,
+                              analysis = NULL,
                               custom_funs = custom_funs,
                               custom_expr_before=custom_expr_before,
                               custom_expr_after=custom_expr_after,
@@ -107,8 +107,8 @@ sma_evaluate <- function(object = NULL,
 #' @param alpha Scalar representing the alpha level used to construct credible intervals. Default is 0.05.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
 #' @param deviance Whether to calculate measures for deviance.
-#' @param path A string. If \code{object} is NULL, the object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.
-#' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
+#' @param path A string. The object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.
+#' @param analysis A string for the name of the folder that contains the analysis.
 #' @param custom_funs A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).
 #' @param custom_expr_before A string of R code to derive custom measures. This code is used BEFORE averaging over all simulations. E.g. "mse = (posteriormedian - parameters)^2". Functions from \code{custom_funs} may be used as well as the keywords 'parameters' (the true values of the parameters) and 'estimator' (the estimator defined in \code{estimator}).
 #' @param custom_expr_after A string of R code to derive additional custom measures. This code is used AFTER averaging over all simulations. E.g. "rmse = sqrt(mse)". Measures calculated from \code{custom_expr_before} may be used as well as the keyword 'parameters' (the true values of the parameters). 

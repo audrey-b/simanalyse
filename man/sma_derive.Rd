@@ -9,21 +9,18 @@ sma_derive(
   code,
   monitor = ".*",
   values = list(),
-  analysis = "analysis0000001",
   progress = FALSE,
   options = furrr::furrr_options()
 )
 }
 \arguments{
-\item{object}{An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist. If set to NULL, the object is read from \code{path} instead.}
+\item{object}{An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist.}
 
 \item{code}{A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".}
 
 \item{monitor}{A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.}
 
 \item{values}{A named list of additional R objects to evaluate in the R expression.}
-
-\item{analysis}{If \code{path} is used, a string for the name of the folder that contains the analysis.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

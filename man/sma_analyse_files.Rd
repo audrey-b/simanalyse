@@ -33,9 +33,9 @@ sma_analyse_files(
 
 \item{deviance}{A flag. Indicates whether to monitor deviance for future DIC calculation.}
 
-\item{path}{A string. If \code{sims} is NULL, sims are read from that path on disk and results are written to disk.}
+\item{path}{A string. Sims are read from that path on disk and results are written to disk.}
 
-\item{analysis}{If \code{path} is specified, a string for the name of the folder that contains the results.}
+\item{analysis}{A string for the name of the folder that contains the results.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

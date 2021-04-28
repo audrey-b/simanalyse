@@ -14,7 +14,7 @@
 #'
 #' Analyse data for a simulation study. Allows results to be written to files.
 #' 
-#' @param sims An nlists or nlist object of the data (or list that can be coerced to nlist or nlists). If NULL, data files are read from \code{path}.
+#' @param sims An nlists or nlist object of the data (or list that can be coerced to nlist or nlists).
 #' @param code A string of code to analyze the data. JAGS code must not be in a data or model block.
 #' @param code.add A string of code to add at the end of \code{code} before analysing the data. This is useful for adding priors to the likelihood.
 #' @param code.values A character vector to replace all instances of "?" in the model. This is useful for varying choices of distributions, e.g. for assessing sensitivity to the choice of priors.
@@ -27,7 +27,7 @@
 #' @param deviance A flag. Indicates whether to monitor deviance for future DIC calculation.
 # @param pD A flag. Indicates whether to monitor pD for future DIC calculation.
 # @param save A flag specifying whether to save the results in \code{path}. If save = NA the results are saved in \code{path} only if \code{sims} is NULL.
-#' @param analysis If \code{path} is specified, a string for the name of the folder that contains the results.
+
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 #' 
@@ -55,7 +55,7 @@ sma_analyse <- function(sims,
                                deviance = TRUE,
                                #pD = FALSE,
                                #save= NA,
-                               analysis = "analysis0000001",
+                              
                                progress = FALSE,
                                options = furrr::furrr_options(seed = TRUE)){
   
@@ -68,7 +68,7 @@ sma_analyse <- function(sims,
               mode,
               deviance,
               path = NULL,
-              analysis,
+              analysis = NULL,
               progress = FALSE,
               options
               
@@ -97,9 +97,9 @@ sma_analyse <- function(sims,
 #' @param deviance A flag. Indicates whether to monitor deviance for future DIC calculation.
 # @param pD A flag. Indicates whether to monitor pD for future DIC calculation.
 # @param save A flag specifying whether to save the results in \code{path}. If save = NA the results are saved in \code{path} only if \code{sims} is NULL.
-#' @param path A string. If \code{sims} is NULL, sims are read from that path on disk and results are written to disk.
+#' @param path A string. Sims are read from that path on disk and results are written to disk.
 # @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
-#' @param analysis If \code{path} is specified, a string for the name of the folder that contains the results.
+#' @param analysis A string for the name of the folder that contains the results.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 #' 

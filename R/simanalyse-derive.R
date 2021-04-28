@@ -1,11 +1,11 @@
 #' Apply R code to derive new variables.
 #' 
-#' @param object An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist. If set to NULL, the object is read from \code{path} instead.
+#' @param object An object of class (or that can be coerced to) mcmcrs, mcmcr, nlists or nlist. 
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param values A named list of additional R objects to evaluate in the R expression.
 
-#' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
+ 
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 
@@ -46,14 +46,14 @@
 sma_derive <- function(object=NULL, code, monitor=".*", 
                        values=list(),
             
-                       analysis = "analysis0000001",
+                       
                        progress = FALSE,
                        options = furrr::furrr_options())
 {
   sma_derive_base(object=object, code = code, monitor=monitor, 
                       values= values,
                       path = NULL,
-                      analysis = analysis,
+                      analysis = NULL,
                       progress = progress,
                       options = options)
   
@@ -68,8 +68,8 @@ sma_derive <- function(object=NULL, code, monitor=".*",
 #' @param code A string of R code to derive posterior samples for new parameters. E.g. "var = sigma^2".
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param values A named list of additional R objects to evaluate in the R expression.
-#' @param path A string. If object is NULL, analyses results are read from that path on disk.
-#' @param analysis If \code{path} is used, a string for the name of the folder that contains the analysis.
+#' @param path A string. Analyses results are read from that path on disk.
+#' @param analysis A string for the name of the folder that contains the analysis.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 
