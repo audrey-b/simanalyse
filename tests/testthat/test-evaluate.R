@@ -53,6 +53,9 @@ test_that("custom expr and FUNS",{
                         mode=sma_set_mode("quick"),
                         monitor="mu",
                         deviance=FALSE)
+  
+  ###### DISCUSS THIS!!!!!!
+  
   result_method1 <- sma_evaluate(result, measures="",
                                  parameters=parameters,
                                  custom_funs= list(estimator = mean),

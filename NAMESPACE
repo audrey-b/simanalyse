@@ -2,9 +2,12 @@
 
 export(nlist)
 export(sma_analyse)
+export(sma_analyse_files)
 export(sma_assess)
 export(sma_derive)
+export(sma_derive_files)
 export(sma_evaluate)
+export(sma_evaluate_files)
 export(sma_set_mode)
 export(sma_summarise)
 import(batchr)

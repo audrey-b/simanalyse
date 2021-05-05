@@ -14,14 +14,14 @@ test_that("work with files",{
                 save=TRUE,
                 exists=NA)
   sims_data_files(tempdir)
-  sma_analyse(code = "a ~ dnorm(mu,1)
+  sma_analyse_files(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                        mode=sma_set_mode("quick"),
                        monitor = "mu",
                        path = tempdir,
                        deviance=FALSE)
-  sma_derive(code="mu2=mu^2", path=tempdir)
-  sma_evaluate(path=tempdir)
+  sma_derive_files(code="mu2=mu^2", path=tempdir)
+  sma_evaluate_files(path=tempdir)
   res1 <- readRDS(file.path(tempdir, "analysis0000001", "performance", "performance.rds"))
   
   #compare to without files
@@ -59,14 +59,14 @@ test_that("work with files",{
                 save=TRUE,
                 exists=NA)
   sims_data_files(tempdir2)
-  sma_analyse(code = "a ~ dnorm(mu,1)
+  sma_analyse_files(code = "a ~ dnorm(mu,1)
                                mu ~ dunif(-3,3)",
                        mode=sma_set_mode("quick"),
                        monitor = "mu",
                        path = tempdir2,
                        deviance=FALSE)
-  sma_derive(code="mu2=mu^2", path=tempdir2)
-  sma_evaluate(path=tempdir2)
+  sma_derive_files(code="mu2=mu^2", path=tempdir2)
+  sma_evaluate_files(path=tempdir2)
   res3 <- readRDS(file.path(tempdir2, "analysis0000001", "performance", "performance.rds"))
   #identical(res1, res3)
   
