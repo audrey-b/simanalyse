@@ -55,19 +55,19 @@
 ## No Files
 
 sma_evaluate <- function(object = NULL, 
-                                  measures=c("bias", "mse", "cpQuantile"), 
-                                  estimator=mean, 
-                                  alpha=0.05,
-                                  parameters = NULL,
-                                  monitor=".*",
-                                  deviance=FALSE,
-        
-                                  
-                                  custom_funs = list(),
-                                  custom_expr_before="",
-                                  custom_expr_after="",
-                                  progress = FALSE,
-                                  options = furrr::furrr_options()){
+                         measures=c("bias", "mse", "cpQuantile"), 
+                         estimator=mean, 
+                         alpha=0.05,
+                         parameters = NULL,
+                         monitor=".*",
+                         deviance=FALSE,
+                         
+                         
+                         custom_funs = list(),
+                         custom_expr_before="",
+                         custom_expr_after="",
+                         progress = FALSE,
+                         options = furrr::furrr_options()){
         
         sma_evaluate_internal(object = object, 
                               measures=measures, 
@@ -84,7 +84,7 @@ sma_evaluate <- function(object = NULL,
                               progress = progress,
                               options = options
         )
-
+        
 }
 
 
@@ -121,19 +121,19 @@ sma_evaluate <- function(object = NULL,
 #'
 
 sma_evaluate_files <- function(
-                         measures=c("bias", "mse", "cpQuantile"), 
-                         estimator=mean, 
-                         alpha=0.05,
-                         parameters = NULL,
-                         monitor=".*",
-                         deviance=FALSE,
-                         path = ".",
-                         analysis = "analysis0000001",
-                         custom_funs = list(),
-                         custom_expr_before="",
-                         custom_expr_after="",
-                         progress = FALSE,
-                         options = furrr::furrr_options()){
+        measures=c("bias", "mse", "cpQuantile"), 
+        estimator=mean, 
+        alpha=0.05,
+        parameters = NULL,
+        monitor=".*",
+        deviance=FALSE,
+        path = ".",
+        analysis = "analysis0000001",
+        custom_funs = list(),
+        custom_expr_before="",
+        custom_expr_after="",
+        progress = FALSE,
+        options = furrr::furrr_options()){
         
         sma_evaluate_internal(object = NULL, 
                               measures=measures, 

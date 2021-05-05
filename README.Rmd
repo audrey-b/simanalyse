@@ -49,10 +49,10 @@ constants <- list(mu = 0)
 code <- "for(i in 1:10){
           y[i] ~ dnorm(mu, 1/sigma^2)}"
 sims <- sims::sims_simulate(code, 
-                           parameters = params, 
-                           constants = constants,
-                           nsims = 5,
-                           silent = TRUE)
+                            parameters = params, 
+                            constants = constants,
+                            nsims = 5,
+                            silent = TRUE)
 print(sims)
 ```
 
@@ -62,9 +62,9 @@ Analyse each of the dataset in "report" mode. By default, this mode runs `r sma_
 ```{r}
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,
-                                code = code,
-                                code.add = prior,
-                                mode = sma_set_mode("report"))
+                       code = code,
+                       code.add = prior,
+                       mode = sma_set_mode("report"))
 ```
 
 ### Derive new parameters (if required)
@@ -90,12 +90,12 @@ sma_evaluate(results.derived, parameters=params.derived)
 Several more performance measures are available and can be specified using the *measures* argument (see ?sma_evaluate for details). You may also create custom performance measures. The example below shows how to reproduce the results above with custom code.
 ```{r}
 sma_evaluate(results.derived,
-              measures = "", 
-              parameters = params.derived, 
-              custom_funs = list(estimator = mean,
-                                 cp.low = function(x) quantile(x, 0.025),
-                                 cp.upp = function(x) quantile(x, 0.975)),
-              custom_expr_b = "bias = estimator - parameters
+             measures = "", 
+             parameters = params.derived, 
+             custom_funs = list(estimator = mean,
+                                cp.low = function(x) quantile(x, 0.025),
+                                cp.upp = function(x) quantile(x, 0.975)),
+             custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 ```
@@ -113,13 +113,13 @@ sims::sims_simulate(code,
                     save=TRUE,
                     exists = NA)
 
-sma_analyse(code = code,
-                     code.add = prior,
-                     mode = sma_set_mode("report"))
+sma_analyse_files(code = code,
+                  code.add = prior,
+                  mode = sma_set_mode("report"))
 
-sma_derive(code="var=sigma^2", monitor="var")
+sma_derive_files(code="var=sigma^2", monitor="var")
 
-sma_evaluate()
+sma_evaluate_files()
 ```
 
 You may show the files created with
@@ -141,8 +141,8 @@ Parallelization is achieved using the
 
 To use all available cores on the local machine simply execute the following code before calling any of the package's functions.
 
-    library(future)
-    plan(multisession)
+library(future)
+plan(multisession)
 
 ## Contribution
 

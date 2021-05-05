@@ -111,7 +111,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
     
     cat(paste0("\nMax r.hat= ", r.hat.convergence, "\n"))
     cat(paste0("Min ess= ", ess.convergence, "\n"))
-
+    
     r.hat.convergence <- r.hat.convergence<=r.hat
     ess.convergence <- ess.convergence>=ess
     convergence <- (r.hat.convergence & ess.convergence)  
@@ -199,6 +199,7 @@ evaluate_all_measures <- function(listnlists,
     return
 }
 
+
 evaluate_all_measures_files <- function(files, 
                                         expr_FUNS, 
                                         parameters,
@@ -211,8 +212,8 @@ evaluate_all_measures_files <- function(files,
   future_res <- future_map(files, 
                            function(file, expr, aggregate.FUNS, parameters){
                              object = mcmcr::as.mcmcrs(readRDS(file))
-                             object %<>% lapply(function(x) as_nlists(mcmcr::collapse_chains(x)))
-                             chk_list(object); lapply(object, chk_nlists)
+                             object %<>% lapply(function(x) mcmcr::collapse_chains(x)) %<>% (mcmcr::as.mcmcrs)
+                             mcmcr::chk_mcmcrs(object)
                              if((".*" %in% monitor) && deviance==FALSE){
                                monitor = pars(object[[1]])
                                monitor = monitor[monitor!="deviance"]
@@ -232,6 +233,8 @@ evaluate_all_measures_files <- function(files,
                            expr = expr_FUNS[["expr"]], 
                            aggregate.FUNS = expr_FUNS[["aggregate.FUNS"]], 
                            parameters = parameters, .progress = progress, .options=options) 
+  
+  future_res <- as_nlists(future_res)
   
   future::resetWorkers(future::plan())
   
@@ -297,8 +300,8 @@ evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
     
     mcmc_derive(object = aggregate.list, expr = expr.all.params, values = parameters, silent=TRUE) %>%
       return
-  
-    }else{return(aggregate.list)}
+    
+  }else{return(aggregate.list)}
 }
 
 make_one_expr <- function(param, expr, keywords){

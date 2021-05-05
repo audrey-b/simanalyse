@@ -38,9 +38,6 @@ number of datasets for the sake of illustration).
 
 ``` r
 library(simanalyse)
-#> Registered S3 method overwritten by 'mcmcr':
-#>   method              from 
-#>   as_nlists.mcmc.list nlist
 #> Registered S3 method overwritten by 'rjags':
 #>   method               from 
 #>   as.mcmc.list.mcarray mcmcr
@@ -50,10 +47,10 @@ constants <- list(mu = 0)
 code <- "for(i in 1:10){
           y[i] ~ dnorm(mu, 1/sigma^2)}"
 sims <- sims::sims_simulate(code, 
-                           parameters = params, 
-                           constants = constants,
-                           nsims = 5,
-                           silent = TRUE)
+                            parameters = params, 
+                            constants = constants,
+                            nsims = 5,
+                            silent = TRUE)
 print(sims)
 #> $y
 #>  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792 -0.82298676
@@ -67,8 +64,8 @@ print(sims)
 
 ### Analyse Data
 
-Analyse the 5 datasets in “report” mode. By default, this mode runs 3
-chains until the following two criteria are met: convergence based on
+Analyse each of the dataset in “report” mode. By default, this mode runs
+3 chains until the following two criteria are met: convergence based on
 r.hat &lt;1.1 and a minimum effective sample size of 400. The chains are
 thinned to 4000 iterations to preserve disk and memory usage. See
 ?sma\_set\_mode for other choices of analysis mode and customization.
@@ -76,9 +73,9 @@ thinned to 4000 iterations to preserve disk and memory usage. See
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,
-                                code = code,
-                                code.add = prior,
-                                mode = sma_set_mode("report"))
+                       code = code,
+                       code.add = prior,
+                       mode = sma_set_mode("report"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -90,6 +87,9 @@ results <- sma_analyse(sims = sims,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1.001
+#> Min ess= 2772
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -100,6 +100,9 @@ results <- sma_analyse(sims = sims,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1.001
+#> Min ess= 3516
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -110,6 +113,9 @@ results <- sma_analyse(sims = sims,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1
+#> Min ess= 3552
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -120,6 +126,9 @@ results <- sma_analyse(sims = sims,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1
+#> Min ess= 3120
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -130,6 +139,9 @@ results <- sma_analyse(sims = sims,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1
+#> Min ess= 4380
 #> Module dic unloaded
 ```
 
@@ -199,8 +211,8 @@ Evaluate the performance of the model using the 5 analyses
 
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
-#>   term     bias      mse cpQuantile
-#> 1  var 1.092141 6.162797          1
+#>   term     bias cpQuantile      mse
+#> 1  var 1.092141          1 6.162797
 ```
 
 Several more performance measures are available and can be specified
@@ -210,12 +222,12 @@ reproduce the results above with custom code.
 
 ``` r
 sma_evaluate(results.derived,
-              measures = "", 
-              parameters = params.derived, 
-              custom_funs = list(estimator = mean,
-                                 cp.low = function(x) quantile(x, 0.025),
-                                 cp.upp = function(x) quantile(x, 0.975)),
-              custom_expr_b = "bias = estimator - parameters
+             measures = "", 
+             parameters = params.derived, 
+             custom_funs = list(estimator = mean,
+                                cp.low = function(x) quantile(x, 0.025),
+                                cp.upp = function(x) quantile(x, 0.975)),
+             custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 #>   term     bias cpQuantile      mse
@@ -238,9 +250,9 @@ sims::sims_simulate(code,
                     exists = NA)
 #> [1] TRUE
 
-sma_analyse(code = code,
-                     code.add = prior,
-                     mode = sma_set_mode("report"))
+sma_analyse_files(code = code,
+                  code.add = prior,
+                  mode = sma_set_mode("report"))
 #> module dic loaded
 #> Compiling model graph
 #>    Resolving undeclared variables
@@ -252,6 +264,9 @@ sma_analyse(code = code,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1.001
+#> Min ess= 2772
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -262,6 +277,9 @@ sma_analyse(code = code,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1.001
+#> Min ess= 3516
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -272,6 +290,9 @@ sma_analyse(code = code,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1
+#> Min ess= 3552
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -282,6 +303,9 @@ sma_analyse(code = code,
 #> 
 #> Initializing model
 #> 
+#> 
+#> Max r.hat= 1
+#> Min ess= 3120
 #> Compiling model graph
 #>    Resolving undeclared variables
 #>    Allocating nodes
@@ -291,29 +315,33 @@ sma_analyse(code = code,
 #>    Total graph size: 18
 #> 
 #> Initializing model
-#> v data0000001.rds [00:00:00.286]
-#> v data0000002.rds [00:00:00.282]
-#> v data0000003.rds [00:00:00.303]
-#> v data0000004.rds [00:00:00.274]
-#> v data0000005.rds [00:00:00.271]
+#> 
+#> 
+#> Max r.hat= 1
+#> Min ess= 4380
+#> v data0000001.rds [00:00:00.298]
+#> v data0000002.rds [00:00:00.277]
+#> v data0000003.rds [00:00:00.293]
+#> v data0000004.rds [00:00:00.285]
+#> v data0000005.rds [00:00:00.311]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
 #> 
 #> Module dic unloaded
 
-sma_derive(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:01.046]
-#> v results0000002.rds [00:00:01.350]
-#> v results0000003.rds [00:00:01.296]
-#> v results0000004.rds [00:00:00.903]
-#> v results0000005.rds [00:00:00.954]
+sma_derive_files(code="var=sigma^2", monitor="var")
+#> v results0000001.rds [00:00:01.055]
+#> v results0000002.rds [00:00:01.184]
+#> v results0000003.rds [00:00:01.284]
+#> v results0000004.rds [00:00:01.066]
+#> v results0000005.rds [00:00:00.951]
 #> Success: 5
 #> Failure: 0
 #> Remaining: 0
 #> 
 
-sma_evaluate()
+sma_evaluate_files()
 ```
 
 You may show the files created with
@@ -358,8 +386,7 @@ Parallelization is achieved using the
 To use all available cores on the local machine simply execute the
 following code before calling any of the package’s functions.
 
-    library(future)
-    plan(multisession)
+library(future) plan(multisession)
 
 ## Contribution
 
