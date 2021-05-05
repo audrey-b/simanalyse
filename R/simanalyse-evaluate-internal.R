@@ -95,12 +95,12 @@ sma_evaluate_internal <- function(object = NULL,
   
   # remove excess measures
   if(any(measures != "all") & any(measures != "")) performance <-  performance[,c("term", measures)]
+  # Order alphabetically. This method is consistent across all OS
+  # Sort all except term which should be the 1st column
+  performance <- performance[, c("term", stringr::str_sort(colnames(performance)[colnames(performance)!="term"]))]
   
   if(!read.file){
-    # Order alphabetically. This method is consistent across all OS
-    # Sort all except term which should be the 1st column
-    performance <- performance[, c("term", stringr::str_sort(colnames(performance)[colnames(performance)!="term"]))]
-    return(performance)
+        return(performance)
   }else{
     dir <- file.path(path, analysis, "performance"); dir.create(dir)
     saveRDS(performance, file.path(dir, "performance.rds"))
