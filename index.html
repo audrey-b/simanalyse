@@ -84,9 +84,6 @@
 <p>Simulate 5 datasets using the sims package (here we use only a small number of datasets for the sake of illustration).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/audrey-b/simanalyse" class="external-link">simanalyse</a></span><span class="op">)</span>
-<span class="co">#&gt; Registered S3 method overwritten by 'mcmcr':</span>
-<span class="co">#&gt;   method              from </span>
-<span class="co">#&gt;   as_nlists.mcmc.list nlist</span>
 <span class="co">#&gt; Registered S3 method overwritten by 'rjags':</span>
 <span class="co">#&gt;   method               from </span>
 <span class="co">#&gt;   as.mcmc.list.mcarray mcmcr</span>
@@ -96,10 +93,10 @@
 <span class="va">code</span> <span class="op">&lt;-</span> <span class="st">"for(i in 1:10){
           y[i] ~ dnorm(mu, 1/sigma^2)}"</span>
 <span class="va">sims</span> <span class="op">&lt;-</span> <span class="fu">sims</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sims/man/sims_simulate.html" class="external-link">sims_simulate</a></span><span class="op">(</span><span class="va">code</span>, 
-                           parameters <span class="op">=</span> <span class="va">params</span>, 
-                           constants <span class="op">=</span> <span class="va">constants</span>,
-                           nsims <span class="op">=</span> <span class="fl">5</span>,
-                           silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+                            parameters <span class="op">=</span> <span class="va">params</span>, 
+                            constants <span class="op">=</span> <span class="va">constants</span>,
+                            nsims <span class="op">=</span> <span class="fl">5</span>,
+                            silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span>
 <span class="co">#&gt; $y</span>
 <span class="co">#&gt;  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792 -0.82298676</span>
@@ -113,13 +110,13 @@
 <div id="analyse-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyse-data" class="anchor" aria-hidden="true"></a>Analyse Data</h3>
-<p>Analyse the 5 datasets in “report” mode. By default, this mode runs 3 chains until the following two criteria are met: convergence based on r.hat &lt;1.1 and a minimum effective sample size of 400. The chains are thinned to 4000 iterations to preserve disk and memory usage. See ?sma_set_mode for other choices of analysis mode and customization.</p>
+<p>Analyse each of the dataset in “report” mode. By default, this mode runs 3 chains until the following two criteria are met: convergence based on r.hat &lt;1.1 and a minimum effective sample size of 400. The chains are thinned to 4000 iterations to preserve disk and memory usage. See ?sma_set_mode for other choices of analysis mode and customization.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="st">"sigma ~ dunif(0, 6)"</span>
 <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sma_analyse.html">sma_analyse</a></span><span class="op">(</span>sims <span class="op">=</span> <span class="va">sims</span>,
-                                code <span class="op">=</span> <span class="va">code</span>,
-                                code.add <span class="op">=</span> <span class="va">prior</span>,
-                                mode <span class="op">=</span> <span class="fu"><a href="reference/sma_set_mode.html">sma_set_mode</a></span><span class="op">(</span><span class="st">"report"</span><span class="op">)</span><span class="op">)</span>
+                       code <span class="op">=</span> <span class="va">code</span>,
+                       code.add <span class="op">=</span> <span class="va">prior</span>,
+                       mode <span class="op">=</span> <span class="fu"><a href="reference/sma_set_mode.html">sma_set_mode</a></span><span class="op">(</span><span class="st">"report"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; module dic loaded</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
@@ -131,6 +128,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1.001</span>
+<span class="co">#&gt; Min ess= 2772</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -141,6 +141,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1.001</span>
+<span class="co">#&gt; Min ess= 3516</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -151,6 +154,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1</span>
+<span class="co">#&gt; Min ess= 3552</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -161,6 +167,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1</span>
+<span class="co">#&gt; Min ess= 3120</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -171,6 +180,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1</span>
+<span class="co">#&gt; Min ess= 4380</span>
 <span class="co">#&gt; Module dic unloaded</span></code></pre></div>
 </div>
 <div id="derive-new-parameters-if-required" class="section level3">
@@ -233,17 +245,17 @@
 <p>Evaluate the performance of the model using the 5 analyses</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="va">results.derived</span>, parameters<span class="op">=</span><span class="va">params.derived</span><span class="op">)</span>
-<span class="co">#&gt;   term     bias      mse cpQuantile</span>
-<span class="co">#&gt; 1  var 1.092141 6.162797          1</span></code></pre></div>
+<span class="co">#&gt;   term     bias cpQuantile      mse</span>
+<span class="co">#&gt; 1  var 1.092141          1 6.162797</span></code></pre></div>
 <p>Several more performance measures are available and can be specified using the <em>measures</em> argument (see ?sma_evaluate for details). You may also create custom performance measures. The example below shows how to reproduce the results above with custom code.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="va">results.derived</span>,
-              measures <span class="op">=</span> <span class="st">""</span>, 
-              parameters <span class="op">=</span> <span class="va">params.derived</span>, 
-              custom_funs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>estimator <span class="op">=</span> <span class="va">mean</span>,
-                                 cp.low <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.025</span><span class="op">)</span>,
-                                 cp.upp <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span>,
-              custom_expr_b <span class="op">=</span> <span class="st">"bias = estimator - parameters
+             measures <span class="op">=</span> <span class="st">""</span>, 
+             parameters <span class="op">=</span> <span class="va">params.derived</span>, 
+             custom_funs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>estimator <span class="op">=</span> <span class="va">mean</span>,
+                                cp.low <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.025</span><span class="op">)</span>,
+                                cp.upp <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span>,
+             custom_expr_b <span class="op">=</span> <span class="st">"bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters &gt;= cp.low) &amp; (parameters &lt;= cp.upp), 1, 0)"</span><span class="op">)</span>
 <span class="co">#&gt;   term     bias cpQuantile      mse</span>
@@ -264,9 +276,9 @@
                     exists <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span>
 
-<span class="fu"><a href="reference/sma_analyse.html">sma_analyse</a></span><span class="op">(</span>code <span class="op">=</span> <span class="va">code</span>,
-                     code.add <span class="op">=</span> <span class="va">prior</span>,
-                     mode <span class="op">=</span> <span class="fu"><a href="reference/sma_set_mode.html">sma_set_mode</a></span><span class="op">(</span><span class="st">"report"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="reference/sma_analyse_files.html">sma_analyse_files</a></span><span class="op">(</span>code <span class="op">=</span> <span class="va">code</span>,
+                  code.add <span class="op">=</span> <span class="va">prior</span>,
+                  mode <span class="op">=</span> <span class="fu"><a href="reference/sma_set_mode.html">sma_set_mode</a></span><span class="op">(</span><span class="st">"report"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; module dic loaded</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
@@ -278,6 +290,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1.001</span>
+<span class="co">#&gt; Min ess= 2772</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -288,6 +303,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1.001</span>
+<span class="co">#&gt; Min ess= 3516</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -298,6 +316,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1</span>
+<span class="co">#&gt; Min ess= 3552</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -308,6 +329,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
 <span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1</span>
+<span class="co">#&gt; Min ess= 3120</span>
 <span class="co">#&gt; Compiling model graph</span>
 <span class="co">#&gt;    Resolving undeclared variables</span>
 <span class="co">#&gt;    Allocating nodes</span>
@@ -317,29 +341,33 @@
 <span class="co">#&gt;    Total graph size: 18</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; v data0000001.rds [00:00:00.286]</span>
-<span class="co">#&gt; v data0000002.rds [00:00:00.282]</span>
-<span class="co">#&gt; v data0000003.rds [00:00:00.303]</span>
-<span class="co">#&gt; v data0000004.rds [00:00:00.274]</span>
-<span class="co">#&gt; v data0000005.rds [00:00:00.271]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Max r.hat= 1</span>
+<span class="co">#&gt; Min ess= 4380</span>
+<span class="co">#&gt; v data0000001.rds [00:00:00.298]</span>
+<span class="co">#&gt; v data0000002.rds [00:00:00.277]</span>
+<span class="co">#&gt; v data0000003.rds [00:00:00.293]</span>
+<span class="co">#&gt; v data0000004.rds [00:00:00.285]</span>
+<span class="co">#&gt; v data0000005.rds [00:00:00.311]</span>
 <span class="co">#&gt; Success: 5</span>
 <span class="co">#&gt; Failure: 0</span>
 <span class="co">#&gt; Remaining: 0</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Module dic unloaded</span>
 
-<span class="fu"><a href="reference/sma_derive.html">sma_derive</a></span><span class="op">(</span>code<span class="op">=</span><span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span>
-<span class="co">#&gt; v results0000001.rds [00:00:01.046]</span>
-<span class="co">#&gt; v results0000002.rds [00:00:01.350]</span>
-<span class="co">#&gt; v results0000003.rds [00:00:01.296]</span>
-<span class="co">#&gt; v results0000004.rds [00:00:00.903]</span>
-<span class="co">#&gt; v results0000005.rds [00:00:00.954]</span>
+<span class="fu"><a href="reference/sma_derive_files.html">sma_derive_files</a></span><span class="op">(</span>code<span class="op">=</span><span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span>
+<span class="co">#&gt; v results0000001.rds [00:00:01.055]</span>
+<span class="co">#&gt; v results0000002.rds [00:00:01.184]</span>
+<span class="co">#&gt; v results0000003.rds [00:00:01.284]</span>
+<span class="co">#&gt; v results0000004.rds [00:00:01.066]</span>
+<span class="co">#&gt; v results0000005.rds [00:00:00.951]</span>
 <span class="co">#&gt; Success: 5</span>
 <span class="co">#&gt; Failure: 0</span>
 <span class="co">#&gt; Remaining: 0</span>
 <span class="co">#&gt; </span>
 
-<span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="reference/sma_evaluate_files.html">sma_evaluate_files</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>You may show the files created with</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, all.files<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
@@ -374,8 +402,7 @@
 <a href="#parallelization" class="anchor" aria-hidden="true"></a>Parallelization</h2>
 <p>Parallelization is achieved using the <a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a> package.</p>
 <p>To use all available cores on the local machine simply execute the following code before calling any of the package’s functions.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">library</span>(future)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">plan</span>(multisession)</span></code></pre></div>
+<p>library(future) plan(multisession)</p>
 </div>
 <div id="contribution" class="section level2">
 <h2 class="hasAnchor">
