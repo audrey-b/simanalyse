@@ -173,58 +173,61 @@
     <p>A flag.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>code</span><span class='op'>=</span><span class='st'>"for(i in 1:10){
-a[i] ~ dpois(mu)}"</span>
-<span class='va'>sims</span> <span class='op'>&lt;-</span> <span class='fu'>sims</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sims/man/sims_simulate.html'>sims_simulate</a></span><span class='op'>(</span><span class='va'>code</span>, parameters<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/nlist/man/nlist.html'>nlist</a></span><span class='op'>(</span>mu<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>, nsims<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sma_analyse.html'>sma_analyse</a></span><span class='op'>(</span><span class='va'>sims</span>, 
-                           <span class='va'>code</span>, 
-                           <span class='st'>"mu ~ dunif(0,10)"</span>, 
-                           monitor <span class='op'>=</span> <span class='st'>"mu"</span>,
-                           deviance<span class='op'>=</span><span class='cn'>FALSE</span>,
-                           mode<span class='op'>=</span><span class='fu'><a href='sma_set_mode.html'>sma_set_mode</a></span><span class='op'>(</span><span class='st'>"quick"</span>, n.save<span class='op'>=</span><span class='fl'>300</span>, max.iter<span class='op'>=</span><span class='fl'>300</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Compiling model graph
-#&gt;    Resolving undeclared variables
-#&gt;    Allocating nodes
-#&gt; Graph information:
-#&gt;    Observed stochastic nodes: 10
-#&gt;    Unobserved stochastic nodes: 1
-#&gt;    Total graph size: 13
-#&gt; 
-#&gt; Initializing model
-#&gt; 
-#&gt; 
-#&gt; Max r.hat= 1
-#&gt; Min ess= 461</div><div class='input'><span class='fu'>sma_assess</span><span class='op'>(</span><span class='va'>res</span>, expr<span class='op'>=</span><span class='st'>"a = rep(mu, 10)"</span>, <span class='va'>sims</span>, <span class='va'>code</span>, nsamples<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: This function is in development and has not been tested. Use at your own risks.</span></div><div class='output co'>#&gt; $D.data
-#&gt; $a
-#&gt;  [1] 0.01073261 0.16350307 0.26088313 0.16350307 0.01073261 0.52105729
-#&gt;  [7] 0.09916034 0.16350307 0.26088313 0.01073261
-#&gt; 
-#&gt; nchains:  1 
-#&gt; niters:  10 
-#&gt; 
-#&gt; 
-#&gt; $D.sims
-#&gt; $a
-#&gt;  [1] 0.08956132 0.22635024 0.21180302 0.04172012 0.10201772 0.10956136
-#&gt;  [7] 0.04064688 0.05036129 0.08516976 0.19882793
-#&gt; 
-#&gt; nchains:  1 
-#&gt; niters:  10 
-#&gt; 
-#&gt; 
-#&gt; $p.value
-#&gt; $p.value$a
-#&gt;  [1] 0.80 0.65 0.60 0.35 0.75 0.35 0.30 0.25 0.20 0.85
-#&gt; 
-#&gt; 
-#&gt; $fit
-#&gt; $fit$a
-#&gt; [1] 0.1813305
-#&gt; 
-#&gt; </div><div class='input'>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>code</span><span class='op'>=</span><span class='st'>"for(i in 1:10){</span>
+<span class='r-in'>a[i] ~ dpois(mu)}"</span></span>
+<span class='r-in'><span class='va'>sims</span> <span class='op'>&lt;-</span> <span class='fu'>sims</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sims/man/sims_simulate.html'>sims_simulate</a></span><span class='op'>(</span><span class='va'>code</span>, parameters<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/pkg/nlist/man/nlist.html'>nlist</a></span><span class='op'>(</span>mu<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>, nsims<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sma_analyse.html'>sma_analyse</a></span><span class='op'>(</span><span class='va'>sims</span>, </span>
+<span class='r-in'>                           <span class='va'>code</span>, </span>
+<span class='r-in'>                           <span class='st'>"mu ~ dunif(0,10)"</span>, </span>
+<span class='r-in'>                           monitor <span class='op'>=</span> <span class='st'>"mu"</span>,</span>
+<span class='r-in'>                           deviance<span class='op'>=</span><span class='cn'>FALSE</span>,</span>
+<span class='r-in'>                           mode<span class='op'>=</span><span class='fu'><a href='sma_set_mode.html'>sma_set_mode</a></span><span class='op'>(</span><span class='st'>"quick"</span>, n.save<span class='op'>=</span><span class='fl'>300</span>, max.iter<span class='op'>=</span><span class='fl'>300</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Compiling model graph</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Resolving undeclared variables</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Allocating nodes</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Graph information:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Observed stochastic nodes: 10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Unobserved stochastic nodes: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    Total graph size: 13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Initializing model</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Max r.hat= 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Min ess= 461</span>
+<span class='r-in'><span class='fu'>sma_assess</span><span class='op'>(</span><span class='va'>res</span>, expr<span class='op'>=</span><span class='st'>"a = rep(mu, 10)"</span>, <span class='va'>sims</span>, <span class='va'>code</span>, nsamples<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>This function is in development and has not been tested. Use at your own risks.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $D.data</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 0.01073261 0.16350307 0.26088313 0.16350307 0.01073261 0.52105729</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] 0.09916034 0.16350307 0.26088313 0.01073261</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> nchains:  1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> niters:  10 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $D.sims</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 0.08956132 0.22635024 0.21180302 0.04172012 0.10201772 0.10956136</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [7] 0.04064688 0.05036129 0.08516976 0.19882793</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> nchains:  1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> niters:  10 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $p.value</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $p.value$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 0.80 0.65 0.60 0.35 0.75 0.35 0.30 0.25 0.20 0.85</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fit</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $fit$a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.1813305</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

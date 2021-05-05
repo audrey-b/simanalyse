@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculates measures to evaluate the performance of the model — sma_evaluate • simanalyse</title>
+<title>Calculates measures to evaluate the performance of the model — sma_evaluate_files • simanalyse</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Calculates measures to evaluate the performance of the model — sma_evaluate" />
+<meta property="og:title" content="Calculates measures to evaluate the performance of the model — sma_evaluate_files" />
 <meta property="og:description" content="Calculates measures to evaluate the performance of the model
 The results are compared with the true parameter values by calculating performance measures 
 such as bias, mean square error and coverage probability.
@@ -119,7 +119,7 @@ R code can be used to customize the performance measures" />
     <div class="page-header">
     <h1>Calculates measures to evaluate the performance of the model</h1>
     <small class="dont-index">Source: <a href='https://github.com/audrey-b/simanalyse/blob/master/R/simanalyse-evaluate.R'><code>R/simanalyse-evaluate.R</code></a></small>
-    <div class="hidden name"><code>sma_evaluate.Rd</code></div>
+    <div class="hidden name"><code>sma_evaluate_files.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -129,14 +129,15 @@ such as bias, mean square error and coverage probability.
 R code can be used to customize the performance measures</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sma_evaluate</span><span class='op'>(</span>
-  object <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>sma_evaluate_files</span><span class='op'>(</span>
   measures <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bias"</span>, <span class='st'>"mse"</span>, <span class='st'>"cpQuantile"</span><span class='op'>)</span>,
   estimator <span class='op'>=</span> <span class='va'>mean</span>,
   alpha <span class='op'>=</span> <span class='fl'>0.05</span>,
   parameters <span class='op'>=</span> <span class='cn'>NULL</span>,
   monitor <span class='op'>=</span> <span class='st'>".*"</span>,
   deviance <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  path <span class='op'>=</span> <span class='st'>"."</span>,
+  analysis <span class='op'>=</span> <span class='st'>"analysis0000001"</span>,
   custom_funs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
   custom_expr_before <span class='op'>=</span> <span class='st'>""</span>,
   custom_expr_after <span class='op'>=</span> <span class='st'>""</span>,
@@ -147,10 +148,6 @@ R code can be used to customize the performance measures</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>object</th>
-      <td><p>A list of nlists object of results or a single nlists of results.</p></td>
-    </tr>
     <tr>
       <th>measures</th>
       <td><p>A vector of strings indicating which performance measures to calculate. Strings may include "bias", "E" (expectation), 
@@ -178,6 +175,14 @@ R code can be used to customize the performance measures</p>
     <tr>
       <th>deviance</th>
       <td><p>Whether to calculate measures for deviance.</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>A string. The object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.</p></td>
+    </tr>
+    <tr>
+      <th>analysis</th>
+      <td><p>A string for the name of the folder that contains the analysis.</p></td>
     </tr>
     <tr>
       <th>custom_funs</th>
