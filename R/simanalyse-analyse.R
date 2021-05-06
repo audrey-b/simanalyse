@@ -150,11 +150,11 @@ sma_analyse_files <- function(
   batch_log = batch_log_read(path)
   saveRDS(batch_log, file.path(path, folder, ".log.rds"))
   batch_log <- batch_log[which(batch_log$type != "SUCCESS"), "message"]
-  if(!is.null(batch_log)) cat(paste(c(batch_log, "\n"), collapse="\n---\n"))
+  if(length(batch_log)!=0) cat(paste(c(batch_log, "\n"), collapse="\n---\n"))
   batch_report(path=path)
   batch_cleanup(path, force=TRUE)
   
-  if(!is.null(batch_log)){
+  if(length(batch_log)!=0){
     return(FALSE)}else{return(TRUE)}
 }
 
