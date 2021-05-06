@@ -6,7 +6,7 @@ sma_evaluate_internal <- function(object = NULL,
                          monitor=".*",
                          deviance=FALSE,
                          path = ".",
-                         analysis = "analysis0000001",
+                         folder = "analysis0000001",
                          custom_funs = list(),
                          custom_expr_before="",
                          custom_expr_after="",
@@ -33,7 +33,7 @@ sma_evaluate_internal <- function(object = NULL,
   
   if(read.file){
     chk_dir(path)
-    derive.path <- file.path(path, analysis, "derived")
+    derive.path <- file.path(path, folder, "derived")
     if(dir.exists(derive.path)){
       prefix = "deriv"
       if(is.null(parameters)) parameters = readRDS(list.files(path=derive.path, pattern=".parameters.rds", all.files=TRUE, full.names=TRUE))
@@ -45,7 +45,7 @@ sma_evaluate_internal <- function(object = NULL,
     if(is.list(parameters) && !is_nlist(parameters)) class(parameters) <- "nlist"
     chk_nlist(parameters)
     
-    files <- list.files(path=file.path(path, analysis), pattern=chk::p0("^", prefix, "\\d{7,7}.rds$"), recursive=TRUE, full.names=TRUE)
+    files <- list.files(path=file.path(path, folder), pattern=chk::p0("^", prefix, "\\d{7,7}.rds$"), recursive=TRUE, full.names=TRUE)
     #object <- mcmcr::as.mcmcrs(lapply(files, readRDS))
     performance <- evaluate_all_measures_files(files, 
                                                make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
@@ -61,7 +61,7 @@ sma_evaluate_internal <- function(object = NULL,
     chk_nlist(parameters)
     object %<>% lapply(function(x) mcmcr::collapse_chains(x)) %<>% (mcmcr::as.mcmcrs)
     mcmcr::chk_mcmcrs(object)
-    if((".*" %in% monitor) && deviance==FALSE){
+    if((".*" %in% monitor) & deviance==FALSE){
       monitor = pars(object[[1]])
       monitor = monitor[monitor!="deviance"]
     }
@@ -102,7 +102,7 @@ sma_evaluate_internal <- function(object = NULL,
   if(!read.file){
         return(performance)
   }else{
-    dir <- file.path(path, analysis, "performance"); dir.create(dir)
+    dir <- file.path(path, folder, "performance"); dir.create(dir)
     saveRDS(performance, file.path(dir, "performance.rds"))
   } 
   

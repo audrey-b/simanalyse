@@ -9,7 +9,7 @@ sma_analyse_internal <- function(sims = NULL,
                         #pD = FALSE,
                         #save= NA,
                         path = ".",
-                        analysis = "analysis0000001",
+                        folder = "analysis0000001",
                         progress = FALSE,
                         options = furrr::furrr_options(seed = TRUE)){
   
@@ -54,8 +54,8 @@ sma_analyse_internal <- function(sims = NULL,
   }
   
   if(is.null(sims)){
-    if(!dir.exists(file.path(path, analysis))) dir.create(file.path(path, analysis))
-    saveRDS(seeds, file.path(path, analysis, ".seeds.rds"))
+    if(!dir.exists(file.path(path, folder))) dir.create(file.path(path, folder))
+    saveRDS(seeds, file.path(path, folder, ".seeds.rds"))
   }
   
   res.list <- list(nlists(nlist()))
@@ -90,8 +90,8 @@ sma_analyse_internal <- function(sims = NULL,
     options$seed = FALSE
     sma_batchr(sma.fun=analyse_dataset_bayesian,
                path.read=path,
-               analysis=analysis,
-               path.save=file.path(path, analysis, "results"),
+               folder=folder,
+               path.save=file.path(path, folder, "results"),
                prefix="data", suffix="results",
                code=code, monitor=monitor,
                inits=inits, n.chains=mode$n.chains,

@@ -12,7 +12,7 @@ sma_evaluate_files(
   monitor = ".*",
   deviance = FALSE,
   path = ".",
-  analysis = "analysis0000001",
+  folder = "analysis0000001",
   custom_funs = list(),
   custom_expr_before = "",
   custom_expr_after = "",
@@ -39,7 +39,7 @@ sma_evaluate_files(
 
 \item{path}{A string. The object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.}
 
-\item{analysis}{A string for the name of the folder that contains the analysis.}
+\item{folder}{A string for the name of the folder that contains the analysis.}
 
 \item{custom_funs}{A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).}
 

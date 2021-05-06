@@ -33,10 +33,10 @@
 #                            parameters = params, 
 #                            nsims=5)
 # result <- sma_analyse(sims=dat,
-#                                       code = "a ~ dnorm(mu, 1)
-#                                               mu ~ dunif(-3,3)",
-#                                       mode=sma_set_mode("quick"),
-#                                       monitor="mu")
+#                       code = "a ~ dnorm(mu, 1)
+#                               mu ~ dunif(-3,3)",
+#                       mode=sma_set_mode("quick"),
+#                       monitor="mu")
 # sma_evaluate(result, parameters=params)
 # sma_evaluate(result, 
 # measures="", 
@@ -45,12 +45,6 @@
 # custom_expr_before = "mse = (posteriormedian - parameters)^2",
 # custom_expr_after = "rmse = sqrt(mse)")
 
-
-#  thin
-#  parallel An integer specifying the number of CPU cores to use for generating the datasets in parallel. Defaul is 1 (not parallel).
-#  path A string specifying the path to the directory where the results were saved. By default \code{path = NULL } the data sets are not saved but are returned as an nlists object.
-#  exists A flag specifying whether the summaries should already exist. If \code{exists = NA} it doesn't matter. If the directory already exists it is overwritten if \code{exists = TRUE} or \code{exists = NA} otherwise an error is thrown.
-#  silent A flag specifying whether to suppress warnings.
 
 ## No Files
 
@@ -61,8 +55,6 @@ sma_evaluate <- function(object = NULL,
                          parameters = NULL,
                          monitor=".*",
                          deviance=FALSE,
-                         
-                         
                          custom_funs = list(),
                          custom_expr_before="",
                          custom_expr_after="",
@@ -77,7 +69,7 @@ sma_evaluate <- function(object = NULL,
                               monitor=monitor,
                               deviance=deviance,
                               path = NULL,
-                              analysis = NULL,
+                              folder = NULL,
                               custom_funs = custom_funs,
                               custom_expr_before=custom_expr_before,
                               custom_expr_after=custom_expr_after,
@@ -108,7 +100,7 @@ sma_evaluate <- function(object = NULL,
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
 #' @param deviance Whether to calculate measures for deviance.
 #' @param path A string. The object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.
-#' @param analysis A string for the name of the folder that contains the analysis.
+#' @param folder A string for the name of the folder that contains the analysis.
 #' @param custom_funs A named list of functions to calculate over the mcmc samples. E.g. list(posteriormedian = median).
 #' @param custom_expr_before A string of R code to derive custom measures. This code is used BEFORE averaging over all simulations. E.g. "mse = (posteriormedian - parameters)^2". Functions from \code{custom_funs} may be used as well as the keywords 'parameters' (the true values of the parameters) and 'estimator' (the estimator defined in \code{estimator}).
 #' @param custom_expr_after A string of R code to derive additional custom measures. This code is used AFTER averaging over all simulations. E.g. "rmse = sqrt(mse)". Measures calculated from \code{custom_expr_before} may be used as well as the keyword 'parameters' (the true values of the parameters). 
@@ -128,7 +120,7 @@ sma_evaluate_files <- function(
         monitor=".*",
         deviance=FALSE,
         path = ".",
-        analysis = "analysis0000001",
+        folder = "analysis0000001",
         custom_funs = list(),
         custom_expr_before="",
         custom_expr_after="",
@@ -143,7 +135,7 @@ sma_evaluate_files <- function(
                               monitor=monitor,
                               deviance=deviance,
                               path = path,
-                              analysis = analysis,
+                              folder = folder,
                               custom_funs = custom_funs,
                               custom_expr_before=custom_expr_before,
                               custom_expr_after=custom_expr_after,

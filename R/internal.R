@@ -214,7 +214,7 @@ evaluate_all_measures_files <- function(files,
                              object = mcmcr::as.mcmcrs(readRDS(file))
                              object %<>% lapply(function(x) mcmcr::collapse_chains(x)) %<>% (mcmcr::as.mcmcrs)
                              mcmcr::chk_mcmcrs(object)
-                             if((".*" %in% monitor) && deviance==FALSE){
+                             if((".*" %in% monitor) & (deviance==FALSE)){
                                monitor = pars(object[[1]])
                                monitor = monitor[monitor!="deviance"]
                              }
@@ -354,21 +354,34 @@ fun.batchr <- function(file, path.save, sma.fun, suffix, ...){#, code, n.adapt, 
 }
 
 sma_batchr <- function(sma.fun, prefix, suffix, path.read, 
-                       path.save, analysis,
+                       path.save, folder,
                        options,
                        seeds=NULL,
                        ...){
   if(!dir.exists(path.save)) dir.create(path.save, recursive=TRUE)
-  batch_process(fun = fun.batchr, 
-                path = path.read,
-                regexp = chk::p0("^", prefix, "\\d{7,7}.rds$"), 
-                ask = FALSE,
-                options = options,
-                seeds = seeds,
-                path.save = path.save,
-                sma.fun = sma.fun,
-                suffix = suffix,
-                ...)
+  batch_config(fun=fun.batchr, 
+               path=path.read, 
+               regexp = chk::p0("^", prefix, "\\d{7,7}.rds$"),
+               path.save = path.save,
+               sma.fun = sma.fun,
+               suffix = suffix,
+               ...)
+  batch_run(
+    path=path.read,
+    seeds = seeds,
+    options = options,
+    ask = FALSE  )
+
+  # batch_process(fun = fun.batchr, 
+  #               path = path.read,
+  #               regexp = chk::p0("^", prefix, "\\d{7,7}.rds$"), 
+  #               ask = FALSE,
+  #               options = options,
+  #               seeds = seeds,
+  #               path.save = path.save,
+  #               sma.fun = sma.fun,
+  #               suffix = suffix,
+  #               ...)
   #...
   # code=code, monitor=monitor,
   # inits=inits, n.chains=mode$n.chains,

@@ -13,7 +13,7 @@ sma_analyse_files(
   mode = sma_set_mode("report"),
   deviance = TRUE,
   path = ".",
-  analysis = "analysis0000001",
+  folder = "analysis0000001",
   progress = FALSE,
   options = furrr::furrr_options(seed = TRUE)
 )
@@ -35,7 +35,7 @@ sma_analyse_files(
 
 \item{path}{A string. Sims are read from that path on disk and results are written to disk.}
 
-\item{analysis}{A string for the name of the folder that contains the results.}
+\item{folder}{A string for the name of the folder to save the results.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

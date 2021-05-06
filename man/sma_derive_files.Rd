@@ -9,7 +9,7 @@ sma_derive_files(
   monitor = ".*",
   values = list(),
   path = ".",
-  analysis = "analysis0000001",
+  folder = "analysis0000001",
   progress = FALSE,
   options = furrr::furrr_options()
 )
@@ -23,7 +23,7 @@ sma_derive_files(
 
 \item{path}{A string. Analyses results are read from that path on disk.}
 
-\item{analysis}{A string for the name of the folder that contains the analysis.}
+\item{folder}{A string for the name of the folder that contains the analysis.}
 
 \item{progress}{A flag specifying whether to print a progress bar.}
 

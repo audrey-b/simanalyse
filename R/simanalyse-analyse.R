@@ -68,7 +68,7 @@ sma_analyse <- function(sims,
               mode,
               deviance,
               path = NULL,
-              analysis = NULL,
+              folder = NULL,
               progress = FALSE,
               options
               
@@ -99,7 +99,7 @@ sma_analyse <- function(sims,
 # @param save A flag specifying whether to save the results in \code{path}. If save = NA the results are saved in \code{path} only if \code{sims} is NULL.
 #' @param path A string. Sims are read from that path on disk and results are written to disk.
 # @param path.save A string specifying the path to the directory to save the results. By default path = NULL the results are not saved but are returned as a list of nlists objects.
-#' @param analysis A string for the name of the folder that contains the results.
+#' @param folder A string for the name of the folder to save the results.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 #' 
@@ -128,7 +128,7 @@ sma_analyse_files <- function(
                                #pD = FALSE,
                                #save= NA,
                                path = ".",
-                               analysis = "analysis0000001",
+                               folder = "analysis0000001",
                                progress = FALSE,
                                options = furrr::furrr_options(seed = TRUE)){
   
@@ -141,12 +141,21 @@ sma_analyse_files <- function(
               mode,
               deviance,
               path = path,
-              analysis,
+              folder,
               progress = FALSE,
               options
               
   )
   
+  batch_log = batch_log_read(path)
+  saveRDS(batch_log, file.path(path, folder, ".log.rds"))
+  batch_log <- batch_log[which(batch_log$type != "SUCCESS"), "message"]
+  if(!is.null(batch_log)) cat(paste(c(batch_log, "\n"), collapse="\n---\n"))
+  batch_report(path=path)
+  batch_cleanup(path, force=TRUE)
+  
+  if(!is.null(batch_log)){
+    return(FALSE)}else{return(TRUE)}
 }
 
 

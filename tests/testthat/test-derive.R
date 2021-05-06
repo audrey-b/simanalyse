@@ -11,7 +11,7 @@ test_that("sma_derive works", {
   #sma_derive(dat, "y=x+c", values=list(c=2))
   res <- sma_analyse(dat, code, code.add = "variance ~ dunif(0,10)", 
                               mode=sma_set_mode("quick"), monitor="variance",
-                              deviance="FALSE")
+                              deviance=FALSE)
   
   result <- sma_derive(res, "sd=sqrt(variance*c)", values=list(c=2))
   

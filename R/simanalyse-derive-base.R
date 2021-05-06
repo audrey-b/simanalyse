@@ -1,7 +1,7 @@
 sma_derive_base <- function(object=NULL, code, monitor=".*", 
                        values=list(),
                        path = ".",
-                       analysis = "analysis0000001",
+                       folder = "analysis0000001",
                        progress = FALSE,
                        options = furrr::furrr_options()) {
   
@@ -52,9 +52,9 @@ sma_derive_base <- function(object=NULL, code, monitor=".*",
     chk_dir(path)
     
     sma_batchr(sma.fun=sma_derive_internal, 
-               analysis=analysis,
-               path.read = file.path(path, analysis, "results"),
-               path.save = file.path(path, analysis, "derived"),
+               folder=folder,
+               path.read = file.path(path, folder, "results"),
+               path.save = file.path(path, folder, "derived"),
                prefix="results", suffix="deriv",
                code=code, monitor=monitor, values=values,
                monitor.non.primary=monitor.non.primary,
@@ -62,6 +62,6 @@ sma_derive_base <- function(object=NULL, code, monitor=".*",
     
     parameters <- sims_info(path)$parameters
     derived.params <- sma_derive_internal(parameters, code, monitor, values, monitor.non.primary, progress, options)
-    saveRDS(derived.params, file.path(path, analysis, "derived", ".parameters.rds"))
+    saveRDS(derived.params, file.path(path, folder, "derived", ".parameters.rds"))
   }
 }

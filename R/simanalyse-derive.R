@@ -5,7 +5,7 @@
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param values A named list of additional R objects to evaluate in the R expression.
 
- 
+
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 
@@ -45,17 +45,17 @@
 
 sma_derive <- function(object=NULL, code, monitor=".*", 
                        values=list(),
-            
+                       
                        
                        progress = FALSE,
                        options = furrr::furrr_options())
 {
   sma_derive_base(object=object, code = code, monitor=monitor, 
-                      values= values,
-                      path = NULL,
-                      analysis = NULL,
-                      progress = progress,
-                      options = options)
+                  values= values,
+                  path = NULL,
+                  folder = NULL,
+                  progress = progress,
+                  options = options)
   
   
 }
@@ -69,7 +69,7 @@ sma_derive <- function(object=NULL, code, monitor=".*",
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the variables in \code{object} and/or \code{code} to monitor. By default all variables are included.
 #' @param values A named list of additional R objects to evaluate in the R expression.
 #' @param path A string. Analyses results are read from that path on disk.
-#' @param analysis A string for the name of the folder that contains the analysis.
+#' @param folder A string for the name of the folder that contains the analysis.
 #' @param progress A flag specifying whether to print a progress bar.
 #' @param options The future specific options to use with the workers.
 
@@ -84,18 +84,18 @@ sma_derive <- function(object=NULL, code, monitor=".*",
 #'
 
 sma_derive_files <- function(code, monitor=".*", 
-                       values=list(),
-                       path = ".",
-                       analysis = "analysis0000001",
-                       progress = FALSE,
-                       options = furrr::furrr_options())
+                             values=list(),
+                             path = ".",
+                             folder = "analysis0000001",
+                             progress = FALSE,
+                             options = furrr::furrr_options())
 {
   sma_derive_base(object=NULL, code = code, monitor=monitor, 
-                      values= values,
-                      path = path,
-                      analysis = analysis,
-                      progress = progress,
-                      options = options)
+                  values= values,
+                  path = path,
+                  folder = folder,
+                  progress = progress,
+                  options = options)
   
   
 }

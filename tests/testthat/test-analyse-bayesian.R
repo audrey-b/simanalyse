@@ -8,11 +8,11 @@ test_that("sma_analyse",{
    params <- nlist(mu=0)
    dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = params, nsims=2)
    result <- sma_analyse(sims=dat,
-                                  code = "a ~ dnorm(mu,?)
+                         code = "a ~ dnorm(mu,?)
                                          mu ~ dunif(-3,?)",
-                                  code.value = c("1","3"),
-                                  mode=sma_set_mode("quick"),
-                                  monitor = "mu")
+                         code.value = c("1","3"),
+                         mode=sma_set_mode("quick"),
+                         monitor = "mu")
    
    result1 <- readRDS("Bayesian_results/result1.rds")
    
@@ -32,12 +32,12 @@ test_that("inits is a list of inits for multiple chains",{
    inits2 <- list("mu"=-2, "tt"=0)
    inits3 <- list("mu"=-2, "tt"=0)
    result <- sma_analyse(sims=sims,
-                                  code = code,
-                                  code.add = prior,
-                                  mode=sma_set_mode("quick", n.chains=3),
-                                  monitor = c("mu", "tt"),
-                                  inits=list(inits1, inits2, inits3),
-                                  deviance=FALSE)
+                         code = code,
+                         code.add = prior,
+                         mode=sma_set_mode("quick", n.chains=3),
+                         monitor = c("mu", "tt"),
+                         inits=list(inits1, inits2, inits3),
+                         deviance=FALSE)
    
    result2 <- readRDS("Bayesian_results/result2.rds")
    
@@ -60,27 +60,27 @@ test_that("inits is a function and reproducible",{
    
    set.seed(99L)
    result <- sma_analyse(sims=sims,
-                                   code = code,
-                                   code.add = prior,
-                                   mode=sma_set_mode("quick"),
-                                   monitor = c("mu", "tt"),
-                                   inits=inits.fun,
-                                   deviance=FALSE)
+                         code = code,
+                         code.add = prior,
+                         mode=sma_set_mode("quick"),
+                         monitor = c("mu", "tt"),
+                         inits=inits.fun,
+                         deviance=FALSE)
    
    result3 <- readRDS("Bayesian_results/result3.rds")
    
    expect_equal(result, result3)
-
+   
 })
 
 test_that("modulo_in_code and default monitor",{
    set.seed(10L)
    params <- nlist(mu=0)
-   dat <- sims_simulate("a ~ dnorm(mu,10) \n b = 10 %*% 2", parameters = params, nsims=2)
+   dat <- sims_simulate("a ~ dnorm(mu, 10 %*% 2)", parameters = params, nsims=2)
    result <- sma_analyse(sims=dat,
-                                  code = "a ~ dnorm(mu,1)
-                                         mu ~ dunif(-3,3)",
-                                  mode=sma_set_mode("quick"))
+                         code = "a ~ dnorm(mu,1)
+                                 mu ~ dunif(-3,3)",
+                         mode=sma_set_mode("quick"))
    
    result4 <- readRDS("Bayesian_results/result4.rds")
    
@@ -105,17 +105,22 @@ test_that("use r.hat.nodes and ess.nodes",{  ###WORK HERE!!!!!!!!!!!!!!
                                parameters=nlist(phi=0.95, 
                                                 N.1=100,
                                                 sigma=5),
-                               latent=NA, stochastic = NA, monitor=c("Y"))
+                               latent=NA, 
+                               stochastic = NA, 
+                               monitor=c("Y"))
    result <- sma_analyse(sims=sims,
-                                  code = code,
-                                  code.add = "phi ~ dunif(0,1) \n sigma ~ dunif(0,20) \n N.1 ~ dpois(100)",
-
-                         mode=sma_set_mode("report", r.hat.nodes="phi", ess.nodes = "phi", n.save=250))
+                         code = code,
+                         code.add = "phi ~ dunif(0,1) \n sigma ~ dunif(0,20) \n N.1 ~ dpois(100)",
+                         
+                         mode=sma_set_mode("report", 
+                                           r.hat.nodes="phi", 
+                                           ess.nodes = "phi", 
+                                           n.save=250))
    
    result5 <- readRDS("Bayesian_results/result5.rds")
    
    expect_equal(result, result5)
-
+   
 })
 
 

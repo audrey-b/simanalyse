@@ -38,10 +38,10 @@ remotes::install_github("audrey-b/simanalyse")
 
 ## Demonstration
 
-### Simulate Data
+### Simulate the Datasets
 
-Simulate 5 datasets using the sims package (here we use only a small number of datasets for the sake of illustration).
-```{r}
+Simulate 100 datasets using the sims package.
+```{r, results="hide", message=FALSE}
 library(simanalyse)
 set.seed(10L)
 params <- list(sigma = 2)
@@ -51,15 +51,21 @@ code <- "for(i in 1:10){
 sims <- sims::sims_simulate(code, 
                             parameters = params, 
                             constants = constants,
-                            nsims = 5,
+                            nsims = 100,
                             silent = TRUE)
-print(sims)
 ```
 
-### Analyse Data
-
-Analyse each of the dataset in "report" mode. By default, this mode runs `r sma_set_mode("report")$n.chains` chains until the following two criteria are met: convergence based on r.hat <`r sma_set_mode("report")$r.hat` and a minimum effective sample size of `r sma_set_mode("report")$ess`. The chains are thinned to `r sma_set_mode("report")$n.save` iterations to preserve disk and memory usage. See ?sma_set_mode for other choices of analysis mode and customization.
+For example, the first dataset is
 ```{r}
+sims[1]
+```
+
+
+### Analyse the Datasets
+
+Conduct a Bayesian analysis of each dataset. Let's analyze each dataset in "report" mode. By default, this mode runs `r sma_set_mode("report")$n.chains` chains until the following two criteria are met: convergence based on r.hat <`r sma_set_mode("report")$r.hat` and a minimum effective sample size of `r sma_set_mode("report")$ess`. The first half of the chains is discarded as burnin. Chains are thinned to `r sma_set_mode("report")$n.save` iterations each to preserve disk and memory usage. See ?sma_set_mode for other choices of modes and customization.
+
+```{r, results="hide", message=FALSE}
 prior <- "sigma ~ dunif(0, 6)"
 results <- sma_analyse(sims = sims,
                        code = code,
@@ -67,12 +73,20 @@ results <- sma_analyse(sims = sims,
                        mode = sma_set_mode("report"))
 ```
 
-### Derive new parameters (if required)
+For example, the posterior distribution obtained from the analysis of the first dataset is pictured below.
+```{r}
+plot(results[[1]])
+```
+
+### Derive New Parameters (if required)
 
 Derive posterior samples for new parameters. 
-```{r}
+```{r, results="hide", message=FALSE}
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
-print(results.derived)
+```
+For example, the derived posterior distribution obtained for the first dataset is pictured below.
+```{r}
+plot(results.derived[[1]])
 ```
 The same transformation must be applied to the true parameter values for eventually evaluating the performance (e.g. bias) of the method for those new parameters, 
 
@@ -81,9 +95,9 @@ params.derived <- sma_derive(params, "var=sigma^2", monitor="var")
 print(params.derived)
 ```
 
-### Summarise the results of the simulation study 
+### Summarise the Results of the Simulation Study 
 
-Evaluate the performance of the model using the 5 analyses
+Evaluate the performance of the model using the 100 analyses:
 ```{r}
 sma_evaluate(results.derived, parameters=params.derived)
 ```
@@ -100,17 +114,17 @@ sma_evaluate(results.derived,
                               cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
 ```
 
-## Saving to file
+## Saving to Files
 
-When running simulation studies, it is often preferable to save all the results to disk. By default, when the *path* argument is not specified, results are saved in your working directory.
+When running lengthy simulation studies, it is often preferable to save all the results to disk. You may do this by using the functions ending in *files*. By default, results are saved in your working directory unless the *path* argument is specified.
 
-```{r}
+```{r, results="hide", message=FALSE}
 set.seed(10L)
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
-                    nsims = 5,
-                    save=TRUE,
+                    nsims = 100,
+                    save = TRUE,
                     exists = NA)
 
 sma_analyse_files(code = code,
@@ -122,17 +136,13 @@ sma_derive_files(code="var=sigma^2", monitor="var")
 sma_evaluate_files()
 ```
 
-You may show the files created with
+You may read specific files using the function *sma_read_files*. For example,
+
 ```{r}
-files <- list.files(getwd(), recursive=TRUE, all.files=TRUE)
-print(files)
+sma_read_files(sma_evaluate_files)
 ```
 
-and read a particular file, e.g.
-```{r}
-readRDS(file.path(getwd(), files[9]))
-```
-
+Note that this result is identical to the result we obtained without saving to files,  using the same seed. The result is also identical when using parallelization, described below.
 
 ## Parallelization
 
@@ -141,8 +151,10 @@ Parallelization is achieved using the
 
 To use all available cores on the local machine simply execute the following code before calling any of the package's functions.
 
+```{r, eval=FALSE}
 library(future)
 plan(multisession)
+```
 
 ## Contribution
 
