@@ -31,16 +31,12 @@ remotes::install_github("audrey-b/simanalyse")
 
 ## Demonstration
 
-### Simulate Data
+### Simulate the Datasets
 
-Simulate 5 datasets using the sims package (here we use only a small
-number of datasets for the sake of illustration).
+Simulate 100 datasets using the sims package.
 
 ``` r
 library(simanalyse)
-#> Registered S3 method overwritten by 'rjags':
-#>   method               from 
-#>   as.mcmc.list.mcarray mcmcr
 set.seed(10L)
 params <- list(sigma = 2)
 constants <- list(mu = 0)
@@ -49,26 +45,33 @@ code <- "for(i in 1:10){
 sims <- sims::sims_simulate(code, 
                             parameters = params, 
                             constants = constants,
-                            nsims = 5,
+                            nsims = 100,
                             silent = TRUE)
-print(sims)
+```
+
+For example, the first dataset is
+
+``` r
+sims[1]
 #> $y
-#>  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792 -0.82298676
-#>  [7]  1.03237779  1.69966601 -1.33777215 -0.77232720
+#>  [1]  1.50009615 -1.04870803 -0.09224249 -1.55116546 -1.26316050  2.48549233
+#>  [7]  0.42241980  2.70828118  0.21842600 -0.78109651
 #> 
 #> $mu
 #> [1] 0
 #> 
-#> an nlists object of 5 nlist objects each with 2 numeric elements
+#> an nlists object of an nlist object with 2 numeric elements
 ```
 
-### Analyse Data
+### Analyse the Datasets
 
-Analyse each of the dataset in “report” mode. By default, this mode runs
-3 chains until the following two criteria are met: convergence based on
-r.hat &lt;1.1 and a minimum effective sample size of 400. The chains are
-thinned to 4000 iterations to preserve disk and memory usage. See
-?sma\_set\_mode for other choices of analysis mode and customization.
+Conduct a Bayesian analysis of each dataset. Let’s analyze each dataset
+in “report” mode. By default, this mode runs 3 chains until the
+following two criteria are met: convergence based on r.hat &lt;1.1 and a
+minimum effective sample size of 400. The first half of the chains is
+discarded as burnin. Chains are thinned to 4000 iterations each to
+preserve disk and memory usage. See ?sma\_set\_mode for other choices of
+modes and customization.
 
 ``` r
 prior <- "sigma ~ dunif(0, 6)"
@@ -76,123 +79,34 @@ results <- sma_analyse(sims = sims,
                        code = code,
                        code.add = prior,
                        mode = sma_set_mode("report"))
-#> module dic loaded
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1.001
-#> Min ess= 2772
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1.001
-#> Min ess= 3516
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1
-#> Min ess= 3552
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1
-#> Min ess= 3120
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1
-#> Min ess= 4380
-#> Module dic unloaded
 ```
 
-### Derive new parameters (if required)
+For example, the posterior distribution obtained from the analysis of
+the first dataset is pictured below.
+
+``` r
+plot(results[[1]])
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+### Derive New Parameters (if required)
 
 Derive posterior samples for new parameters.
 
 ``` r
 results.derived <- sma_derive(results, "var=sigma^2", monitor="var")
-print(results.derived)
-#> $mcmcr1
-#> $var
-#> [1] 2.535958
-#> 
-#> nchains:  3 
-#> niters:  4000 
-#> 
-#> 
-#> $mcmcr2
-#> $var
-#> [1] 3.34022
-#> 
-#> nchains:  3 
-#> niters:  4000 
-#> 
-#> 
-#> $mcmcr3
-#> $var
-#> [1] 5.490214
-#> 
-#> nchains:  3 
-#> niters:  4000 
-#> 
-#> 
-#> $mcmcr4
-#> $var
-#> [1] 2.534139
-#> 
-#> nchains:  3 
-#> niters:  4000 
-#> 
-#> 
-#> $mcmcr5
-#> $var
-#> [1] 7.283483
-#> 
-#> nchains:  3 
-#> niters:  4000
 ```
 
-The same transformation must be applied to the true parameter values for
+For example, the derived posterior distribution obtained for the first
+dataset is pictured below.
+
+``` r
+plot(results.derived[[1]])
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" /> The
+same transformation must be applied to the true parameter values for
 eventually evaluating the performance (e.g. bias) of the method for
 those new parameters,
 
@@ -205,14 +119,14 @@ print(params.derived)
 #> an nlist object with 1 numeric element
 ```
 
-### Summarise the results of the simulation study
+### Summarise the Results of the Simulation Study
 
-Evaluate the performance of the model using the 5 analyses
+Evaluate the performance of the model using the 100 analyses:
 
 ``` r
 sma_evaluate(results.derived, parameters=params.derived)
-#>   term     bias cpQuantile      mse
-#> 1  var 1.092141          1 6.162797
+#>   term    bias cpQuantile      mse
+#> 1  var 1.76198       0.92 9.410909
 ```
 
 Several more performance measures are available and can be specified
@@ -230,153 +144,47 @@ sma_evaluate(results.derived,
              custom_expr_b = "bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters >= cp.low) & (parameters <= cp.upp), 1, 0)")
-#>   term     bias cpQuantile      mse
-#> 1  var 1.092141          1 6.162797
+#>   term    bias cpQuantile      mse
+#> 1  var 1.76198       0.92 9.410909
 ```
 
-## Saving to file
+## Saving to Files
 
-When running simulation studies, it is often preferable to save all the
-results to disk. By default, when the *path* argument is not specified,
-results are saved in your working directory.
+When running lengthy simulation studies, it is often preferable to save
+all the results to disk. You may do this by using the functions ending
+in *files*. By default, results are saved in your working directory
+unless the *path* argument is specified.
 
 ``` r
 set.seed(10L)
 sims::sims_simulate(code, 
                     parameters = params, 
                     constants = constants,
-                    nsims = 5,
-                    save=TRUE,
+                    nsims = 100,
+                    save = TRUE,
                     exists = NA)
-#> [1] TRUE
 
 sma_analyse_files(code = code,
                   code.add = prior,
                   mode = sma_set_mode("report"))
-#> module dic loaded
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1.001
-#> Min ess= 2772
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1.001
-#> Min ess= 3516
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1
-#> Min ess= 3552
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1
-#> Min ess= 3120
-#> Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 10
-#>    Unobserved stochastic nodes: 1
-#>    Total graph size: 18
-#> 
-#> Initializing model
-#> 
-#> 
-#> Max r.hat= 1
-#> Min ess= 4380
-#> v data0000001.rds [00:00:00.298]
-#> v data0000002.rds [00:00:00.277]
-#> v data0000003.rds [00:00:00.293]
-#> v data0000004.rds [00:00:00.285]
-#> v data0000005.rds [00:00:00.311]
-#> Success: 5
-#> Failure: 0
-#> Remaining: 0
-#> 
-#> Module dic unloaded
 
 sma_derive_files(code="var=sigma^2", monitor="var")
-#> v results0000001.rds [00:00:01.055]
-#> v results0000002.rds [00:00:01.184]
-#> v results0000003.rds [00:00:01.284]
-#> v results0000004.rds [00:00:01.066]
-#> v results0000005.rds [00:00:00.951]
-#> Success: 5
-#> Failure: 0
-#> Remaining: 0
-#> 
 
 sma_evaluate_files()
 ```
 
-You may show the files created with
+You may read specific files using the function *sma\_read\_files*. For
+example,
 
 ``` r
-files <- list.files(getwd(), recursive=TRUE, all.files=TRUE)
-print(files)
-#>  [1] ".sims.rds"                                  
-#>  [2] "analysis0000001/.seeds.rds"                 
-#>  [3] "analysis0000001/derived/.parameters.rds"    
-#>  [4] "analysis0000001/derived/deriv0000001.rds"   
-#>  [5] "analysis0000001/derived/deriv0000002.rds"   
-#>  [6] "analysis0000001/derived/deriv0000003.rds"   
-#>  [7] "analysis0000001/derived/deriv0000004.rds"   
-#>  [8] "analysis0000001/derived/deriv0000005.rds"   
-#>  [9] "analysis0000001/performance/performance.rds"
-#> [10] "analysis0000001/results/results0000001.rds" 
-#> [11] "analysis0000001/results/results0000002.rds" 
-#> [12] "analysis0000001/results/results0000003.rds" 
-#> [13] "analysis0000001/results/results0000004.rds" 
-#> [14] "analysis0000001/results/results0000005.rds" 
-#> [15] "data0000001.rds"                            
-#> [16] "data0000002.rds"                            
-#> [17] "data0000003.rds"                            
-#> [18] "data0000004.rds"                            
-#> [19] "data0000005.rds"
+sma_read_files(sma_evaluate_files)
+#>   term    bias cpQuantile      mse
+#> 1  var 1.76198       0.92 9.410909
 ```
 
-and read a particular file, e.g.
-
-``` r
-readRDS(file.path(getwd(), files[9]))
-#>   term     bias      mse cpQuantile
-#> 1  var 1.092141 6.162797          1
-```
+Note that this result is identical to the result we obtained without
+saving to files, using the same seed. The result is also identical when
+using parallelization, described below.
 
 ## Parallelization
 
@@ -386,7 +194,10 @@ Parallelization is achieved using the
 To use all available cores on the local machine simply execute the
 following code before calling any of the package’s functions.
 
-library(future) plan(multisession)
+``` r
+library(future)
+plan(multisession)
+```
 
 ## Contribution
 
