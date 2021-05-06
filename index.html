@@ -78,15 +78,12 @@
 <div id="demonstration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#demonstration" class="anchor" aria-hidden="true"></a>Demonstration</h2>
-<div id="simulate-data" class="section level3">
+<div id="simulate-the-datasets" class="section level3">
 <h3 class="hasAnchor">
-<a href="#simulate-data" class="anchor" aria-hidden="true"></a>Simulate Data</h3>
-<p>Simulate 5 datasets using the sims package (here we use only a small number of datasets for the sake of illustration).</p>
+<a href="#simulate-the-datasets" class="anchor" aria-hidden="true"></a>Simulate the Datasets</h3>
+<p>Simulate 100 datasets using the sims package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/audrey-b/simanalyse" class="external-link">simanalyse</a></span><span class="op">)</span>
-<span class="co">#&gt; Registered S3 method overwritten by 'rjags':</span>
-<span class="co">#&gt;   method               from </span>
-<span class="co">#&gt;   as.mcmc.list.mcarray mcmcr</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span>
 <span class="va">params</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>sigma <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="va">constants</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>mu <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
@@ -95,143 +92,46 @@
 <span class="va">sims</span> <span class="op">&lt;-</span> <span class="fu">sims</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sims/man/sims_simulate.html" class="external-link">sims_simulate</a></span><span class="op">(</span><span class="va">code</span>, 
                             parameters <span class="op">=</span> <span class="va">params</span>, 
                             constants <span class="op">=</span> <span class="va">constants</span>,
-                            nsims <span class="op">=</span> <span class="fl">5</span>,
-                            silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sims</span><span class="op">)</span>
+                            nsims <span class="op">=</span> <span class="fl">100</span>,
+                            silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>For example, the first dataset is</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sims</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
 <span class="co">#&gt; $y</span>
-<span class="co">#&gt;  [1]  1.29495655 -0.63919833  0.07602842 -1.55116546  0.89066792 -0.82298676</span>
-<span class="co">#&gt;  [7]  1.03237779  1.69966601 -1.33777215 -0.77232720</span>
+<span class="co">#&gt;  [1]  1.50009615 -1.04870803 -0.09224249 -1.55116546 -1.26316050  2.48549233</span>
+<span class="co">#&gt;  [7]  0.42241980  2.70828118  0.21842600 -0.78109651</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $mu</span>
 <span class="co">#&gt; [1] 0</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; an nlists object of 5 nlist objects each with 2 numeric elements</span></code></pre></div>
+<span class="co">#&gt; an nlists object of an nlist object with 2 numeric elements</span></code></pre></div>
 </div>
-<div id="analyse-data" class="section level3">
+<div id="analyse-the-datasets" class="section level3">
 <h3 class="hasAnchor">
-<a href="#analyse-data" class="anchor" aria-hidden="true"></a>Analyse Data</h3>
-<p>Analyse each of the dataset in “report” mode. By default, this mode runs 3 chains until the following two criteria are met: convergence based on r.hat &lt;1.1 and a minimum effective sample size of 400. The chains are thinned to 4000 iterations to preserve disk and memory usage. See ?sma_set_mode for other choices of analysis mode and customization.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<a href="#analyse-the-datasets" class="anchor" aria-hidden="true"></a>Analyse the Datasets</h3>
+<p>Conduct a Bayesian analysis of each dataset. Let’s analyze each dataset in “report” mode. By default, this mode runs 3 chains until the following two criteria are met: convergence based on r.hat &lt;1.1 and a minimum effective sample size of 400. The first half of the chains is discarded as burnin. Chains are thinned to 4000 iterations each to preserve disk and memory usage. See ?sma_set_mode for other choices of modes and customization.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="st">"sigma ~ dunif(0, 6)"</span>
 <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sma_analyse.html">sma_analyse</a></span><span class="op">(</span>sims <span class="op">=</span> <span class="va">sims</span>,
                        code <span class="op">=</span> <span class="va">code</span>,
                        code.add <span class="op">=</span> <span class="va">prior</span>,
-                       mode <span class="op">=</span> <span class="fu"><a href="reference/sma_set_mode.html">sma_set_mode</a></span><span class="op">(</span><span class="st">"report"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; module dic loaded</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1.001</span>
-<span class="co">#&gt; Min ess= 2772</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1.001</span>
-<span class="co">#&gt; Min ess= 3516</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1</span>
-<span class="co">#&gt; Min ess= 3552</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1</span>
-<span class="co">#&gt; Min ess= 3120</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1</span>
-<span class="co">#&gt; Min ess= 4380</span>
-<span class="co">#&gt; Module dic unloaded</span></code></pre></div>
+                       mode <span class="op">=</span> <span class="fu"><a href="reference/sma_set_mode.html">sma_set_mode</a></span><span class="op">(</span><span class="st">"report"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>For example, the posterior distribution obtained from the analysis of the first dataset is pictured below.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">results</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 </div>
 <div id="derive-new-parameters-if-required" class="section level3">
 <h3 class="hasAnchor">
-<a href="#derive-new-parameters-if-required" class="anchor" aria-hidden="true"></a>Derive new parameters (if required)</h3>
+<a href="#derive-new-parameters-if-required" class="anchor" aria-hidden="true"></a>Derive New Parameters (if required)</h3>
 <p>Derive posterior samples for new parameters.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results.derived</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sma_derive.html">sma_derive</a></span><span class="op">(</span><span class="va">results</span>, <span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results.derived</span><span class="op">)</span>
-<span class="co">#&gt; $mcmcr1</span>
-<span class="co">#&gt; $var</span>
-<span class="co">#&gt; [1] 2.535958</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; nchains:  3 </span>
-<span class="co">#&gt; niters:  4000 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $mcmcr2</span>
-<span class="co">#&gt; $var</span>
-<span class="co">#&gt; [1] 3.34022</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; nchains:  3 </span>
-<span class="co">#&gt; niters:  4000 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $mcmcr3</span>
-<span class="co">#&gt; $var</span>
-<span class="co">#&gt; [1] 5.490214</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; nchains:  3 </span>
-<span class="co">#&gt; niters:  4000 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $mcmcr4</span>
-<span class="co">#&gt; $var</span>
-<span class="co">#&gt; [1] 2.534139</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; nchains:  3 </span>
-<span class="co">#&gt; niters:  4000 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $mcmcr5</span>
-<span class="co">#&gt; $var</span>
-<span class="co">#&gt; [1] 7.283483</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; nchains:  3 </span>
-<span class="co">#&gt; niters:  4000</span></code></pre></div>
-<p>The same transformation must be applied to the true parameter values for eventually evaluating the performance (e.g. bias) of the method for those new parameters,</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">results.derived</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sma_derive.html">sma_derive</a></span><span class="op">(</span><span class="va">results</span>, <span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span></code></pre></div>
+<p>For example, the derived posterior distribution obtained for the first dataset is pictured below.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">results.derived</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"> The same transformation must be applied to the true parameter values for eventually evaluating the performance (e.g. bias) of the method for those new parameters,</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">params.derived</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sma_derive.html">sma_derive</a></span><span class="op">(</span><span class="va">params</span>, <span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">params.derived</span><span class="op">)</span>
 <span class="co">#&gt; $var</span>
@@ -241,14 +141,14 @@
 </div>
 <div id="summarise-the-results-of-the-simulation-study" class="section level3">
 <h3 class="hasAnchor">
-<a href="#summarise-the-results-of-the-simulation-study" class="anchor" aria-hidden="true"></a>Summarise the results of the simulation study</h3>
-<p>Evaluate the performance of the model using the 5 analyses</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<a href="#summarise-the-results-of-the-simulation-study" class="anchor" aria-hidden="true"></a>Summarise the Results of the Simulation Study</h3>
+<p>Evaluate the performance of the model using the 100 analyses:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="va">results.derived</span>, parameters<span class="op">=</span><span class="va">params.derived</span><span class="op">)</span>
-<span class="co">#&gt;   term     bias cpQuantile      mse</span>
-<span class="co">#&gt; 1  var 1.092141          1 6.162797</span></code></pre></div>
+<span class="co">#&gt;   term    bias cpQuantile      mse</span>
+<span class="co">#&gt; 1  var 1.76198       0.92 9.410909</span></code></pre></div>
 <p>Several more performance measures are available and can be specified using the <em>measures</em> argument (see ?sma_evaluate for details). You may also create custom performance measures. The example below shows how to reproduce the results above with custom code.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="va">results.derived</span>,
              measures <span class="op">=</span> <span class="st">""</span>, 
              parameters <span class="op">=</span> <span class="va">params.derived</span>, 
@@ -258,151 +158,45 @@
              custom_expr_b <span class="op">=</span> <span class="st">"bias = estimator - parameters
                               mse = (estimator - parameters)^2
                               cpQuantile = ifelse((parameters &gt;= cp.low) &amp; (parameters &lt;= cp.upp), 1, 0)"</span><span class="op">)</span>
-<span class="co">#&gt;   term     bias cpQuantile      mse</span>
-<span class="co">#&gt; 1  var 1.092141          1 6.162797</span></code></pre></div>
+<span class="co">#&gt;   term    bias cpQuantile      mse</span>
+<span class="co">#&gt; 1  var 1.76198       0.92 9.410909</span></code></pre></div>
 </div>
 </div>
-<div id="saving-to-file" class="section level2">
+<div id="saving-to-files" class="section level2">
 <h2 class="hasAnchor">
-<a href="#saving-to-file" class="anchor" aria-hidden="true"></a>Saving to file</h2>
-<p>When running simulation studies, it is often preferable to save all the results to disk. By default, when the <em>path</em> argument is not specified, results are saved in your working directory.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<a href="#saving-to-files" class="anchor" aria-hidden="true"></a>Saving to Files</h2>
+<p>When running lengthy simulation studies, it is often preferable to save all the results to disk. You may do this by using the functions ending in <em>files</em>. By default, results are saved in your working directory unless the <em>path</em> argument is specified.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span>
 <span class="fu">sims</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sims/man/sims_simulate.html" class="external-link">sims_simulate</a></span><span class="op">(</span><span class="va">code</span>, 
                     parameters <span class="op">=</span> <span class="va">params</span>, 
                     constants <span class="op">=</span> <span class="va">constants</span>,
-                    nsims <span class="op">=</span> <span class="fl">5</span>,
-                    save<span class="op">=</span><span class="cn">TRUE</span>,
+                    nsims <span class="op">=</span> <span class="fl">100</span>,
+                    save <span class="op">=</span> <span class="cn">TRUE</span>,
                     exists <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-<span class="co">#&gt; [1] TRUE</span>
 
 <span class="fu"><a href="reference/sma_analyse_files.html">sma_analyse_files</a></span><span class="op">(</span>code <span class="op">=</span> <span class="va">code</span>,
                   code.add <span class="op">=</span> <span class="va">prior</span>,
                   mode <span class="op">=</span> <span class="fu"><a href="reference/sma_set_mode.html">sma_set_mode</a></span><span class="op">(</span><span class="st">"report"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; module dic loaded</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1.001</span>
-<span class="co">#&gt; Min ess= 2772</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1.001</span>
-<span class="co">#&gt; Min ess= 3516</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1</span>
-<span class="co">#&gt; Min ess= 3552</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1</span>
-<span class="co">#&gt; Min ess= 3120</span>
-<span class="co">#&gt; Compiling model graph</span>
-<span class="co">#&gt;    Resolving undeclared variables</span>
-<span class="co">#&gt;    Allocating nodes</span>
-<span class="co">#&gt; Graph information:</span>
-<span class="co">#&gt;    Observed stochastic nodes: 10</span>
-<span class="co">#&gt;    Unobserved stochastic nodes: 1</span>
-<span class="co">#&gt;    Total graph size: 18</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Initializing model</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Max r.hat= 1</span>
-<span class="co">#&gt; Min ess= 4380</span>
-<span class="co">#&gt; v data0000001.rds [00:00:00.298]</span>
-<span class="co">#&gt; v data0000002.rds [00:00:00.277]</span>
-<span class="co">#&gt; v data0000003.rds [00:00:00.293]</span>
-<span class="co">#&gt; v data0000004.rds [00:00:00.285]</span>
-<span class="co">#&gt; v data0000005.rds [00:00:00.311]</span>
-<span class="co">#&gt; Success: 5</span>
-<span class="co">#&gt; Failure: 0</span>
-<span class="co">#&gt; Remaining: 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Module dic unloaded</span>
 
 <span class="fu"><a href="reference/sma_derive_files.html">sma_derive_files</a></span><span class="op">(</span>code<span class="op">=</span><span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span>
-<span class="co">#&gt; v results0000001.rds [00:00:01.055]</span>
-<span class="co">#&gt; v results0000002.rds [00:00:01.184]</span>
-<span class="co">#&gt; v results0000003.rds [00:00:01.284]</span>
-<span class="co">#&gt; v results0000004.rds [00:00:01.066]</span>
-<span class="co">#&gt; v results0000005.rds [00:00:00.951]</span>
-<span class="co">#&gt; Success: 5</span>
-<span class="co">#&gt; Failure: 0</span>
-<span class="co">#&gt; Remaining: 0</span>
-<span class="co">#&gt; </span>
 
 <span class="fu"><a href="reference/sma_evaluate_files.html">sma_evaluate_files</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>You may show the files created with</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, recursive<span class="op">=</span><span class="cn">TRUE</span>, all.files<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span>
-<span class="co">#&gt;  [1] ".sims.rds"                                  </span>
-<span class="co">#&gt;  [2] "analysis0000001/.seeds.rds"                 </span>
-<span class="co">#&gt;  [3] "analysis0000001/derived/.parameters.rds"    </span>
-<span class="co">#&gt;  [4] "analysis0000001/derived/deriv0000001.rds"   </span>
-<span class="co">#&gt;  [5] "analysis0000001/derived/deriv0000002.rds"   </span>
-<span class="co">#&gt;  [6] "analysis0000001/derived/deriv0000003.rds"   </span>
-<span class="co">#&gt;  [7] "analysis0000001/derived/deriv0000004.rds"   </span>
-<span class="co">#&gt;  [8] "analysis0000001/derived/deriv0000005.rds"   </span>
-<span class="co">#&gt;  [9] "analysis0000001/performance/performance.rds"</span>
-<span class="co">#&gt; [10] "analysis0000001/results/results0000001.rds" </span>
-<span class="co">#&gt; [11] "analysis0000001/results/results0000002.rds" </span>
-<span class="co">#&gt; [12] "analysis0000001/results/results0000003.rds" </span>
-<span class="co">#&gt; [13] "analysis0000001/results/results0000004.rds" </span>
-<span class="co">#&gt; [14] "analysis0000001/results/results0000005.rds" </span>
-<span class="co">#&gt; [15] "data0000001.rds"                            </span>
-<span class="co">#&gt; [16] "data0000002.rds"                            </span>
-<span class="co">#&gt; [17] "data0000003.rds"                            </span>
-<span class="co">#&gt; [18] "data0000004.rds"                            </span>
-<span class="co">#&gt; [19] "data0000005.rds"</span></code></pre></div>
-<p>and read a particular file, e.g.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">files</span><span class="op">[</span><span class="fl">9</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;   term     bias      mse cpQuantile</span>
-<span class="co">#&gt; 1  var 1.092141 6.162797          1</span></code></pre></div>
+<p>You may read specific files using the function <em>sma_read_files</em>. For example,</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/sma_read_files.html">sma_read_files</a></span><span class="op">(</span><span class="va">sma_evaluate_files</span><span class="op">)</span>
+<span class="co">#&gt;   term    bias cpQuantile      mse</span>
+<span class="co">#&gt; 1  var 1.76198       0.92 9.410909</span></code></pre></div>
+<p>Note that this result is identical to the result we obtained without saving to files, using the same seed. The result is also identical when using parallelization, described below.</p>
 </div>
 <div id="parallelization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#parallelization" class="anchor" aria-hidden="true"></a>Parallelization</h2>
 <p>Parallelization is achieved using the <a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a> package.</p>
 <p>To use all available cores on the local machine simply execute the following code before calling any of the package’s functions.</p>
-<p>library(future) plan(multisession)</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="contribution" class="section level2">
 <h2 class="hasAnchor">
