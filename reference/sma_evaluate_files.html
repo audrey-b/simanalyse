@@ -133,6 +133,7 @@ R code can be used to customize the performance measures</p>
   measures <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bias"</span>, <span class='st'>"mse"</span>, <span class='st'>"cpQuantile"</span><span class='op'>)</span>,
   estimator <span class='op'>=</span> <span class='va'>mean</span>,
   alpha <span class='op'>=</span> <span class='fl'>0.05</span>,
+  h_null <span class='op'>=</span> <span class='fl'>0</span>,
   parameters <span class='op'>=</span> <span class='cn'>NULL</span>,
   monitor <span class='op'>=</span> <span class='st'>".*"</span>,
   deviance <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -154,7 +155,7 @@ R code can be used to customize the performance measures</p>
 "cpQuantile" (coverage probability of quantile-based CrIs of level <code>alpha</code>), "LQuantile" (length of quantile-based CrIs of level <code>alpha</code>),
 "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
  bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error), 
- "rrmse" (relative root mean square error), "cv" (coefficient of variation), "all" (all the measures)</p></td>
+ "rrmse" (relative root mean square error), "cv" (coefficient of variation), "power" (coverage probability of the value <code>h_null</code> of quantile-based CrIs of level <code>alpha</code>), "all" (all the measures)</p></td>
     </tr>
     <tr>
       <th>estimator</th>
@@ -163,6 +164,10 @@ R code can be used to customize the performance measures</p>
     <tr>
       <th>alpha</th>
       <td><p>Scalar representing the alpha level used to construct credible intervals. Default is 0.05.</p></td>
+    </tr>
+    <tr>
+      <th>h_null</th>
+      <td><p>Scalar representing the value used to evaluate power. Default is 0.</p></td>
     </tr>
     <tr>
       <th>parameters</th>
