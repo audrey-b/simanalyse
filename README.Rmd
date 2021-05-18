@@ -149,12 +149,40 @@ Note that this result is identical to the result we obtained without saving to f
 Parallelization is achieved using the
 [future](https://github.com/HenrikBengtsson/future) package.
 
-To use all available cores on the local machine simply execute the following code before calling any of the package's functions.
+To use all available cores on a local machine simply execute the following code before calling the package's functions.
 
 ```{r, eval=FALSE}
 library(future)
 plan(multisession)
 ```
+
+Alternatively, if you wish to use a cluster computing environment (e.g. Compute Canada) with a workload manager (e.g. Slurm, Torque/PBS), simply execute the following code before calling the package's functions.
+
+```{r, eval=FALSE}
+library(future)
+library(future.batchtools)
+plan(batchtools_slurm, #for Slurm; see help(batchtools_template) for other options
+     template = "batchtools.slurm.tmpl") #path to configuration file
+```
+
+For example, the following configuration file may be used with the Slurm manager:
+
+```
+#!/bin/sh
+
+#SBATCH --time=00:10:00 ## walltime in hh:mm:ss
+#SBATCH --ntasks=1 ## number of cores per dataset
+#SBATCH --mem-per-cpu=1000 ## min memory per core in MB
+
+## Export value of DEBUGME environment var to slave
+export DEBUGME=<%= Sys.getenv("DEBUGME") %>
+  
+module load nixpkgs/16.09  gcc/7.3.0 r/4.0.2 ## load latest version of R
+module load jags/4.3.0 ## load JAGS
+
+Rscript -e 'batchtools::doJobCollection("<%= uri %>")'
+```
+The configuration file will be called for each dataset. Thus in this example, one new core (ntasks=1) will be requested for each dataset and the 100 datasets will be analyzed in parallel on a total of 100 cores.
 
 ## Contribution
 
