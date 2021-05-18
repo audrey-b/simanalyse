@@ -2,6 +2,7 @@ sma_evaluate_internal <- function(object = NULL,
                          measures=c("bias", "mse", "cpQuantile"), 
                          estimator=mean, 
                          alpha=0.05,
+                         h_null = 0,
                          parameters = NULL,
                          monitor=".*",
                          deviance=FALSE,
@@ -17,6 +18,7 @@ sma_evaluate_internal <- function(object = NULL,
   chk_function(estimator)
   chk_vector(monitor); chk_all(monitor, chk_string)
   chk_number(alpha); chk_range(alpha, c(0,1))
+  chk_number(h_null)
   chk_string(custom_expr_before)
   chk_string(custom_expr_after)
   chk_flag(progress)
@@ -48,7 +50,14 @@ sma_evaluate_internal <- function(object = NULL,
     files <- list.files(path=file.path(path, folder), pattern=chk::p0("^", prefix, "\\d{7,7}.rds$"), recursive=TRUE, full.names=TRUE)
     #object <- mcmcr::as.mcmcrs(lapply(files, readRDS))
     performance <- evaluate_all_measures_files(files, 
-                                               make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
+                                               make_expr_and_FUNS(measures, 
+                                                                  parameters, 
+                                                                  estimator, 
+                                                                  alpha, 
+                                                                  h_null,
+                                                                  custom_funs, 
+                                                                  custom_expr_before, 
+                                                                  custom_expr_after), 
                                                parameters,
                                                progress=progress,
                                                options=options,
@@ -77,7 +86,14 @@ sma_evaluate_internal <- function(object = NULL,
     } 
     
     performance <- evaluate_all_measures(object, 
-                                         make_expr_and_FUNS(measures, parameters, estimator, alpha, custom_funs, custom_expr_before, custom_expr_after), 
+                                         make_expr_and_FUNS(measures, 
+                                                            parameters, 
+                                                            estimator, 
+                                                            alpha, 
+                                                            h_null,
+                                                            custom_funs, 
+                                                            custom_expr_before, 
+                                                            custom_expr_after), 
                                          parameters,
                                          progress=progress,
                                          options=options)

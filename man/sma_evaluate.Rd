@@ -9,6 +9,7 @@ sma_evaluate(
   measures = c("bias", "mse", "cpQuantile"),
   estimator = mean,
   alpha = 0.05,
+  h_null = 0,
   parameters = NULL,
   monitor = ".*",
   deviance = FALSE,
@@ -26,11 +27,13 @@ sma_evaluate(
 "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
 "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
  bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error), 
- "rrmse" (relative root mean square error), "cv" (coefficient of variation), "all" (all the measures)}
+ "rrmse" (relative root mean square error), "cv" (coefficient of variation), "power" (coverage probability of the value \code{h_null} of quantile-based CrIs of level \code{alpha}), "all" (all the measures)}
 
 \item{estimator}{A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.}
 
 \item{alpha}{Scalar representing the alpha level used to construct credible intervals. Default is 0.05.}
+
+\item{h_null}{Scalar representing the value used to evaluate power. Default is 0.}
 
 \item{parameters}{An nlist object (or list that can be coerced to nlist). True values of parameters to be used to calculate the performance measures.}
 

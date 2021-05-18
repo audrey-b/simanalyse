@@ -40,9 +40,9 @@ test_that("summarise one measure - bias",{
                                   nlist(error.mu = error.mu2, 
                                         error.theta=error.theta2)))
   
-  expr_FUN <- make_expr_and_FUNS("bias", estimator = mean, parameters=parameters)
+  expr_FUN <- make_expr_and_FUNS("bias", estimator = mean, parameters = parameters)
   expect_identical(expr_FUN[["expr"]], "bias = estimator - parameters")
-  result2 <- evaluate_all_measures(listnlists, expr_FUN, parameters=parameters)
+  result2 <- evaluate_all_measures(listnlists, expr_FUN, parameters = parameters)
   expect_identical(result2, nlist(bias.mu = (error.mu1+error.mu2)/2,
                                   bias.theta = (error.theta1+error.theta2)/2))
 })

@@ -10,10 +10,11 @@
 #' "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
 #' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
 #'  bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error), 
-#'  "rrmse" (relative root mean square error), "cv" (coefficient of variation), "all" (all the measures)
+#'  "rrmse" (relative root mean square error), "cv" (coefficient of variation), "power" (coverage probability of the value \code{h_null} of quantile-based CrIs of level \code{alpha}), "all" (all the measures)
 #' @param parameters An nlist object (or list that can be coerced to nlist). True values of parameters to be used to calculate the performance measures.
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.
 #' @param alpha Scalar representing the alpha level used to construct credible intervals. Default is 0.05.
+#' @param h_null Scalar representing the value used to evaluate power. Default is 0.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
 #' @param deviance Whether to calculate measures for deviance.
 
@@ -49,15 +50,16 @@
 ## No Files
 
 sma_evaluate <- function(object = NULL, 
-                         measures=c("bias", "mse", "cpQuantile"), 
+                         measures = c("bias", "mse", "cpQuantile"), 
                          estimator=mean, 
-                         alpha=0.05,
+                         alpha = 0.05,
+                         h_null = 0,
                          parameters = NULL,
-                         monitor=".*",
-                         deviance=FALSE,
+                         monitor = ".*",
+                         deviance = FALSE,
                          custom_funs = list(),
-                         custom_expr_before="",
-                         custom_expr_after="",
+                         custom_expr_before = "",
+                         custom_expr_after = "",
                          progress = FALSE,
                          options = furrr::furrr_options()){
         
@@ -65,6 +67,7 @@ sma_evaluate <- function(object = NULL,
                               measures=measures, 
                               estimator=estimator, 
                               alpha=alpha,
+                              h_null = h_null,
                               parameters = parameters,
                               monitor=monitor,
                               deviance=deviance,
@@ -93,10 +96,11 @@ sma_evaluate <- function(object = NULL,
 #' "cpQuantile" (coverage probability of quantile-based CrIs of level \code{alpha}), "LQuantile" (length of quantile-based CrIs of level \code{alpha}),
 #' "Epvar" (expected posterior variance), "Epsd" (expected posterior standard deviation), "rb" (relative 
 #'  bias), "br" (bias ratio), "var" (variance), "se" (standard error), "mse" (root mean square error), "rmse" (root mean square error), 
-#'  "rrmse" (relative root mean square error), "cv" (coefficient of variation), "all" (all the measures)
+#'  "rrmse" (relative root mean square error), "cv" (coefficient of variation), "power" (coverage probability of the value \code{h_null} of quantile-based CrIs of level \code{alpha}), "all" (all the measures)
 #' @param parameters An nlist object (or list that can be coerced to nlist). True values of parameters to be used to calculate the performance measures.
 #' @param estimator A function, typically mean or median, for the Bayes estimator to use to calculate the performance measures.
 #' @param alpha Scalar representing the alpha level used to construct credible intervals. Default is 0.05.
+#' @param h_null Scalar representing the value used to evaluate power. Default is 0.
 #' @param monitor A character vector (or regular expression if a string) specifying the names of the stochastic nodes in code to include in the summary. By default all stochastic nodes are included.
 #' @param deviance Whether to calculate measures for deviance.
 #' @param path A string. The object is read using this path. If a "derive" folder exists, the object is read from that folder, otherwise it is read from the "results" folder.
@@ -113,32 +117,34 @@ sma_evaluate <- function(object = NULL,
 #'
 
 sma_evaluate_files <- function(
-        measures=c("bias", "mse", "cpQuantile"), 
-        estimator=mean, 
-        alpha=0.05,
+        measures = c("bias", "mse", "cpQuantile"), 
+        estimator = mean, 
+        alpha = 0.05,
+        h_null = 0,
         parameters = NULL,
-        monitor=".*",
-        deviance=FALSE,
+        monitor = ".*",
+        deviance = FALSE,
         path = ".",
         folder = "analysis0000001",
         custom_funs = list(),
-        custom_expr_before="",
-        custom_expr_after="",
+        custom_expr_before = "",
+        custom_expr_after = "",
         progress = FALSE,
         options = furrr::furrr_options()){
         
         sma_evaluate_internal(object = NULL, 
-                              measures=measures, 
-                              estimator=estimator, 
-                              alpha=alpha,
+                              measures = measures, 
+                              estimator = estimator, 
+                              alpha = alpha,
+                              h_null = h_null,
                               parameters = parameters,
-                              monitor=monitor,
-                              deviance=deviance,
+                              monitor = monitor,
+                              deviance = deviance,
                               path = path,
                               folder = folder,
                               custom_funs = custom_funs,
-                              custom_expr_before=custom_expr_before,
-                              custom_expr_after=custom_expr_after,
+                              custom_expr_before = custom_expr_before,
+                              custom_expr_after = custom_expr_after,
                               progress = progress,
                               options = options
         )

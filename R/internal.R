@@ -130,9 +130,10 @@ make_expr_and_FUNS <- function(measures,
                                parameters, 
                                estimator, 
                                alpha, 
-                               custom_FUNS=NULL,
-                               custom_expr_before="", 
-                               custom_expr_after=""){
+                               h_null,
+                               custom_FUNS = NULL,
+                               custom_expr_before = "", 
+                               custom_expr_after = ""){
   expr <- NULL
   aggregate.FUNS <- NULL
   derive_expr <- NULL
@@ -147,7 +148,7 @@ make_expr_and_FUNS <- function(measures,
   if(sum(c("Epsd", "all") %in% measures) > 0){
     aggregate.FUNS %<>% append(list(psd = sd))
   }
-  if(sum(c("cpQuantile", "LQuantile", "all") %in% measures) > 0){
+  if(sum(c("cpQuantile", "LQuantile", "power", "all") %in% measures) > 0){
     cp.lower.with.alpha = function(x) do.call("cp.lower",list(x,"alpha"=alpha))
     cp.upper.with.alpha = function(x) do.call("cp.upper",list(x,"alpha"=alpha))
     aggregate.FUNS %<>% append(list(cp.lower = cp.lower.with.alpha, 
@@ -157,6 +158,7 @@ make_expr_and_FUNS <- function(measures,
   expr <- derive_expr(c("bias", "rb", "br"), "bias = estimator - parameters", measures, expr)
   expr <- derive_expr(c("mse", "rmse", "rrmse"), "mse = (estimator - parameters)^2", measures, expr)
   expr <- derive_expr(c("cpQuantile"), "cpQuantile = ifelse((parameters >= cp.lower) & (parameters <= cp.upper), 1, 0)", measures, expr)
+  expr <- derive_expr(c("power"), paste0("power = 1-ifelse((", h_null, " >= cp.lower) & (", h_null, " <= cp.upper), 1, 0)"), measures, expr)
   expr <- derive_expr(c("E", "cv", "var", "se", "br"), "E = estimator", measures, expr)
   expr <- derive_expr(c("cv", "var", "se", "br"), "Esq = estimator^2", measures, expr)
   expr <- derive_expr(c("LQuantile"), "LQuantile = cp.upper - cp.lower", measures, expr)
@@ -186,7 +188,9 @@ evaluate_all_measures <- function(listnlists,
   future_res <- future_map(listnlists, evaluate_within, 
                            expr = expr_FUNS[["expr"]], 
                            aggregate.FUNS = expr_FUNS[["aggregate.FUNS"]], 
-                           parameters = parameters, .progress = progress, .options=options) 
+                           parameters = parameters, 
+                           .progress = progress, 
+                           .options=options) 
   
   future::resetWorkers(future::plan())
   
@@ -279,7 +283,7 @@ summarise_one_result <- function(nlists, aggregate.FUNS){
     lapply(function(FUN, nlists) estimates(nlists, FUN), nlists)
 }
 
-evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters){
+evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters, ...){
   
   # if statement added because as_nlists was removed from sma_evaluate()
   # It was removed because it made the function very slow
