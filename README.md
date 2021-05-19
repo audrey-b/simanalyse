@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R build
 status](https://github.com/audrey-b/simanalyse/workflows/R-CMD-check/badge.svg)](https://github.com/audrey-b/simanalyse/actions)
 [![Codecov test
-coverage](https://github.com/audrey-b/simanalyse/workflows/test-coverage/badge.svg)](https://codecov.io/gh/audrey-b/simanalyse?branch=master)
+coverage](https://codecov.io/gh/audrey-b/simanalyse/branch/master/graph/badge.svg)](https://codecov.io/gh/audrey-b/simanalyse?branch=master)
 [![License:
 GPL3](https://img.shields.io/badge/License-GPL3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![CRAN
@@ -207,8 +207,10 @@ functions.
 ``` r
 library(future)
 library(future.batchtools)
-plan(batchtools_slurm, #for Slurm; see help(batchtools_template) for other options
-     template = "batchtools.slurm.tmpl") #path to configuration file
+
+plan(batchtools_slurm, # for Slurm; see help(batchtools_template) for other options
+     workers = 100, # maximum number of cores to be used at any time
+     template = "batchtools.slurm.tmpl") # path to configuration file
 ```
 
 For example, the following configuration file may be used with the Slurm
@@ -216,21 +218,22 @@ manager:
 
     #!/bin/sh
 
-    #SBATCH --time=00:10:00 ## walltime in hh:mm:ss
-    #SBATCH --ntasks=1 ## number of cores per dataset
+    #SBATCH --time=00:5:00 ## walltime in hh:mm:ss (per dataset)
+    #SBATCH --ntasks=1 ## number of cores (per dataset)
     #SBATCH --mem-per-cpu=1000 ## min memory per core in MB
 
     ## Export value of DEBUGME environment var to slave
     export DEBUGME=<%= Sys.getenv("DEBUGME") %>
       
-    module load nixpkgs/16.09  gcc/7.3.0 r/4.0.2 ## load latest version of R
+    module load nixpkgs/16.09  gcc/7.3.0 r/4.0.2 ## load R
     module load jags/4.3.0 ## load JAGS
 
     Rscript -e 'batchtools::doJobCollection("<%= uri %>")'
 
 The configuration file will be called for each dataset. Thus in this
-example, one new core (ntasks=1) will be requested for each dataset and
-the 100 datasets will be analyzed in parallel on a total of 100 cores.
+example, one new core (*ntasks=1*) will be requested for each dataset
+and the 100 datasets will be analyzed in parallel on a total of 100
+cores (*workers=100*).
 
 ## Contribution
 
