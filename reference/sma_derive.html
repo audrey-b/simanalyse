@@ -172,7 +172,6 @@
 <span class='r-in'><span class='va'>dat</span> <span class='op'>&lt;-</span> <span class='fu'>sims</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sims/man/sims_simulate.html'>sims_simulate</a></span><span class='op'>(</span><span class='va'>code</span>, parameters <span class='op'>=</span> <span class='va'>parameters</span>, nsims<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sma_analyse.html'>sma_analyse</a></span><span class='op'>(</span><span class='va'>dat</span>, <span class='va'>code</span>, code.add <span class='op'>=</span> <span class='st'>"variance ~ dunif(0,10)"</span>, </span>
 <span class='r-in'>mode<span class='op'>=</span><span class='fu'><a href='sma_set_mode.html'>sma_set_mode</a></span><span class='op'>(</span><span class='st'>"quick"</span><span class='op'>)</span>, monitor<span class='op'>=</span><span class='st'>"variance"</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> module dic loaded</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Compiling model graph</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    Resolving undeclared variables</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    Allocating nodes</span>
@@ -186,6 +185,7 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Max r.hat= 1.219</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Min ess= 9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Module dic unloaded</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Compiling model graph</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    Resolving undeclared variables</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    Allocating nodes</span>
@@ -200,6 +200,8 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Max r.hat= 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Min ess= 15</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Module dic unloaded</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> module dic loaded</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> module dic loaded</span>
 <span class='r-in'><span class='fu'>sma_derive</span><span class='op'>(</span><span class='va'>res</span>, <span class='st'>"sd=sqrt(variance)"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $mcmcr1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $deviance</span>
