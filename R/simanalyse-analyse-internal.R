@@ -62,10 +62,7 @@ sma_analyse_internal <- function(sims = NULL,
   
   code %<>% prepare_code(code.add, code.values)
   
-  if(deviance == TRUE){
-    load.module("dic")
-    monitor <- unique(c(monitor, "deviance"))
-  }
+
   #if(pD == TRUE) monitor <- unique(c(monitor, "pD"))
   
   #jags
@@ -73,7 +70,7 @@ sma_analyse_internal <- function(sims = NULL,
     #if(!is.null(path) & is.null(sims)) sims <- sims_data(path)
     
     res.list <- future_pmap(list(nlistdata=sims), analyse_dataset_bayesian, 
-                            code=code, monitor=monitor,
+                            code=code, monitor=monitor, deviance = deviance,
                             inits=inits, n.chains=mode$n.chains,
                             n.adapt=mode$n.adapt, max.time=mode$max.time,
                             max.iter=mode$max.iter, n.save=mode$n.save, 
@@ -83,27 +80,25 @@ sma_analyse_internal <- function(sims = NULL,
                             units=mode$units, .progress = progress, .options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
-    if(deviance == TRUE) unload.module("dic")
     return((mcmcr::as.mcmcrs(res.list)))
     
   }else{
     options$seed = FALSE
-    sma_batchr(sma.fun=analyse_dataset_bayesian,
-               path.read=path,
-               folder=folder,
-               path.save=file.path(path, folder, "results"),
-               prefix="data", suffix="results",
-               code=code, monitor=monitor,
-               inits=inits, n.chains=mode$n.chains,
-               n.adapt=mode$n.adapt, max.time=mode$max.time,
-               max.iter=mode$max.iter, n.save=mode$n.save, 
-               ess=mode$ess, r.hat=mode$r.hat,
-               ess.nodes=mode$ess.nodes, 
-               r.hat.nodes=mode$r.hat.nodes,
-               units=mode$units, options=options, seeds=seeds)
+    sma_batchr(sma.fun = analyse_dataset_bayesian,
+               path.read = path,
+               folder = folder,
+               path.save = file.path(path, folder, "results"),
+               prefix = "data", suffix = "results",
+               code = code, monitor = monitor, deviance = deviance,
+               inits = inits, n.chains = mode$n.chains,
+               n.adapt = mode$n.adapt, max.time = mode$max.time,
+               max.iter = mode$max.iter, n.save = mode$n.save, 
+               ess = mode$ess, r.hat = mode$r.hat,
+               ess.nodes = mode$ess.nodes, 
+               r.hat.nodes = mode$r.hat.nodes,
+               units = mode$units, options = options, seeds = seeds)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
-    if(deviance == TRUE) unload.module("dic")
   }
   
   future::resetWorkers(future::plan())

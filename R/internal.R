@@ -47,11 +47,16 @@ set_seed_inits <- function(inits, n.chains) {
   
 }
 
-analyse_dataset_bayesian <- function(nlistdata, code, monitor, 
+analyse_dataset_bayesian <- function(nlistdata, code, monitor, deviance, 
                                      n.chains=3, inits=list(), n.adapt, 
                                      n.save, max.time, max.iter,
                                      quiet = FALSE, units="mins", 
                                      ess, r.hat, ess.nodes, r.hat.nodes) {
+  
+  if(deviance == TRUE){
+    load.module("dic")
+    monitor <- unique(c(monitor, "deviance"))
+  }
   
   code %<>% add_model_block() %>% textConnection
   
@@ -116,6 +121,9 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor,
     ess.convergence <- ess.convergence>=ess
     convergence <- (r.hat.convergence & ess.convergence)  
   }
+  
+  if(deviance == TRUE) unload.module("dic")
+  
   return(mcmcr::as.mcmcr(sample))
 }
 
