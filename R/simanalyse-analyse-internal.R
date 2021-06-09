@@ -77,6 +77,7 @@ sma_analyse_internal <- function(sims = NULL,
                             ess=mode$ess, r.hat=mode$r.hat,
                             ess.nodes=mode$ess.nodes, 
                             r.hat.nodes=mode$r.hat.nodes,
+                            normalize = mode$normalize,
                             units=mode$units, .progress = progress, .options=options)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")
@@ -96,6 +97,7 @@ sma_analyse_internal <- function(sims = NULL,
                ess = mode$ess, r.hat = mode$r.hat,
                ess.nodes = mode$ess.nodes, 
                r.hat.nodes = mode$r.hat.nodes,
+               normalize = mode$normalize,
                units = mode$units, options = options, seeds = seeds)
     
     if("lecuyer::RngStream" %in% list.factories(type="rng")[,1]) unload.module("lecuyer")

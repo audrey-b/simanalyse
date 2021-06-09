@@ -14,6 +14,7 @@ sma_set_mode(
   r.hat.nodes,
   ess,
   ess.nodes,
+  normalize = FALSE,
   max.time,
   units
 )
@@ -36,6 +37,8 @@ sma_set_mode(
 \item{ess}{A number specifying the minimum effective sample size.}
 
 \item{ess.nodes}{A character vector of nodes to be used to assess ess.}
+
+\item{normalize}{A flag. If TRUE, variables between 0 and 1 are logit-transformed and non-negative variables are log-transformed when assessing rhat and ess.}
 
 \item{max.time}{A number specifying the maximum time to spend on analysis.}
 

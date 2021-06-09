@@ -16,6 +16,7 @@
 #' @param r.hat.nodes A character vector of nodes to be used to assess r.hat
 #' @param ess A number specifying the minimum effective sample size.
 #' @param ess.nodes A character vector of nodes to be used to assess ess.
+#' @param normalize A flag. If TRUE, variables between 0 and 1 are logit-transformed and non-negative variables are log-transformed when assessing rhat and ess.
 #' @param max.time A number specifying the maximum time to spend on analysis.
 #' @param units A character string specifying the units of time for \code{max.time}. See \code{difftime}.
 
@@ -50,6 +51,7 @@ sma_set_mode <- function(mode = "report",
                          r.hat.nodes,
                          ess,
                          ess.nodes,
+                         normalize = FALSE,
                          max.time,
                          units){
   
@@ -72,6 +74,7 @@ sma_set_mode <- function(mode = "report",
   chk_character(r.hat.nodes)
   if(missing(ess.nodes)) ess.nodes <- ".*"
   chk_character(ess.nodes)
+  chk_flag(normalize)
   #units?
   #other checks
   
@@ -90,6 +93,8 @@ sma_set_mode <- function(mode = "report",
          r.hat = ifelse(missing(r.hat), 1.05, r.hat),
          
          r.hat.nodes  = r.hat.nodes,
+         
+         normalize = normalize,
          
          n.save = ifelse(missing(n.save), 10*ess, n.save),
          
@@ -115,6 +120,8 @@ sma_set_mode <- function(mode = "report",
          
          r.hat.nodes  = r.hat.nodes,
          
+         normalize = normalize,
+         
          n.save = ifelse(missing(n.save), 10*ess, n.save),
          
          max.iter = ifelse(missing(max.iter), .Machine$integer.max, max.iter),
@@ -139,6 +146,8 @@ sma_set_mode <- function(mode = "report",
          r.hat = ifelse(missing(r.hat), 1.05, r.hat),
          
          r.hat.nodes  = r.hat.nodes,
+         
+         normalize = normalize,
          
          n.save = ifelse(missing(n.save), 10*ess, n.save),
          

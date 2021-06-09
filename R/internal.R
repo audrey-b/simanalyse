@@ -51,7 +51,8 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor, deviance,
                                      n.chains=3, inits=list(), n.adapt, 
                                      n.save, max.time, max.iter,
                                      quiet = FALSE, units="mins", 
-                                     ess, r.hat, ess.nodes, r.hat.nodes) {
+                                     ess, r.hat, ess.nodes, r.hat.nodes,
+                                     normalize) {
   
   if(deviance == TRUE){
     load.module("dic")
@@ -90,8 +91,19 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor, deviance,
   if(".*" %in% r.hat.nodes) r.hat.nodes <- pars(sample)
   if(".*" %in% ess.nodes) ess.nodes <- pars(sample)
   
-  r.hat.convergence <- max(mcmcr::rhat(subset(sample, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
-  ess.convergence <- min(mcmcr::ess(subset(sample, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
+  sample.norm <- sample
+  
+  if(normalize == TRUE){
+    
+    which.log <- which(lapply(1:length(sample), function(i){(sum(sample[[i]] < 0) == 0) & (sum(sample[[i]] > 1) > 0)}) == TRUE)
+    which.logit <- which(lapply(1:length(sample), function(i){(sum(sample[[i]] < 0) == 0) & (sum(sample[[i]] > 1) == 0)}) == TRUE)
+    if(length(which.log) != 0) sample.norm[which.log] <- lapply(sample.norm[which.log], log)
+    if(length(which.logit) != 0) sample.norm[which.logit] <- lapply(sample.norm[which.logit], logit)
+  
+    }
+  
+  r.hat.convergence <- max(mcmcr::rhat(subset(sample.norm, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
+  ess.convergence <- min(mcmcr::ess(subset(sample.norm, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
   
   cat(paste0("\nMax r.hat= ", r.hat.convergence, "\n"))
   cat(paste0("Min ess= ", ess.convergence, "\n"))
@@ -111,9 +123,20 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor, deviance,
     batch.time = as.double(difftime(Sys.time(), time0, units=units))-cum.time
     cum.time = cum.time + batch.time
     
-    r.hat.convergence <- max(mcmcr::rhat(subset(sample, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
-    ess.convergence <- min(mcmcr::ess(subset(sample, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
+    sample.norm <- sample
     
+    if(normalize == TRUE){
+      
+      which.log <- which(lapply(1:length(sample), function(i){(sum(sample[[i]] < 0) == 0) & (sum(sample[[i]] > 1) > 0)}) == TRUE)
+      which.logit <- which(lapply(1:length(sample), function(i){(sum(sample[[i]] < 0) == 0) & (sum(sample[[i]] > 1) == 0)}) == TRUE)
+      if(length(which.log) != 0) sample.norm[which.log] <- lapply(sample.norm[which.log], log)
+      if(length(which.logit) != 0) sample.norm[which.logit] <- lapply(sample.norm[which.logit], logit)
+      
+    }
+    
+    r.hat.convergence <- max(mcmcr::rhat(subset(sample.norm, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
+    ess.convergence <- min(mcmcr::ess(subset(sample.norm, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
+   
     cat(paste0("\nMax r.hat= ", r.hat.convergence, "\n"))
     cat(paste0("Min ess= ", ess.convergence, "\n"))
     

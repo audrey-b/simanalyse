@@ -46,3 +46,7 @@ sprintf_custom = function(code, code.value){
   chk_equal(length(code.value), length(spl)-1)
   return(paste0(spl, c(code.value,""), collapse = ""))
 }
+
+logit <- function(x){
+  return(log(x/(1-x)))
+}

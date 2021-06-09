@@ -66,7 +66,8 @@ test_that("analyse_dataset_bayesian with data works",{
                                      ess=5,
                                      r.hat=1.5,
                                      r.hat.nodes = ".*",
-                                     ess.nodes=".*")
+                                     ess.nodes=".*",
+                                     normalize = FALSE)
   
   result1 <- readRDS("Internal_results/result1.rds")
   expect_equal(result, result1)
@@ -83,7 +84,8 @@ test_that("analyse_dataset_bayesian works",{
                                      ess=5,
                                      r.hat=1.5,
                                      r.hat.nodes = ".*",
-                                     ess.nodes=".*")
+                                     ess.nodes=".*",
+                                     normalize = FALSE)
   
   result2 <- readRDS("Internal_results/result2.rds")
   expect_equal(result, result2)
