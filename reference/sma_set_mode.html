@@ -63,7 +63,6 @@ and thinning is multiplied by 2. The stop criteria is applied again and so on." 
 
 
 
-
   
 
   
@@ -143,6 +142,7 @@ and thinning is multiplied by 2. The stop criteria is applied again and so on.</
   <span class='va'>r.hat.nodes</span>,
   <span class='va'>ess</span>,
   <span class='va'>ess.nodes</span>,
+  normalize <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>max.time</span>,
   <span class='va'>units</span>
 <span class='op'>)</span></code></pre></div>
@@ -185,6 +185,10 @@ and thinning is multiplied by 2. The stop criteria is applied again and so on.</
     <tr>
       <th>ess.nodes</th>
       <td><p>A character vector of nodes to be used to assess ess.</p></td>
+    </tr>
+    <tr>
+      <th>normalize</th>
+      <td><p>A flag. If TRUE, variables between 0 and 1 are logit-transformed and non-negative variables are log-transformed when assessing rhat and ess.</p></td>
     </tr>
     <tr>
       <th>max.time</th>
