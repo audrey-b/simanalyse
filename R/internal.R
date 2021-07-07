@@ -5,11 +5,19 @@ add_model_block <- function(code){
 }
 
 
-set_seed_inits <- function(inits, n.chains) {
+set_seed_inits <- function(inits, n.chains, nlistdata) {
   
   if(class(inits)=="function"){
-    if(!is.null(names(as.list(args(inits)))[1])){
-      inits = lapply(1:n.chains, inits)
+    names_arguments <- names(as.list(args(inits)))
+    names_arguments <- names_arguments[-length(names_arguments)]
+    if(!is.null(names_arguments)){
+      chk_subset(names_arguments, c("chain",  "data"))
+      if(length(names_arguments) == 1){
+        chk_equal(names_arguments, "chain")
+        inits = lapply(1:n.chains, inits)
+      }else{
+        inits = lapply(1:n.chains, inits, data = nlistdata)
+      }
     }else{
       inits = lapply(1:n.chains, function(x) inits())
     }
@@ -61,7 +69,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor, deviance,
   
   code %<>% add_model_block() %>% textConnection
   
-  inits <- set_seed_inits(inits, n.chains)
+  inits <- set_seed_inits(inits, n.chains, nlistdata)
   
   #adaptation
   model <- rjags::jags.model(code, data = nlistdata, inits = inits,
@@ -99,8 +107,8 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor, deviance,
     which.logit <- which(lapply(1:length(sample), function(i){(sum(sample[[i]] < 0) == 0) & (sum(sample[[i]] > 1) == 0)}) == TRUE)
     if(length(which.log) != 0) sample.norm[which.log] <- lapply(sample.norm[which.log], log)
     if(length(which.logit) != 0) sample.norm[which.logit] <- lapply(sample.norm[which.logit], logit)
-  
-    }
+    
+  }
   
   r.hat.convergence <- max(mcmcr::rhat(subset(sample.norm, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
   ess.convergence <- min(mcmcr::ess(subset(sample.norm, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
@@ -136,7 +144,7 @@ analyse_dataset_bayesian <- function(nlistdata, code, monitor, deviance,
     
     r.hat.convergence <- max(mcmcr::rhat(subset(sample.norm, pars=r.hat.nodes), as_df=TRUE, by="term")$rhat, na.rm=TRUE)
     ess.convergence <- min(mcmcr::ess(subset(sample.norm, pars=ess.nodes), as_df=TRUE, by="term")$ess, na.rm=TRUE)
-   
+    
     cat(paste0("\nMax r.hat= ", r.hat.convergence, "\n"))
     cat(paste0("Min ess= ", ess.convergence, "\n"))
     
@@ -406,7 +414,7 @@ sma_batchr <- function(sma.fun, prefix, suffix, path.read,
     seeds = seeds,
     options = options,
     ask = FALSE  )
-
+  
   # batch_process(fun = fun.batchr, 
   #               path = path.read,
   #               regexp = chk::p0("^", prefix, "\\d{7,7}.rds$"), 

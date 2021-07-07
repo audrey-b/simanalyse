@@ -91,6 +91,41 @@ test_that("analyse_dataset_bayesian works",{
   expect_equal(result, result2)
 })
 
+test_that("inits as function",{
+  set.seed(10L)
+  dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = nlist(mu=0), nsims=2)
+  result <- analyse_dataset_bayesian(nlistdata = dat[[1]],
+                                     code = "a ~ dnorm(0,1)
+                                             mu ~ dnorm(-3, 3)",
+                                     n.adapt = 101,
+                                     max.iter=5,
+                                     n.save=5,
+                                     max.time=0.1,
+                                     monitor = "mu",
+                                     deviance = TRUE,
+                                     ess=5,
+                                     r.hat=1.5,
+                                     r.hat.nodes = ".*",
+                                     ess.nodes=".*",
+                                     normalize = FALSE)
+  
+  result1 <- readRDS("Internal_results/result1.rds")
+  expect_equal(result, result1)
+})
+
+test_that("inits as function of chain and data",{
+  set.seed(10L)
+  dat <- sims_simulate("a ~ dnorm(mu,1)", parameters = nlist(mu=0), nsims=1)
+  
+  inits <- function(){0}
+  expect_equal(unname(set_seed_inits(inits, 3, dat[[1]])[1:3]), list(0, 0, 0))
+  
+  inits <- function(chain){if(chain == 1) return(1); return(0)}
+  expect_equal(unname(set_seed_inits(inits, 3, dat[[1]])[1:3]), list(1, 0, 0))
+  
+  inits <- function(chain, data){mu = data$a}
+  expect_equal(unname(set_seed_inits(inits, 3, dat[[1]])[1:3]), list(dat[[1]]$a, dat[[1]]$a, dat[[1]]$a))
+})
 
 # test_that("extract_measure_from_summary",{
 #   monitor = c("mu", "theta")
