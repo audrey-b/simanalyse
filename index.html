@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">simanalyse</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9001</span>
       </span>
     </div>
 
@@ -48,7 +48,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/audrey-b/simanalyse/">
+  <a href="https://github.com/audrey-b/simanalyse/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -65,9 +65,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="simanalyse" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#simanalyse" class="anchor" aria-hidden="true"></a>simanalyse</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="simanalyse">simanalyse<a class="anchor" aria-label="anchor" href="#simanalyse"></a>
+</h1></div>
 <!-- badges: start -->
 
 <p>simanalyse is an R package to facilitate model comparisons and simulation studies.</p>
@@ -75,12 +75,12 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#install.packages("remotes")</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"audrey-b/simanalyse"</span><span class="op">)</span></code></pre></div>
-<div id="demonstration" class="section level2">
-<h2 class="hasAnchor">
-<a href="#demonstration" class="anchor" aria-hidden="true"></a>Demonstration</h2>
-<div id="simulate-the-datasets" class="section level3">
-<h3 class="hasAnchor">
-<a href="#simulate-the-datasets" class="anchor" aria-hidden="true"></a>Simulate the Datasets</h3>
+<div class="section level2">
+<h2 id="demonstration">Demonstration<a class="anchor" aria-label="anchor" href="#demonstration"></a>
+</h2>
+<div class="section level3">
+<h3 id="simulate-the-datasets">Simulate the Datasets<a class="anchor" aria-label="anchor" href="#simulate-the-datasets"></a>
+</h3>
 <p>Simulate 100 datasets using the sims package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/audrey-b/simanalyse" class="external-link">simanalyse</a></span><span class="op">)</span>
@@ -106,9 +106,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; an nlists object of an nlist object with 2 numeric elements</span></code></pre></div>
 </div>
-<div id="analyse-the-datasets" class="section level3">
-<h3 class="hasAnchor">
-<a href="#analyse-the-datasets" class="anchor" aria-hidden="true"></a>Analyse the Datasets</h3>
+<div class="section level3">
+<h3 id="analyse-the-datasets">Analyse the Datasets<a class="anchor" aria-label="anchor" href="#analyse-the-datasets"></a>
+</h3>
 <p>Conduct a Bayesian analysis of each dataset. Let’s analyze each dataset in “report” mode. By default, this mode runs 3 chains until the following two criteria are met: convergence based on r.hat &lt;1.1 and a minimum effective sample size of 400. The first half of the chains is discarded as burnin. Chains are thinned to 4000 iterations each to preserve disk and memory usage. See ?sma_set_mode for other choices of modes and customization.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="st">"sigma ~ dunif(0, 6)"</span>
@@ -121,9 +121,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">results</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
 </div>
-<div id="derive-new-parameters-if-required" class="section level3">
-<h3 class="hasAnchor">
-<a href="#derive-new-parameters-if-required" class="anchor" aria-hidden="true"></a>Derive New Parameters (if required)</h3>
+<div class="section level3">
+<h3 id="derive-new-parameters-if-required">Derive New Parameters (if required)<a class="anchor" aria-label="anchor" href="#derive-new-parameters-if-required"></a>
+</h3>
 <p>Derive posterior samples for new parameters.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results.derived</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sma_derive.html">sma_derive</a></span><span class="op">(</span><span class="va">results</span>, <span class="st">"var=sigma^2"</span>, monitor<span class="op">=</span><span class="st">"var"</span><span class="op">)</span></code></pre></div>
@@ -139,9 +139,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; an nlist object with 1 numeric element</span></code></pre></div>
 </div>
-<div id="summarise-the-results-of-the-simulation-study" class="section level3">
-<h3 class="hasAnchor">
-<a href="#summarise-the-results-of-the-simulation-study" class="anchor" aria-hidden="true"></a>Summarise the Results of the Simulation Study</h3>
+<div class="section level3">
+<h3 id="summarise-the-results-of-the-simulation-study">Summarise the Results of the Simulation Study<a class="anchor" aria-label="anchor" href="#summarise-the-results-of-the-simulation-study"></a>
+</h3>
 <p>Evaluate the performance of the model using the 100 analyses:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/sma_evaluate.html">sma_evaluate</a></span><span class="op">(</span><span class="va">results.derived</span>, parameters<span class="op">=</span><span class="va">params.derived</span><span class="op">)</span>
@@ -162,9 +162,9 @@
 <span class="co">#&gt; 1  var 1.76198       0.92 9.410909</span></code></pre></div>
 </div>
 </div>
-<div id="saving-to-files" class="section level2">
-<h2 class="hasAnchor">
-<a href="#saving-to-files" class="anchor" aria-hidden="true"></a>Saving to Files</h2>
+<div class="section level2">
+<h2 id="saving-to-files">Saving to Files<a class="anchor" aria-label="anchor" href="#saving-to-files"></a>
+</h2>
 <p>When running lengthy simulation studies, it is often preferable to save all the results to disk. You may do this by using the functions ending in <em>files</em>. By default, results are saved in your working directory unless the <em>path</em> argument is specified.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span>
@@ -189,20 +189,20 @@
 <span class="co">#&gt; 1  var 1.76198       0.92 9.410909</span></code></pre></div>
 <p>Note that this result is identical to the result we obtained without saving to files, using the same seed. The result is also identical when using parallelization, described below.</p>
 </div>
-<div id="parallelization" class="section level2">
-<h2 class="hasAnchor">
-<a href="#parallelization" class="anchor" aria-hidden="true"></a>Parallelization</h2>
+<div class="section level2">
+<h2 id="parallelization">Parallelization<a class="anchor" aria-label="anchor" href="#parallelization"></a>
+</h2>
 <p>Parallelization is achieved using the <a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a> package.</p>
 <p>To use all available cores on a local machine simply execute the following code before calling the package’s functions.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
+<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, if you wish to use a cluster computing environment (e.g. Compute Canada) with a workload manager (e.g. Slurm, Torque/PBS), simply execute the following code before calling the package’s functions.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future" class="external-link">future</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">future.batchtools</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future.batchtools" class="external-link">future.batchtools</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">batchtools_slurm</span>, <span class="co"># for Slurm; see help(batchtools_template) for other options</span>
+<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">batchtools_slurm</span>, <span class="co"># for Slurm; see help(batchtools_template) for other options</span>
      workers <span class="op">=</span> <span class="fl">100</span>, <span class="co"># maximum number of cores to be used at any time</span>
      template <span class="op">=</span> <span class="st">"batchtools.slurm.tmpl"</span><span class="op">)</span> <span class="co"># path to configuration file</span></code></pre></div>
 <p>For example, the following configuration file may be used with the Slurm manager:</p>
@@ -221,15 +221,15 @@
 <span id="cb15-13"><a href="#cb15-13"></a>Rscript <span class="op">-</span>e <span class="st">'batchtools::doJobCollection("&lt;%= uri %&gt;")'</span></span></code></pre></div>
 <p>The configuration file will be called for each dataset. Thus in this example, one new core (<em>ntasks=1</em>) will be requested for each dataset and the 100 datasets will be analyzed in parallel on a total of 100 cores (<em>workers=100</em>).</p>
 </div>
-<div id="contribution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contribution" class="anchor" aria-hidden="true"></a>Contribution</h2>
+<div class="section level2">
+<h2 id="contribution">Contribution<a class="anchor" aria-label="anchor" href="#contribution"></a>
+</h2>
 <p>Please report any <a href="https://github.com/audrey-b/simanalyse/issues" class="external-link">issues</a>.</p>
 <p><a href="https://github.com/audrey-b/simanalyse/pulls" class="external-link">Pull requests</a> are always welcome.</p>
 </div>
-<div id="code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor" aria-hidden="true"></a>Code of Conduct</h2>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
 <p>Please note that the simanalyse project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
@@ -239,10 +239,8 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/audrey-b/simanalyse/">https://​github.com/​audrey-b/​simanalyse/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/audrey-b/simanalyse/issues">https://​github.com/​audrey-b/​simanalyse/​issues</a>
-</li>
+<li><a href="https://github.com/audrey-b/simanalyse/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/audrey-b/simanalyse/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -250,7 +248,7 @@
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></small></li>
 </ul>
 </div>
 
@@ -261,12 +259,19 @@
 </ul>
 </div>
 
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing simanalyse</a></li>
+</ul>
+</div>
+
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Audrey Beliveau <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Joe Thorley <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7683-4592" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">More on authors...</a></li>
+<li>Joe Thorley <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7683-4592" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
@@ -292,7 +297,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer>
