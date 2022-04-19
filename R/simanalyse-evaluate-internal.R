@@ -105,7 +105,7 @@ sma_evaluate_internal <- function(object = NULL,
   performance <- nlist::as_term_frame(performance)
   
   performance$measure = sapply(strsplit(performance$term, "\\."), function(x) x[1])
-  performance$term = sapply(strsplit(performance$term, "\\."), function(x) x[-1])
+  performance$term = sapply(strsplit(performance$term, "\\."), function(x) paste0(x[-1], collapse = "."))
   performance <- data.frame(reshape::cast(performance, term ~ measure))
   if(custom_expr_before=="" & custom_expr_after=="" & !("all" %in% measures)) performance <- performance[,c("term", measures)]
   

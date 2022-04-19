@@ -239,7 +239,7 @@ evaluate_all_measures <- function(listnlists,
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
                     parameters) %>%
-    return
+    return()
 }
 
 
@@ -287,7 +287,7 @@ evaluate_all_measures_files <- function(files,
     derive_measures(expr_FUNS[["derive_expr"]], 
                     measure_names(expr_FUNS[["expr"]]), 
                     parameters) %>%
-    return
+    return()
 }
 
 derive_measures <- function(nlist, derive_expr, keywords, parameters){
@@ -297,14 +297,14 @@ derive_measures <- function(nlist, derive_expr, keywords, parameters){
     names(parameters) <- paste0("parameters.",names(parameters))
     mcmc_derive(object = nlist, expr = expr.all.params, values = parameters, silent = TRUE) %>%
       append(nlist) %>%
-      return
+      return()
   }else{return(nlist)}
 }
 
 evaluate_across <- function(summary.nlist, FUN){
   summary.nlist %>% 
     estimates(fun = mean) %>%
-    return
+    return()
 }
 
 expand_expr <- function(expr, keywords, monitor, parameters){
@@ -314,7 +314,7 @@ expand_expr <- function(expr, keywords, monitor, parameters){
     lapply(make_one_expr, expr, keywords) %>%
     unlist %>%
     paste(collapse=" \n ") %>%
-    return
+    return()
 }
 
 summarise_one_result <- function(nlists, aggregate.FUNS){
@@ -342,7 +342,7 @@ evaluate_within <- function(nlists, expr, aggregate.FUNS, parameters, ...){
     names(parameters) <- paste0("parameters.",names(parameters))
     
     mcmc_derive(object = aggregate.list, expr = expr.all.params, values = parameters, silent=TRUE) %>%
-      return
+      return()
     
   }else{return(aggregate.list)}
 }
@@ -439,7 +439,7 @@ derive_one <- function(object.nlists, code){
     mcmc_derive(expr = code, 
                 primary = TRUE, 
                 silent = TRUE) %>%
-    return
+    return()
   #if(monitor != ".*") return(subset(derived_obj, select=monitor))
   #return(derived_obj)
 }
