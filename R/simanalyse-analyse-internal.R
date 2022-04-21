@@ -46,11 +46,14 @@ sma_analyse_internal <- function(sims = NULL,
   
   
   if(!is.list(options$seed)){ #error if list not the right length
+    plan_current <- future::plan()
+    future::plan("sequential")
     seeds <- furrr::future_map(1:n.sims, 
                                function(x) return(.Random.seed), 
                                .options = options)
     names(seeds) = chk::p0("data", sprintf("%07d", 1:n.sims), ".rds")
     options$seed = seeds
+    future::plan(plan_current)
   }
   
   if(is.null(sims)){

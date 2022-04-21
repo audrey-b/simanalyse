@@ -23,13 +23,13 @@ Imports:
   furrr,
   reshape,
   yesno,
-  batchr
+  batchr,
+  future
 Remotes:
   poissonconsulting/batchr
 Suggests: 
     covr,
-    testthat,
-    future
+    testthat
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
