@@ -113,7 +113,8 @@ sma_evaluate_internal <- function(object = NULL,
   if(any(measures != "all") & any(measures != "")) performance <-  performance[,c("term", measures)]
   # Order alphabetically. This method is consistent across all OS
   # Sort all except term which should be the 1st column
-  performance <- performance[, c("term", stringr::str_sort(colnames(performance)[colnames(performance)!="term"]))]
+  performance <- performance[, c("term", 
+                                 stringr::str_sort(colnames(performance)[colnames(performance)!="term"], numeric = TRUE))]
   
   if(!read.file){
         return(performance)
