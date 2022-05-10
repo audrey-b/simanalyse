@@ -178,7 +178,7 @@ make_expr_and_FUNS <- function(measures,
   derive_expr <- NULL
   
   #aggregate_FUNS
-  if(sum(c("bias", "mse", "rb", "br", "cv", "var", "se", "rmse", "rrmse", "all") %in% measures) > 0) {
+  if(sum(c("E", "bias", "mse", "rb", "br", "cv", "var", "se", "rmse", "rrmse", "all") %in% measures) > 0) {
     aggregate.FUNS %<>% append(list(estimator = estimator))
   }
   if(sum(c("Epvar", "all") %in% measures) > 0){
