@@ -26,7 +26,8 @@ Imports:
   batchr,
   future
 Remotes:
-  poissonconsulting/batchr
+  poissonconsulting/batchr,
+  poissonconsulting/mcmcderive
 Suggests: 
     covr,
     testthat
